@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://triplecc.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="认识标签(第一部分)语义化，让你的网页更好的被搜索引擎理解我们要开始把网页中常用到的标签一 一向大家介绍，学习这一章节的时候要记住学习html标签过程中，主要注意两个方面的学习：标签的用途、标签在浏览器中的默认样式。 标签的用途：我们学习网页制作时，常常会听到一个词，语义化。那么什么叫做语义化呢，说的通俗点就是：明白每个标签的用途（在什么情况下使用此标签合理）比如，网页上的文章的标题就可以用标题标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="html认识标签">
+<meta property="og:url" content="https://triplecc.github.io/2019/03/22/html%E8%AE%A4%E8%AF%86%E6%A0%87%E7%AD%BE/index.html">
+<meta property="og:site_name" content="Light&#39;s Blog">
+<meta property="og:description" content="认识标签(第一部分)语义化，让你的网页更好的被搜索引擎理解我们要开始把网页中常用到的标签一 一向大家介绍，学习这一章节的时候要记住学习html标签过程中，主要注意两个方面的学习：标签的用途、标签在浏览器中的默认样式。 标签的用途：我们学习网页制作时，常常会听到一个词，语义化。那么什么叫做语义化呢，说的通俗点就是：明白每个标签的用途（在什么情况下使用此标签合理）比如，网页上的文章的标题就可以用标题标">
+<meta property="article:published_time" content="2019-03-22T12:00:00.000Z">
+<meta property="article:modified_time" content="2019-12-23T03:18:18.755Z">
+<meta property="article:author" content="Light">
+<meta property="article:tag" content="Html">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://triplecc.github.io/2019/03/22/html%E8%AE%A4%E8%AF%86%E6%A0%87%E7%AD%BE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>html认识标签 | Light's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Light's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/03/22/html%E8%AE%A4%E8%AF%86%E6%A0%87%E7%AD%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          html认识标签
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-22 12:00:00" itemprop="dateCreated datePublished" datetime="2019-03-22T12:00:00+00:00">2019-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-23 03:18:18" itemprop="dateModified" datetime="2019-12-23T03:18:18+00:00">2019-12-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="认识标签-第一部分"><a href="#认识标签-第一部分" class="headerlink" title="认识标签(第一部分)"></a>认识标签(第一部分)</h1><p>语义化，让你的网页更好的被搜索引擎理解<br>我们要开始把网页中常用到的标签一 一向大家介绍，学习这一章节的时候要记住学习html标签过程中，主要注意两个方面的学习：标签的用途、标签在浏览器中的默认样式。</p>
+<p>标签的用途：我们学习网页制作时，常常会听到一个词，语义化。那么什么叫做语义化呢，说的通俗点就是：明白每个标签的用途（在什么情况下使用此标签合理）比如，网页上的文章的标题就可以用标题标签，网页上的各个栏目的栏目名称也可以使用标题标签。文章中内容的段落就得放在段落标签中，在文章中有想强调的文本，就可以使用 em 标签表示强调等等。</p>
+<p>讲了这么多语义化，但是语义化可以给我们带来什么样的好处呢？</p>
+<a id="more"></a>
+<ol>
+<li><p>更容易被搜索引擎收录。</p>
+</li>
+<li><p>更容易让屏幕阅读器读出网页内容。</p>
+</li>
+</ol>
+<p>在后面的章节会带领大家学习了解html中每个标签的语义（用途）。</p>
+<p>单击提交按钮进行下一小节的学习！</p>
+<h2 id="标签，网页上显示的内容放在这里"><a href="#标签，网页上显示的内容放在这里" class="headerlink" title="\标签，网页上显示的内容放在这里"></a>\<body>标签，网页上显示的内容放在这里</h2><p>在网页上要展示出来的页面内容一定要放在body标签中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;了不起的盖茨比&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;了不起的盖茨比&lt;&#x2F;h1&gt;</span><br><span class="line">    &lt;p&gt;1922年的春天，一个想要成名名叫&lt;em&gt;尼克•卡拉威&lt;&#x2F;em&gt;（托比•马奎尔Tobey Maguire 饰）的作家，离开了美国中西部，来到了纽约。那是一个道德感渐失，爵士乐流行，走私为王，股票飞涨的时代。为了追寻他的&lt;span&gt;美国梦&lt;&#x2F;span&gt;，他搬入纽约附近一海湾居住。&lt;&#x2F;p&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;p&gt;菲茨杰拉德，二十世纪美国文学巨擘之一，兼具作家和编剧双重身份。他以诗人的敏感和戏剧家的想象为&lt;strong&gt;&quot;爵士乐时代&quot;&lt;&#x2F;strong&gt;吟唱华丽挽歌，其诗人和梦想家的气质亦为那个奢靡年代的不二注解。&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">        了不起的程序员</span><br><span class="line">    &lt;&#x2F;h1&gt;</span><br><span class="line">    &lt;p&gt;</span><br><span class="line">        我是一个了不起的程序员，&lt;strong&gt;“程序员”&lt;&#x2F;strong&gt;，哈哈哈哈哈哈啊fasfsdfsdfsdfsdfsdfsdf沈德符</span><br><span class="line">        dsfsdfds&lt;em&gt;&quot;程序员&quot;&lt;&#x2F;em&gt;</span><br><span class="line">    &lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="标签，添加段落"><a href="#标签，添加段落" class="headerlink" title="\标签，添加段落"></a>\<p>标签，添加段落</h2><p>如果想在网页上显示文章，这时就需要\<p>标签了，把文章的段落放到\<p>标签中<br>注意一段文字一个\<p>标签，如在一篇新闻文章中有3段文字，就要把这3个段落分别放到3个\<p>标签中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt; p标签&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;我的第一个段落。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;p&gt;我的第二个段落。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="标签，为你的网页添加标题"><a href="#标签，为你的网页添加标题" class="headerlink" title="\标签，为你的网页添加标题"></a>\<hx>标签，为你的网页添加标题</h2><p>标题标签一共有6个，h1、h2、h3、h4、h5、h6分别为一级标题、二级标题、三级标题、四级标题、五级标题、六级标题。并且依据重要性递减。\<h1>是最高的等级。<br>语法：</p>
+<p><code>&lt;hx&gt;标题文本&lt;/hx&gt; (x为1-6)</code></p>
+<p>文章的标题前面已经说过了，可以使用标题标签，另外网页上的各个栏目的标题也可使用它们</p>
+<h2 id="和-强调语气"><a href="#和-强调语气" class="headerlink" title="\和\ 强调语气"></a>\<strong>和\<em> 强调语气</h2><p>了段落又有了标题，现在如果想在一段话中特别强调某几个文字，这时候就可以用到\<em>或\<strong>标签。<br>但两者在强调的语气上有区别:\<em> 表示强调，\<strong> 表示更强烈的强调。并且在浏览器中\<em> 默认用斜体表示，\<strong> 用粗体表示。两个标签相比，目前国内前端程序员更喜欢使用\<strong>表示强调。</p>
+<h2 id="标签为文字设置单独样式"><a href="#标签为文字设置单独样式" class="headerlink" title="\标签为文字设置单独样式"></a>\<span>标签为文字设置单独样式</h2><p>这一小节讲解\<span>标签，我们对\<em>、\<strong>、\<span>这三个标签进行一下总结：</p>
+<ol>
+<li><p>\<em>和\<strong>标签是为了强调一段话中的关键字时使用，它们的语义是强调。</p>
+</li>
+<li><p>\<span>标签是没有语义的，它的作用就是为了设置单独的样式用的。</p>
+</li>
+</ol>
+<p>如果现在我们想把上一小节的第一段话“美国梦”三个字设置成blue（蓝色），但注意不是为了强调“美国梦”，而只是想为它设置和其它文字不同的样式（并不想让屏幕阅读器对“美国梦”这三个字加重音读出），所以这样情况下就可以用到\<span>标签了。</p>
+<p>如下面例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;了不起的盖茨比&lt;&#x2F;title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">span&#123;</span><br><span class="line">    color:blue;    </span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;p&gt;1922年的春天，一个想要成名名叫尼克•卡拉威（托比•马奎尔Tobey Maguire 饰）的作家，离开了美国中西部，来到了纽约。那是一个道德感渐失，爵士乐流行，走私为王，股票飞涨的时代。为了追寻他的&lt;span&gt;美国梦&lt;&#x2F;span&gt;，他搬入纽约附近一海湾居住。&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;p&gt;菲茨杰拉德，二十世纪美国文学巨擘之一，兼具作家和编剧双重身份。他以诗人的敏感和戏剧家的想象为&quot;爵士乐时代&quot;吟唱华丽挽歌，其诗人和梦想家的气质亦为那个奢靡年代的不二注解。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="标签，短文本引用"><a href="#标签，短文本引用" class="headerlink" title="\标签，短文本引用"></a>\<q>标签，短文本引用</h2><p>想在你的html中加一段引用吗？比如在你的网页的文章里想引用某个作家的一句诗，这样会使你的文章更加出彩，那么\<q>标签是你所需要的<br>注意要引用的文本不用加双引号，浏览器会对q标签自动添加双引号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;q标签&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;周瑜，不可否认，他是历史上一个了不起的英雄人物！确实也配的上那句&lt;q&gt;聪明秀出为之英，胆略过人为之雄。&lt;&#x2F;q&gt;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="标签，长文本引用"><a href="#标签，长文本引用" class="headerlink" title="\标签，长文本引用"></a>\<blockquote>标签，长文本引用</h2><p>\<blockquote>的作用也是引用别人的文本。但它是对长文本的引用，如在文章中引入大段某知名作家的文字，这时需要这个标签。浏览器对\<blockquote>标签的解析是缩进样式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;blockquote标签的使用&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h2&gt;心似桂花开&lt;&#x2F;h2&gt;</span><br><span class="line">&lt;p&gt;大家都在忙于自认为最重要的事情，却没能享受到人生的乐趣，反而要吞下苦果？&lt;&#x2F;p&gt;</span><br><span class="line">&lt;blockquote&gt;暗淡轻黄体性柔，情疏迹远只香留。何须浅碧深红色，自是花中第一流。”&lt;&#x2F;blockquote&gt;</span><br><span class="line">&lt;p&gt;这是李清照《咏桂》中的词句，在李清照看来，桂花暗淡青黄，性情温柔，淡泊自适，远比那些大红大紫争奇斗艳花值得称道。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="标签分行显示文本"><a href="#标签分行显示文本" class="headerlink" title="\标签分行显示文本"></a>\<br>标签分行显示文本</h2><p>怎么可以让每一句诗词后面加入一个折行呢？那就可以用到、\<br />标签了，在需要加回车换行的地方加入\<br />，\<br />标签作用相当于word文档中的回车。与以前我们学过的标签不一样，\<br />标签是一个空标签，没有HTML内容的标签就是空标签，空标签只需要写一个开始标签，这样的标签有\<br />、\<hr />和\<img />。在 html 代码中输入回车、空格都是没有作用的。在html文本中想输入回车换行，就必须输入\<br />。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;br标签的使用&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h2&gt;《咏桂》&lt;&#x2F;h2&gt;</span><br><span class="line">&lt;p&gt;暗淡轻黄体性柔，情疏迹远只香留。&lt;br&#x2F;&gt;何须浅碧深红色，自是花中第一流。&lt;br&#x2F;&gt;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html</span><br></pre></td></tr></table></figure>
+<h2 id="amp-nbsp为你的网页中添加一些空格"><a href="#amp-nbsp为你的网页中添加一些空格" class="headerlink" title="&amp;nbsp为你的网页中添加一些空格"></a>&amp;nbsp为你的网页中添加一些空格</h2><p>我们已经讲解过在html代码中输入空格、回车都是没有作用的。要想输入空格，必须写入&nbsp;</p>
+<h2 id="标签，添加水平横线"><a href="#标签，添加水平横线" class="headerlink" title="\标签，添加水平横线"></a>\<hr>标签，添加水平横线</h2><p>在信息展示时，有时会需要加一些用于分隔的横线，这样会使文章看起来整齐些。<br>\<hr />标签和\<br />标签一样也是一个空标签，所以只有一个开始标签，没有结束标签。<br>\<hr />标签的在浏览器中的默认样式线条比较粗，颜色为灰色，可能有些人觉得这种样式不美观，没有关系，这些外在样式在我们以后学习了css样式表之后，都可以对其修改。</p>
+<h2 id="标签，为网页加入地址信息"><a href="#标签，为网页加入地址信息" class="headerlink" title="\标签，为网页加入地址信息"></a>\<address>标签，为网页加入地址信息</h2><p>一般网页中会有一些网站的联系地址信息需要在网页中展示出来，这些联系地址信息如公司的地址就可以<address>标签。也可以定义一个地址（比如电子邮件地址）、签名或者文档的作者身份。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;address&gt;</span><br><span class="line">本文的作者：&lt;a href&#x3D;&quot;mailto:lilian@imooc.com&quot;&gt;lilian&lt;&#x2F;a&gt;</span><br><span class="line">&lt;&#x2F;address&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="标签"><a href="#标签" class="headerlink" title="\标签"></a>\<code>标签</h2><p>在介绍语言技术的网站中，避免不了在网页中显示一些计算机专业的编程代码，当代码为一行代码时，你就可以使用<code>标签了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;code标签介绍&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;我们可能知道水平渐变的实现，类似这样：&lt;code&gt;&#123;background-image:linear-gradient(left, red 100px, yellow 200px);&#125;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="标签为你的网页加入大段代码"><a href="#标签为你的网页加入大段代码" class="headerlink" title="\标签为你的网页加入大段代码"></a>\<pre>标签为你的网页加入大段代码</h2><p>在上节中介绍加入一行代码的标签为\<code>，但是在大多数情况下是需要加入大段代码的，<br>\<pre> 标签的主要作用:预格式化的文本。被包围在 pre 元素中的文本通常会保留空格和换行符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;</span><br><span class="line">&lt;title&gt;pre标签的使用&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">input:</span><br><span class="line">&lt;pre&gt;</span><br><span class="line">var message&#x3D;&quot;欢迎&quot;;</span><br><span class="line">for(var i&#x3D;1;i&lt;&#x3D;10;i++)&lt;br&gt;</span><br><span class="line">&#123;&lt;br&gt;</span><br><span class="line">    alert(message); &lt;br&gt;</span><br><span class="line">&#125;&lt;br&gt;</span><br><span class="line">&lt;&#x2F;pre&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h1 id="认识标签-第二部分"><a href="#认识标签-第二部分" class="headerlink" title="认识标签(第二部分)"></a>认识标签(第二部分)</h1><h2 id="ul，添加新闻信息列表"><a href="#ul，添加新闻信息列表" class="headerlink" title="ul，添加新闻信息列表"></a>ul，添加新闻信息列表</h2><p>ul-li在网页中显示的默认样式一般为：每项li前都自带一个圆点，如下图所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;li&gt;信息&lt;&#x2F;li&gt;</span><br><span class="line">  &lt;li&gt;信息&lt;&#x2F;li&gt;</span><br><span class="line">   ......</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="ol，添加图书销售排行榜"><a href="#ol，添加图书销售排行榜" class="headerlink" title="ol，添加图书销售排行榜"></a>ol，添加图书销售排行榜</h2><p>如果想在网页中展示有前后顺序的信息列表，怎么办呢？如，当当网上的书籍热卖排行榜，如下图所示。这类信息展示就可以使用\<ol>标签来制作有序列表来展示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ol&gt;</span><br><span class="line">   &lt;li&gt;信息&lt;&#x2F;li&gt;</span><br><span class="line">   &lt;li&gt;信息&lt;&#x2F;li&gt;</span><br><span class="line">   ......</span><br><span class="line">&lt;&#x2F;ol&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="div在排版中的作用"><a href="#div在排版中的作用" class="headerlink" title="div在排版中的作用"></a>div在排版中的作用</h2><p>在网页制作过程过中，可以把一些独立的逻辑部分划分出来，放在一个\<div>标签中，这个\<div>标签的作用就相当于一个容器。</p>
+<p>语法：<br><code>&lt;div&gt;…&lt;/div&gt;</code><br>确定逻辑部分：<br>什么是逻辑部分？它是页面上相互关联的一组元素。如网页中的独立的栏目版块，就是一个典型的逻辑部分。如下图所示：图中用红色边框标出的部分就是一个逻辑部分，就可以使用\<div>标签作为容器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;div标签&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">    &lt;h2&gt;热门课程排行榜&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;ol&gt;</span><br><span class="line">        &lt;li&gt;前端开发面试心法 &lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;零基础学习html&lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;javascript全攻略&lt;&#x2F;li&gt;</span><br><span class="line">    &lt;&#x2F;ol&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">    &lt;h2&gt;最新课程排行&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;ol&gt;</span><br><span class="line">        &lt;li&gt;版本管理工具介绍—Git篇 &lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;Canvas绘图详解&lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;QQ5.0侧滑菜单&lt;&#x2F;li&gt;</span><br><span class="line">    &lt;&#x2F;ol&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="div命名，使逻辑更加清晰"><a href="#div命名，使逻辑更加清晰" class="headerlink" title="div命名，使逻辑更加清晰"></a>div命名，使逻辑更加清晰</h2><p>在上一小节中，我们把一些标签放进\<div>里，划分出一个独立的逻辑部分。为了使逻辑更加清晰，我们可以为这一个独立的逻辑部分设置一个名称，用id属性来为\<div>提供唯一的名称，这个就像我们每个人都有一个身份证号，这个身份证号是唯一标识我们的身份的，也是必须唯一的。<br><code>&lt;div  id=&quot;版块名称&quot;&gt;…&lt;/div&gt;</code></p>
+<h2 id="table标签，认识网页上的表格"><a href="#table标签，认识网页上的表格" class="headerlink" title="table标签，认识网页上的表格"></a>table标签，认识网页上的表格</h2><p>创建表格的四个元素：<br>table、tbody、tr、th、td<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1、&lt;table&gt;…&lt;&#x2F;table&gt;：整个表格以&lt;table&gt;标记开始、&lt;&#x2F;table&gt;标记结束。</span><br><span class="line"></span><br><span class="line">2、&lt;tbody&gt;…&lt;&#x2F;tbody&gt;：如果不加&lt;thead&gt;&lt;tbody&gt;&lt;tfooter&gt; , table表格加载完后才显示。加上这些表格结构， tbody包含行的内容下载完优先显示，不必等待表格结束后在显示，同时如果表格很长，用tbody分段，可以一部分一部分地显示。（通俗理解table 可以按结构一块块的显示，不在等整个表格加载完后显示。）</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">3、&lt;tr&gt;…&lt;&#x2F;tr&gt;：表格的一行，所以有几对tr 表格就有几行。</span><br><span class="line"></span><br><span class="line">4、&lt;td&gt;…&lt;&#x2F;td&gt;：表格的一个单元格，一行中包含几对&lt;td&gt;...&lt;&#x2F;td&gt;，说明一行中就有几列。</span><br><span class="line"></span><br><span class="line">5、&lt;th&gt;…&lt;&#x2F;th&gt;：表格的头部的一个单元格，表格表头。</span><br><span class="line"></span><br><span class="line">6、表格中列的个数，取决于一行中数据单元格的个数。</span><br><span class="line"></span><br><span class="line">上述代码在浏览器中显示的默认的样式为：</span><br></pre></td></tr></table></figure><br>总结：</p>
+<p>1、table表格在没有添加css样式之前，在浏览器中显示是没有表格线的</p>
+<p>2、表头，也就是th标签中的文本默认为粗体并且居中显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;</span><br><span class="line">&lt;title&gt;认识table表标签&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;table&gt;</span><br><span class="line">  &lt;tbody&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">      &lt;th&gt;班级&lt;&#x2F;th&gt;</span><br><span class="line">      &lt;th&gt;学生数&lt;&#x2F;th&gt;</span><br><span class="line">      &lt;th&gt;平均成绩&lt;&#x2F;th&gt;</span><br><span class="line">      &lt;th&gt;男生数&lt;&#x2F;th&gt;</span><br><span class="line">    &lt;&#x2F;tr&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">      &lt;td&gt;一班&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;td&gt;30&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;td&gt;89&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;td&gt;4&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;&#x2F;tr&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">      &lt;td&gt;二班&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;td&gt;35&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;td&gt;85&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;td&gt;5&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;&#x2F;tr&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">        &lt;td&gt;三班&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;32&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;80&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;&#x2F;tr&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &lt;&#x2F;tbody&gt;</span><br><span class="line">&lt;&#x2F;table&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="用css样式，为表格加入边框"><a href="#用css样式，为表格加入边框" class="headerlink" title="用css样式，为表格加入边框"></a>用css样式，为表格加入边框</h2><p>Table 表格在没有添加 css 样式之前，是没有边框的。这样不便于我们后期合并单元格知识点的讲解，所以在这一节中我们为表格添加一些样式，为它添加边框<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;</span><br><span class="line">&lt;title&gt;为表格添加边框&lt;&#x2F;title&gt;</span><br><span class="line">&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;</span><br><span class="line">table tr td,th&#123;border:1px solid #000;&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;table summary&#x3D;&quot;&quot;&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;th&gt;班级&lt;&#x2F;th&gt;</span><br><span class="line">    &lt;th&gt;学生数&lt;&#x2F;th&gt;</span><br><span class="line">    &lt;th&gt;平均成绩&lt;&#x2F;th&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;一班&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;30&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;89&lt;&#x2F;td&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;二班&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;35&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;85&lt;&#x2F;td&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;三班&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;32&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;80&lt;&#x2F;td&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">&lt;&#x2F;table&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="caption标签，为表格添加标题和摘要"><a href="#caption标签，为表格添加标题和摘要" class="headerlink" title="caption标签，为表格添加标题和摘要"></a>caption标签，为表格添加标题和摘要</h2><p>表格还是需要添加一些标签进行优化，可以添加标题和摘要。<br>摘要<br>摘要的内容是不会在浏览器中显示出来的。它的作用是增加表格的可读性(语义化)，使搜索引擎更好的读懂表格内容，还可以使屏幕阅读器更好的帮助特殊用户读取表格内容。<br>语法:<code>&lt;table summary=&quot;表格简介文本&quot;&gt;</code><br>标题</p>
+<p>用以描述表格内容，标题的显示位置：表格上方。<br>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;table&gt;</span><br><span class="line">    &lt;caption&gt;标题文本&lt;&#x2F;caption&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">        &lt;td&gt;…&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;…&lt;&#x2F;td&gt;</span><br><span class="line">        …</span><br><span class="line">    &lt;&#x2F;tr&gt;</span><br><span class="line">…</span><br><span class="line">&lt;&#x2F;table&gt;</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Html/" rel="tag"># Html</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/25/libimobiledevice%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="prev" title="libimobiledevice的安装和常用命令">
+      <i class="fa fa-chevron-left"></i> libimobiledevice的安装和常用命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/18/carthage%E4%BD%BF%E7%94%A8/" rel="next" title="carthage基本使用">
+      carthage基本使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#认识标签-第一部分"><span class="nav-number">1.</span> <span class="nav-text">认识标签(第一部分)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，网页上显示的内容放在这里"><span class="nav-number">1.1.</span> <span class="nav-text">\标签，网页上显示的内容放在这里</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，添加段落"><span class="nav-number">1.2.</span> <span class="nav-text">\标签，添加段落</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，为你的网页添加标题"><span class="nav-number">1.3.</span> <span class="nav-text">\标签，为你的网页添加标题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">是最高的等级。语法：
+&lt;hx&gt;标题文本&lt;&#x2F;hx&gt; (x为1-6)
+文章的标题前面已经说过了，可以使用标题标签，另外网页上的各个栏目的标题也可使用它们
+\和\ 强调语气了段落又有了标题，现在如果想在一段话中特别强调某几个文字，这时候就可以用到\或\标签。但两者在强调的语气上有区别:\ 表示强调，\ 表示更强烈的强调。并且在浏览器中\ 默认用斜体表示，\ 用粗体表示。两个标签相比，目前国内前端程序员更喜欢使用\表示强调。
+\标签为文字设置单独样式这一小节讲解\标签，我们对\、\、\这三个标签进行一下总结：
+
+\和\标签是为了强调一段话中的关键字时使用，它们的语义是强调。
+
+\标签是没有语义的，它的作用就是为了设置单独的样式用的。
+
+
+如果现在我们想把上一小节的第一段话“美国梦”三个字设置成blue（蓝色），但注意不是为了强调“美国梦”，而只是想为它设置和其它文字不同的样式（并不想让屏幕阅读器对“美国梦”这三个字加重音读出），所以这样情况下就可以用到\标签了。
+如下面例子：12345678910111213141516&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;&lt;title&gt;了不起的盖茨比&lt;&#x2F;title&gt;&lt;style&gt;span{    color:blue;    }&lt;&#x2F;style&gt;&lt;&#x2F;head&gt;&lt;body&gt;    &lt;p&gt;1922年的春天，一个想要成名名叫尼克•卡拉威（托比•马奎尔Tobey Maguire 饰）的作家，离开了美国中西部，来到了纽约。那是一个道德感渐失，爵士乐流行，走私为王，股票飞涨的时代。为了追寻他的&lt;span&gt;美国梦&lt;&#x2F;span&gt;，他搬入纽约附近一海湾居住。&lt;&#x2F;p&gt;    &lt;p&gt;菲茨杰拉德，二十世纪美国文学巨擘之一，兼具作家和编剧双重身份。他以诗人的敏感和戏剧家的想象为&quot;爵士乐时代&quot;吟唱华丽挽歌，其诗人和梦想家的气质亦为那个奢靡年代的不二注解。&lt;&#x2F;p&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+\标签，短文本引用想在你的html中加一段引用吗？比如在你的网页的文章里想引用某个作家的一句诗，这样会使你的文章更加出彩，那么\标签是你所需要的注意要引用的文本不用加双引号，浏览器会对q标签自动添加双引号12345678910&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;&lt;title&gt;q标签&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;&lt;p&gt;周瑜，不可否认，他是历史上一个了不起的英雄人物！确实也配的上那句&lt;q&gt;聪明秀出为之英，胆略过人为之雄。&lt;&#x2F;q&gt;&lt;&#x2F;p&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+\标签，长文本引用\的作用也是引用别人的文本。但它是对长文本的引用，如在文章中引入大段某知名作家的文字，这时需要这个标签。浏览器对\标签的解析是缩进样式。
+12345678910111213&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;&lt;title&gt;blockquote标签的使用&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;&lt;h2&gt;心似桂花开&lt;&#x2F;h2&gt;&lt;p&gt;大家都在忙于自认为最重要的事情，却没能享受到人生的乐趣，反而要吞下苦果？&lt;&#x2F;p&gt;&lt;blockquote&gt;暗淡轻黄体性柔，情疏迹远只香留。何须浅碧深红色，自是花中第一流。”&lt;&#x2F;blockquote&gt;&lt;p&gt;这是李清照《咏桂》中的词句，在李清照看来，桂花暗淡青黄，性情温柔，淡泊自适，远比那些大红大紫争奇斗艳花值得称道。&lt;&#x2F;p&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+\标签分行显示文本怎么可以让每一句诗词后面加入一个折行呢？那就可以用到、\标签了，在需要加回车换行的地方加入\，\标签作用相当于word文档中的回车。与以前我们学过的标签不一样，\标签是一个空标签，没有HTML内容的标签就是空标签，空标签只需要写一个开始标签，这样的标签有\、\和\。在 html 代码中输入回车、空格都是没有作用的。在html文本中想输入回车换行，就必须输入\。
+1234567891011&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;&lt;title&gt;br标签的使用&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;&lt;h2&gt;《咏桂》&lt;&#x2F;h2&gt;&lt;p&gt;暗淡轻黄体性柔，情疏迹远只香留。&lt;br&#x2F;&gt;何须浅碧深红色，自是花中第一流。&lt;br&#x2F;&gt;&lt;&#x2F;p&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html
+&amp;nbsp为你的网页中添加一些空格我们已经讲解过在html代码中输入空格、回车都是没有作用的。要想输入空格，必须写入 
+\标签，添加水平横线在信息展示时，有时会需要加一些用于分隔的横线，这样会使文章看起来整齐些。\标签和\标签一样也是一个空标签，所以只有一个开始标签，没有结束标签。\标签的在浏览器中的默认样式线条比较粗，颜色为灰色，可能有些人觉得这种样式不美观，没有关系，这些外在样式在我们以后学习了css样式表之后，都可以对其修改。
+\标签，为网页加入地址信息一般网页中会有一些网站的联系地址信息需要在网页中展示出来，这些联系地址信息如公司的地址就可以标签。也可以定义一个地址（比如电子邮件地址）、签名或者文档的作者身份。
+123&lt;address&gt;本文的作者：&lt;a href&#x3D;&quot;mailto:lilian@imooc.com&quot;&gt;lilian&lt;&#x2F;a&gt;&lt;&#x2F;address&gt;
+\标签在介绍语言技术的网站中，避免不了在网页中显示一些计算机专业的编程代码，当代码为一行代码时，你就可以使用标签了
+12345678910&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;&lt;title&gt;code标签介绍&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;&lt;p&gt;我们可能知道水平渐变的实现，类似这样：&lt;code&gt;{background-image:linear-gradient(left, red 100px, yellow 200px);}&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+\标签为你的网页加入大段代码在上节中介绍加入一行代码的标签为\，但是在大多数情况下是需要加入大段代码的，\ 标签的主要作用:预格式化的文本。被包围在 pre 元素中的文本通常会保留空格和换行符。1234567891011121314151617&lt;!DOCTYPE HTML&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;&lt;title&gt;pre标签的使用&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;input:&lt;pre&gt;var message&#x3D;&quot;欢迎&quot;;for(var i&#x3D;1;i&lt;&#x3D;10;i++)&lt;br&gt;{&lt;br&gt;    alert(message); &lt;br&gt;}&lt;br&gt;&lt;&#x2F;pre&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+认识标签(第二部分)ul，添加新闻信息列表ul-li在网页中显示的默认样式一般为：每项li前都自带一个圆点，如下图所示：12345&lt;ul&gt;  &lt;li&gt;信息&lt;&#x2F;li&gt;  &lt;li&gt;信息&lt;&#x2F;li&gt;   ......&lt;&#x2F;ul&gt;
+ol，添加图书销售排行榜如果想在网页中展示有前后顺序的信息列表，怎么办呢？如，当当网上的书籍热卖排行榜，如下图所示。这类信息展示就可以使用\标签来制作有序列表来展示。12345&lt;ol&gt;   &lt;li&gt;信息&lt;&#x2F;li&gt;   &lt;li&gt;信息&lt;&#x2F;li&gt;   ......&lt;&#x2F;ol&gt;
+div在排版中的作用在网页制作过程过中，可以把一些独立的逻辑部分划分出来，放在一个\标签中，这个\标签的作用就相当于一个容器。
+语法：&lt;div&gt;…&lt;&#x2F;div&gt;确定逻辑部分：什么是逻辑部分？它是页面上相互关联的一组元素。如网页中的独立的栏目版块，就是一个典型的逻辑部分。如下图所示：图中用红色边框标出的部分就是一个逻辑部分，就可以使用\标签作为容器。12345678910111213141516171819202122232425&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;&lt;title&gt;div标签&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;    &lt;div&gt;    &lt;h2&gt;热门课程排行榜&lt;&#x2F;h2&gt;    &lt;ol&gt;        &lt;li&gt;前端开发面试心法 &lt;&#x2F;li&gt;        &lt;li&gt;零基础学习html&lt;&#x2F;li&gt;        &lt;li&gt;javascript全攻略&lt;&#x2F;li&gt;    &lt;&#x2F;ol&gt;    &lt;&#x2F;div&gt;    &lt;div&gt;    &lt;h2&gt;最新课程排行&lt;&#x2F;h2&gt;    &lt;ol&gt;        &lt;li&gt;版本管理工具介绍—Git篇 &lt;&#x2F;li&gt;        &lt;li&gt;Canvas绘图详解&lt;&#x2F;li&gt;        &lt;li&gt;QQ5.0侧滑菜单&lt;&#x2F;li&gt;    &lt;&#x2F;ol&gt;    &lt;&#x2F;div&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+div命名，使逻辑更加清晰在上一小节中，我们把一些标签放进\里，划分出一个独立的逻辑部分。为了使逻辑更加清晰，我们可以为这一个独立的逻辑部分设置一个名称，用id属性来为\提供唯一的名称，这个就像我们每个人都有一个身份证号，这个身份证号是唯一标识我们的身份的，也是必须唯一的。&lt;div  id&#x3D;&quot;版块名称&quot;&gt;…&lt;&#x2F;div&gt;
+table标签，认识网页上的表格创建表格的四个元素：table、tbody、tr、th、td1234567891011121314151、&lt;table&gt;…&lt;&#x2F;table&gt;：整个表格以&lt;table&gt;标记开始、&lt;&#x2F;table&gt;标记结束。2、&lt;tbody&gt;…&lt;&#x2F;tbody&gt;：如果不加&lt;thead&gt;&lt;tbody&gt;&lt;tfooter&gt; , table表格加载完后才显示。加上这些表格结构， tbody包含行的内容下载完优先显示，不必等待表格结束后在显示，同时如果表格很长，用tbody分段，可以一部分一部分地显示。（通俗理解table 可以按结构一块块的显示，不在等整个表格加载完后显示。） 3、&lt;tr&gt;…&lt;&#x2F;tr&gt;：表格的一行，所以有几对tr 表格就有几行。4、&lt;td&gt;…&lt;&#x2F;td&gt;：表格的一个单元格，一行中包含几对&lt;td&gt;...&lt;&#x2F;td&gt;，说明一行中就有几列。5、&lt;th&gt;…&lt;&#x2F;th&gt;：表格的头部的一个单元格，表格表头。6、表格中列的个数，取决于一行中数据单元格的个数。上述代码在浏览器中显示的默认的样式为：总结：
+1、table表格在没有添加css样式之前，在浏览器中显示是没有表格线的
+2、表头，也就是th标签中的文本默认为粗体并且居中显示12345678910111213141516171819202122232425262728293031323334353637383940&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;&lt;title&gt;认识table表标签&lt;&#x2F;title&gt;&lt;&#x2F;head&gt;&lt;body&gt;&lt;table&gt;  &lt;tbody&gt;    &lt;tr&gt;      &lt;th&gt;班级&lt;&#x2F;th&gt;      &lt;th&gt;学生数&lt;&#x2F;th&gt;      &lt;th&gt;平均成绩&lt;&#x2F;th&gt;      &lt;th&gt;男生数&lt;&#x2F;th&gt;    &lt;&#x2F;tr&gt;    &lt;tr&gt;      &lt;td&gt;一班&lt;&#x2F;td&gt;      &lt;td&gt;30&lt;&#x2F;td&gt;      &lt;td&gt;89&lt;&#x2F;td&gt;      &lt;td&gt;4&lt;&#x2F;td&gt;    &lt;&#x2F;tr&gt;    &lt;tr&gt;      &lt;td&gt;二班&lt;&#x2F;td&gt;      &lt;td&gt;35&lt;&#x2F;td&gt;      &lt;td&gt;85&lt;&#x2F;td&gt;      &lt;td&gt;5&lt;&#x2F;td&gt;    &lt;&#x2F;tr&gt;    &lt;tr&gt;        &lt;td&gt;三班&lt;&#x2F;td&gt;        &lt;td&gt;32&lt;&#x2F;td&gt;        &lt;td&gt;80&lt;&#x2F;td&gt;    &lt;&#x2F;tr&gt;  &lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+用css样式，为表格加入边框Table 表格在没有添加 css 样式之前，是没有边框的。这样不便于我们后期合并单元格知识点的讲解，所以在这一节中我们为表格添加一些样式，为它添加边框123456789101112131415161718192021222324252627282930313233343536&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;&lt;title&gt;为表格添加边框&lt;&#x2F;title&gt;&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;table tr td,th{border:1px solid #000;}&lt;&#x2F;style&gt;&lt;&#x2F;head&gt;&lt;body&gt;&lt;table summary&#x3D;&quot;&quot;&gt;  &lt;tr&gt;    &lt;th&gt;班级&lt;&#x2F;th&gt;    &lt;th&gt;学生数&lt;&#x2F;th&gt;    &lt;th&gt;平均成绩&lt;&#x2F;th&gt;  &lt;&#x2F;tr&gt;  &lt;tr&gt;    &lt;td&gt;一班&lt;&#x2F;td&gt;    &lt;td&gt;30&lt;&#x2F;td&gt;    &lt;td&gt;89&lt;&#x2F;td&gt;  &lt;&#x2F;tr&gt;  &lt;tr&gt;    &lt;td&gt;二班&lt;&#x2F;td&gt;    &lt;td&gt;35&lt;&#x2F;td&gt;    &lt;td&gt;85&lt;&#x2F;td&gt;  &lt;&#x2F;tr&gt;  &lt;tr&gt;    &lt;td&gt;三班&lt;&#x2F;td&gt;    &lt;td&gt;32&lt;&#x2F;td&gt;    &lt;td&gt;80&lt;&#x2F;td&gt;  &lt;&#x2F;tr&gt;&lt;&#x2F;table&gt;&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;
+caption标签，为表格添加标题和摘要表格还是需要添加一些标签进行优化，可以添加标题和摘要。摘要摘要的内容是不会在浏览器中显示出来的。它的作用是增加表格的可读性(语义化)，使搜索引擎更好的读懂表格内容，还可以使屏幕阅读器更好的帮助特殊用户读取表格内容。语法:&lt;table summary&#x3D;&quot;表格简介文本&quot;&gt;标题
+用以描述表格内容，标题的显示位置：表格上方。语法：123456789&lt;table&gt;    &lt;caption&gt;标题文本&lt;&#x2F;caption&gt;    &lt;tr&gt;        &lt;td&gt;…&lt;&#x2F;td&gt;        &lt;td&gt;…&lt;&#x2F;td&gt;        …    &lt;&#x2F;tr&gt;…&lt;&#x2F;table&gt;
+</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#和-强调语气"><span class="nav-number">2.1.</span> <span class="nav-text">\和\ 强调语气</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签为文字设置单独样式"><span class="nav-number">2.2.</span> <span class="nav-text">\标签为文字设置单独样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，短文本引用"><span class="nav-number">2.3.</span> <span class="nav-text">\标签，短文本引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，长文本引用"><span class="nav-number">2.4.</span> <span class="nav-text">\标签，长文本引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签分行显示文本"><span class="nav-number">2.5.</span> <span class="nav-text">\标签分行显示文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#amp-nbsp为你的网页中添加一些空格"><span class="nav-number">2.6.</span> <span class="nav-text">&amp;nbsp为你的网页中添加一些空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，添加水平横线"><span class="nav-number">2.7.</span> <span class="nav-text">\标签，添加水平横线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签，为网页加入地址信息"><span class="nav-number">2.8.</span> <span class="nav-text">\标签，为网页加入地址信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签"><span class="nav-number">2.9.</span> <span class="nav-text">\标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签为你的网页加入大段代码"><span class="nav-number">2.10.</span> <span class="nav-text">\标签为你的网页加入大段代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认识标签-第二部分"><span class="nav-number">3.</span> <span class="nav-text">认识标签(第二部分)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ul，添加新闻信息列表"><span class="nav-number">3.1.</span> <span class="nav-text">ul，添加新闻信息列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ol，添加图书销售排行榜"><span class="nav-number">3.2.</span> <span class="nav-text">ol，添加图书销售排行榜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#div在排版中的作用"><span class="nav-number">3.3.</span> <span class="nav-text">div在排版中的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#div命名，使逻辑更加清晰"><span class="nav-number">3.4.</span> <span class="nav-text">div命名，使逻辑更加清晰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#table标签，认识网页上的表格"><span class="nav-number">3.5.</span> <span class="nav-text">table标签，认识网页上的表格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用css样式，为表格加入边框"><span class="nav-number">3.6.</span> <span class="nav-text">用css样式，为表格加入边框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#caption标签，为表格添加标题和摘要"><span class="nav-number">3.7.</span> <span class="nav-text">caption标签，为表格添加标题和摘要</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Light"
+      src="/images/avatar/lightning.png">
+  <p class="site-author-name" itemprop="name">Light</p>
+  <div class="site-description" itemprop="description">Keep going……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:heliangzhang@yeah.net" title="E-Mail → mailto:heliangzhang@yeah.net" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Light</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: ,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
