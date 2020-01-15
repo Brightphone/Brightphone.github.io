@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://triplecc.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="CocoaPods通过集中式的管理，可以非常有效的管理第三方库，甚至可以用于大型项目的模块化管理，非常优雅高效的解决iOS项目中的依赖管理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocoapods基本使用">
+<meta property="og:url" content="https://triplecc.github.io/2019/04/20/cocoapods%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Light&#39;s Blog">
+<meta property="og:description" content="CocoaPods通过集中式的管理，可以非常有效的管理第三方库，甚至可以用于大型项目的模块化管理，非常优雅高效的解决iOS项目中的依赖管理。">
+<meta property="og:image" content="https://triplecc.github.io/res/images/article/cocoapods/1.png">
+<meta property="article:published_time" content="2019-04-20T12:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-15T11:01:42.452Z">
+<meta property="article:author" content="Light">
+<meta property="article:tag" content="cocoapods">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://triplecc.github.io/res/images/article/cocoapods/1.png">
+
+<link rel="canonical" href="https://triplecc.github.io/2019/04/20/cocoapods%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>cocoapods基本使用 | Light's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Light's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/04/20/cocoapods%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cocoapods基本使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-20 12:00:00" itemprop="dateCreated datePublished" datetime="2019-04-20T12:00:00+00:00">2019-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-15 11:01:42" itemprop="dateModified" datetime="2020-01-15T11:01:42+00:00">2020-01-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>CocoaPods通过集中式的管理，可以非常有效的管理第三方库，甚至可以用于大型项目的模块化管理，非常优雅高效的解决iOS项目中的依赖管理。</p>
+<a id="more"></a>
+<h1 id="安装CocoaPods"><a href="#安装CocoaPods" class="headerlink" title="安装CocoaPods:"></a>安装CocoaPods:</h1><p>CocoaPods是一个Ruby Gem，因为直接访问RubyGem速度非常慢，建议先替换成淘宝镜像</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gem sources --remove <span class="symbol">https:</span>/<span class="regexp">/rubygems.org/</span> /<span class="regexp">/移除系统 ruby 默认源</span></span><br><span class="line"><span class="regexp">$ gem sources -a https:/</span><span class="regexp">/ruby.taobao.org/</span> /<span class="regexp">/使用新的源或--add</span></span><br><span class="line"><span class="regexp">$ gem sources -l  /</span><span class="regexp">/验证是否替换成功</span></span><br></pre></td></tr></table></figure>
+<p>安装CocoaPods<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gem install cocoapods /<span class="regexp">/按照命令</span></span><br><span class="line"><span class="regexp">$ gem uninstall cocoapods /</span><span class="regexp">/卸载命令</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="管理第三方库"><a href="#管理第三方库" class="headerlink" title="管理第三方库"></a>管理第三方库</h1><h2 id="创建Podfile"><a href="#创建Podfile" class="headerlink" title="创建Podfile"></a>创建Podfile</h2><p>在项目根目录下创建Podfile，下面是一个Podfile的例子 (详情可以参考<a href="http://guides.cocoapods.org/syntax/podfile.html#podfile)：" target="_blank" rel="noopener">http://guides.cocoapods.org/syntax/podfile.html#podfile)：</a></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">platform <span class="symbol">:ios</span>, <span class="string">'9.0'</span></span><br><span class="line">use_frameworks!</span><br><span class="line"></span><br><span class="line">target <span class="string">"MyApp"</span> <span class="keyword">do</span></span><br><span class="line">  pod <span class="string">'ObjectiveSugar'</span>, <span class="string">'~&gt; 0.5'</span></span><br><span class="line"> </span><br><span class="line">  target <span class="string">"MyAppTests"</span> <span class="keyword">do</span></span><br><span class="line">    pod <span class="string">'OCMock'</span>, <span class="string">'~&gt; 2.0.1'</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>platform: 指定的版本是仓库兼容的最小版本</p>
+<p>use_frameworks!则表明依赖的库编译生成.frameworkds的包，而不是.a的包</p>
+<p>target: 指定的是作用于工程中的那个目标</p>
+<p>pod: 用来指定相关的仓库及仓库版本。下方是相关仓库版本的几种常见的指定方式：</p>
+<p>pod ‘xxxx’ : 后方没有指定版本，则表示使用仓库的最新版本。</p>
+<p>pod ‘xxxx’, ‘2.3’ : 使用xxxx仓库的2.3版本。</p>
+<p>pod ‘xxxx’, ‘~&gt;2.3’: 则表示使用的版本范围是 2.3 &lt;= 版本 &lt; 3.0。如果后方指定版本是~&gt;2.3.1, 那么则表示使用的版本范围是 2.3.1 &lt;= 版本 &lt; 2.4.0。</p>
+<p>pod ‘xxxx’, ‘&gt;2.3’: 使用大于2.3的版本。</p>
+<p>pod ‘xxxx’, ‘&gt;=2.3’: 使用2.3及以上的版本。</p>
+<p>pod ‘xxxx’, ‘&lt;2.3’: 使用小于2.3的版本。</p>
+<p>pod ‘xxxx’, ‘&lt;=2.3’: 使用小于等于2.3的版本。</p>
+<p>pod ‘AFNetworking’, :path =&gt; ‘~/Documents/AFNetworking’  – 使用本地路径引入</p>
+<p>pod ‘AFNetworking’, :git =&gt; ‘<a href="https://github.com/gowalla/AFNetworking.git&#39;" target="_blank" rel="noopener">https://github.com/gowalla/AFNetworking.git&#39;</a>, :tag =&gt; ‘0.7.0’  – 使用git库引入</p>
+<p>pod ‘JSONKit’, :podspec =&gt; ‘<a href="https://example.com/JSONKit.podspec&#39;" target="_blank" rel="noopener">https://example.com/JSONKit.podspec&#39;</a>  – 使用外部的podspec来引入</p>
+<h2 id="安装Pods"><a href="#安装Pods" class="headerlink" title="安装Pods"></a>安装Pods</h2><p>安装pods<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod install</span><br></pre></td></tr></table></figure><br>更新pods<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod update</span><br></pre></td></tr></table></figure><br>install和update的区别：假如使用 pod ‘SVProgressHUD’，没有指定版本。使用pod install，如果Pods中存在SVProgressHUD，则直接使用。使用pod update，则会保证更新SVProgressHUD到最新版本。</p>
+<p>install或update速度通常很慢，因为每次执行的时候都需要同步一下CocoaPods Specs，这个有几百兆的大小，同步一次非常耗时。所以如果你使用的第三方库并不是经常更新，则不用经常更新那个Specs库。可以使用以下命令：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ pod install --verbose --no-repo-update</span><br><span class="line">$ pod update --verbose --no-repo-update</span><br><span class="line"></span><br><span class="line">执行完install或者update命令后，就可以使用.xcworkspace打开项目。</span><br></pre></td></tr></table></figure><br>初始第三方库信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod setup</span><br></pre></td></tr></table></figure></p>
+<p>初始第三方库信息：<code>pod setup</code>（此时会花费较长时间，另开一终端，cd ~/.cocoapods到该目录下 ，执行：du -sh *，可以查看下载进度）<br>(<code>pod update</code> 更新第三方库信息)<br>(<code>pod search</code>  搜索是否存在第三方框架)</p>
+<h1 id="使用CocoaPods管理私有库"><a href="#使用CocoaPods管理私有库" class="headerlink" title="使用CocoaPods管理私有库"></a>使用CocoaPods管理私有库</h1><h2 id="大型项目模块化管理"><a href="#大型项目模块化管理" class="headerlink" title="大型项目模块化管理"></a>大型项目模块化管理</h2><p>随着iOS APP越来越复杂，功能越来越多，对于iOS项目的工程化要求也越来越高了，对于复杂的APP一般都需要对项目进行模块化管理。</p>
+<p>模块化有几个方式：</p>
+<ol>
+<li><p>目录结构管理：这是最原始的方式，仅仅通过目录结构实现代码层次的清晰化。但本质上并没有解决代码之间的依赖混乱的情况，模块化划分也非常不清晰。</p>
+</li>
+<li><p>子工程：通过子工程可以实现代码依赖管理和模块化，但是需要引入复杂的设置，不利于管理。</p>
+</li>
+<li><p>静态库：将依赖代码打包成为静态库.a，不过由于不能看到源码，调试不方便。</p>
+</li>
+</ol>
+<p>自从有了CocoaPods，可以使用它来管理私有库，从而实现了代码模块化管理。例如下图所示：<br><img src="/res/images/article/cocoapods/1.png" alt="image"></p>
+<h1 id="CocoaPods私有库"><a href="#CocoaPods私有库" class="headerlink" title="CocoaPods私有库"></a>CocoaPods私有库</h1><h2 id="创建私有的Specs-git库"><a href="#创建私有的Specs-git库" class="headerlink" title="创建私有的Specs git库"></a>创建私有的Specs git库</h2><p>例如在github上面创建一个空的git库：<a href="https://github.com/xxx/MySpecs" target="_blank" rel="noopener">https://github.com/xxx/MySpecs</a><br>将这个git库加入到CocoaPods库的列表中：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod repo add MySpecs git@github.<span class="symbol">com:</span>xxx/MySpecs.git</span><br></pre></td></tr></table></figure><br>此时可以检查下本地的pod repo<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br class="Apple-interchange-newline"&gt;$ pod repo list&lt;br&gt;&lt;br&gt;MySpecs</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Type: git (master)- URL: <a href="mailto:git@github.com">git@github.com</a>:xxx/MySpecs.git</li>
+<li>Path: /Users/xxx/.cocoapods/repos/mySpecs</li>
+</ul>
+<p>master</p>
+<ul>
+<li>Type: git (master)</li>
+<li>URL:  <a href="mailto:git@github.com">git@github.com</a>:CocoaPods/Specs.git</li>
+<li>Path: /Users/xxx/.cocoapods/repos/master<br>　　确定私有库的Specs已经加到本地pod repo中。<h2 id="在私有库项目中创建podspec文件"><a href="#在私有库项目中创建podspec文件" class="headerlink" title="在私有库项目中创建podspec文件"></a>在私有库项目中创建podspec文件</h2>在私有库项目中的根目录，创建对应的podspec文件，里面会描述这个库的基本信息。</li>
+</ul>
+<p>PodSpec规范可以查看：<a href="https://guides.cocoapods.org/syntax/podspec.html" target="_blank" rel="noopener">https://guides.cocoapods.org/syntax/podspec.html</a><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  Be sure to run `pod spec lint PodName.podspec' to ensure this is a</span></span><br><span class="line"><span class="comment">#  valid spec and to remove all comments including this before submitting the spec.</span></span><br><span class="line"><span class="comment">#  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html</span></span><br><span class="line"><span class="comment">#  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name         = <span class="string">"PodName"</span></span><br><span class="line">  s.version      = <span class="string">"0.0.1"</span></span><br><span class="line">  s.summary      = <span class="string">"A short description of PodName."</span></span><br><span class="line">  s.homepage     = <span class="string">"http://github.com/xxx/PodName"</span></span><br><span class="line">  s.license      = &#123; <span class="symbol">:type</span> =&gt; <span class="string">"MIT"</span>, <span class="symbol">:text</span> =&gt; &lt;&lt;-LICENSE</span><br><span class="line">    Copyright © <span class="number">2016</span>年 xxx. All rights reserved.</span><br><span class="line">    LICENSE</span><br><span class="line">     &#125;</span><br><span class="line">  s.author       = &#123; <span class="string">""</span> =&gt; <span class="string">""</span> &#125;</span><br><span class="line">  s.source       = &#123; <span class="symbol">:git</span> =&gt; <span class="string">"git@github.com:xxx/PodName.git"</span>, <span class="symbol">:tag</span> =&gt; <span class="string">"0.0.1"</span> &#125;</span><br><span class="line">  s.source_files = <span class="string">"**/*.&#123;h,m,mm,c&#125;"</span></span><br><span class="line">  s.frameworks   = <span class="string">"Foundation"</span>, <span class="string">"QuartzCore"</span>, <span class="string">"UIKit"</span>, <span class="string">"WebKit"</span></span><br><span class="line">  s.libraries    = <span class="string">"z"</span></span><br><span class="line">  </span><br><span class="line">  s.dependency <span class="string">'AFNetworking'</span></span><br><span class="line">  s.ios.deployment_target = <span class="string">'6.0'</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure><br>resource: 可以指定资源文件，建议使用bundle以避免资源文件产生冲突。</p>
+<p>frameworks: 指定这个pod依赖的系统framework</p>
+<p>libraries: 指定这个pod依赖的系统动态库。注意使用的名字：比如需要引用”libz.dylib”, 那么这里只需要写”z”</p>
+<p>无论原始项目的目录结构或者group结构，默认的pod里面的代码都会平铺在根目录里面</p>
+<p>如果需要增加目录层次结构，则需要使用subspec，详细使用规范：<a href="https://guides.cocoapods.org/syntax/podspec.html#subspec" target="_blank" rel="noopener">https://guides.cocoapods.org/syntax/podspec.html#subspec</a></p>
+<p>注意：SubSpecs之间不能存在相互依赖关系，只能单向依赖</p>
+<h2 id="验证私有库的合法性"><a href="#验证私有库的合法性" class="headerlink" title="验证私有库的合法性"></a>验证私有库的合法性</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod lib lint --sources=<span class="string">'git@github.com:xxx/MySpecs.git'</span> --verbose --use-libraries --allow-warnings</span><br></pre></td></tr></table></figure>
+<p>sources参数可以指定私有库的Pod Specs库的地址。如果能够通过，说明代码编译没有问题。</p>
+<h2 id="提交私有库的版本信息"><a href="#提交私有库的版本信息" class="headerlink" title="提交私有库的版本信息"></a>提交私有库的版本信息</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -m <span class="string">"first release"</span> <span class="string">"0.0.1"</span></span><br><span class="line">$ git push --tags     <span class="comment">#推送tag到远端仓库</span></span><br></pre></td></tr></table></figure>
+<h2 id="向Spec-Repo提交podspec"><a href="#向Spec-Repo提交podspec" class="headerlink" title="向Spec Repo提交podspec"></a>向Spec Repo提交podspec</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod repo push MySpecs PodName.podspec --sources=<span class="string">'git@github.com:xxx/MySpecs.git'</span> --use-libraries --allow-warnings</span><br></pre></td></tr></table></figure>
+<p>这样就完成了一个CocoaPods的私有库的提交了，别人就可以在Podfile里面使用这个私有库了。</p>
+<h1 id="cocoapods-更多使用"><a href="#cocoapods-更多使用" class="headerlink" title="cocoapods 更多使用"></a>cocoapods 更多使用</h1><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">platform <span class="symbol">:ios</span>, <span class="string">'9.0'</span></span><br><span class="line">inhibit_all_warnings!</span><br><span class="line"></span><br><span class="line">target <span class="string">'MyApp'</span> <span class="keyword">do</span></span><br><span class="line">    pod <span class="string">'ObjectiveSugar'</span>, <span class="string">'~&gt; 0.5'</span> </span><br><span class="line"></span><br><span class="line">    target <span class="string">"MyAppTests"</span> <span class="keyword">do</span></span><br><span class="line">       inherit! <span class="symbol">:search_paths</span> </span><br><span class="line">       pod <span class="string">'OCMock'</span>, <span class="string">'~&gt; 2.0.1'</span></span><br><span class="line">     <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">post_install <span class="keyword">do</span> <span class="params">|installer|</span>     </span><br><span class="line">    installer.pods_project.targets.each <span class="keyword">do</span> <span class="params">|target|</span> </span><br><span class="line">        puts <span class="string">"<span class="subst">#&#123;target.name&#125;</span>"</span> </span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="根选项（Root-Options"><a href="#根选项（Root-Options" class="headerlink" title="根选项（Root Options"></a>根选项（Root Options</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">install! <span class="string">'cocoapods'</span> , </span><br><span class="line">          <span class="symbol">:deterministic_uuids</span> =&gt; <span class="literal">false</span> , </span><br><span class="line">          <span class="symbol">:integrate_targets</span> =&gt; <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>所支持的关键词:<br>:clean<br>:deduplicate_targets<br>:deterministic_uuids<br>:integrate_targets<br>:lock_pod_sources<br>:share_schemes_for_development_pods</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cocoapods/" rel="tag"># cocoapods</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/18/carthage%E4%BD%BF%E7%94%A8/" rel="prev" title="carthage基本使用">
+      <i class="fa fa-chevron-left"></i> carthage基本使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/18/LLDB/" rel="next" title="LLDB使用">
+      LLDB使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装CocoaPods"><span class="nav-number">1.</span> <span class="nav-text">安装CocoaPods:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#管理第三方库"><span class="nav-number">2.</span> <span class="nav-text">管理第三方库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Podfile"><span class="nav-number">2.1.</span> <span class="nav-text">创建Podfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Pods"><span class="nav-number">2.2.</span> <span class="nav-text">安装Pods</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用CocoaPods管理私有库"><span class="nav-number">3.</span> <span class="nav-text">使用CocoaPods管理私有库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#大型项目模块化管理"><span class="nav-number">3.1.</span> <span class="nav-text">大型项目模块化管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CocoaPods私有库"><span class="nav-number">4.</span> <span class="nav-text">CocoaPods私有库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建私有的Specs-git库"><span class="nav-number">4.1.</span> <span class="nav-text">创建私有的Specs git库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在私有库项目中创建podspec文件"><span class="nav-number">4.2.</span> <span class="nav-text">在私有库项目中创建podspec文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证私有库的合法性"><span class="nav-number">4.3.</span> <span class="nav-text">验证私有库的合法性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交私有库的版本信息"><span class="nav-number">4.4.</span> <span class="nav-text">提交私有库的版本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向Spec-Repo提交podspec"><span class="nav-number">4.5.</span> <span class="nav-text">向Spec Repo提交podspec</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cocoapods-更多使用"><span class="nav-number">5.</span> <span class="nav-text">cocoapods 更多使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#根选项（Root-Options"><span class="nav-number">5.1.</span> <span class="nav-text">根选项（Root Options</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Light"
+      src="/images/avatar/lightning.png">
+  <p class="site-author-name" itemprop="name">Light</p>
+  <div class="site-description" itemprop="description">Keep going……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:heliangzhang@yeah.net" title="E-Mail → mailto:heliangzhang@yeah.net" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Light</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: ,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
