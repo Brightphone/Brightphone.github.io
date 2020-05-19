@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://triplecc.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="多重赋值合并执行多个赋值操作a, b, *c &#x3D; 1, 2, 3, 4, 5   p [a, b, c] #&#x3D;&gt; [1, 2, [3, 4, 5]]  a, * b, c &#x3D; 1, 2, 3, 4, 5   p [a, b, c] #-&gt; [1, [2, 3, 4], 5] 置换变量的值a, b &#x3D; 0, 1a, b &#x3D; b, a # 置换变量a、b 的值p [a, b] #&#x3D;&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ruby基本使用">
+<meta property="og:url" content="https://triplecc.github.io/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Light&#39;s Blog">
+<meta property="og:description" content="多重赋值合并执行多个赋值操作a, b, *c &#x3D; 1, 2, 3, 4, 5   p [a, b, c] #&#x3D;&gt; [1, 2, [3, 4, 5]]  a, * b, c &#x3D; 1, 2, 3, 4, 5   p [a, b, c] #-&gt; [1, [2, 3, 4], 5] 置换变量的值a, b &#x3D; 0, 1a, b &#x3D; b, a # 置换变量a、b 的值p [a, b] #&#x3D;&gt;">
+<meta property="og:image" content="https://triplecc.github.io/res/images/article/ruby/1.png">
+<meta property="og:image" content="https://triplecc.github.io/res/images/article/ruby/2.png">
+<meta property="article:published_time" content="2019-07-20T12:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-19T10:35:42.580Z">
+<meta property="article:author" content="Light">
+<meta property="article:tag" content="Ruby">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://triplecc.github.io/res/images/article/ruby/1.png">
+
+<link rel="canonical" href="https://triplecc.github.io/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>ruby基本使用 | Light's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Light's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ruby基本使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-20 12:00:00" itemprop="dateCreated datePublished" datetime="2019-07-20T12:00:00+00:00">2019-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-19 10:35:42" itemprop="dateModified" datetime="2020-05-19T10:35:42+00:00">2020-05-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="多重赋值"><a href="#多重赋值" class="headerlink" title="多重赋值"></a>多重赋值</h1><h2 id="合并执行多个赋值操作"><a href="#合并执行多个赋值操作" class="headerlink" title="合并执行多个赋值操作"></a>合并执行多个赋值操作</h2><p>a, b, *c = 1, 2, 3, 4, 5  </p>
+<p>p [a, b, c] #=&gt; [1, 2, [3, 4, 5]] </p>
+<p>a, * b, c = 1, 2, 3, 4, 5  </p>
+<p>p [a, b, c] #-&gt; [1, [2, 3, 4], 5]</p>
+<h2 id="置换变量的值"><a href="#置换变量的值" class="headerlink" title="置换变量的值"></a>置换变量的值</h2><p>a, b = 0, 1<br>a, b = b, a # 置换变量a、b 的值<br>p [a, b] #=&gt; [1, 0<br><a id="more"></a></p>
+<h2 id="获取数组的元素"><a href="#获取数组的元素" class="headerlink" title="获取数组的元素"></a>获取数组的元素</h2><p>用数组赋值，左边有多个变量时，Ruby 会自动获取数组的元素进行多重赋值。<br>ary = [1, 2]<br>a, b = ary<br>p a #=&gt; 1<br>p b #=&gt; 2  </p>
+<p>只是希望获取数组开头的元素时，可以按照以下示例那样做。左边的变量列表以，结束，给人一种“是不是还没写完?”的感觉，建议尽量少用这样的写法。<br>ary = [1, 2]<br>a, = ary<br>p a #=&gt; 1</p>
+<h2 id="获取嵌套数组的元素"><a href="#获取嵌套数组的元素" class="headerlink" title="获取嵌套数组的元素"></a>获取嵌套数组的元素</h2><p>我们来看看数组 [1, [2, 3], 4]，用之前介绍的方法，我们可以分别取出 1，[2, 3]、4 的值。<br>ary = [1, [2, 3], 4]<br>a, b, c = ary<br>p a #=&gt; 1<br>p b #=&gt; [2, 3]<br>p c #=&gt; 4</p>
+<p>像下面那样把左边的变量括起来后，就可以再进一步将内部数组的元素值取出来。<br>ary = [1, [2, 3], 4]<br>a, (b1, b2), c = ary # 对与数组结构相对应的变量赋值<br>p a  #=&gt; 1<br>p b1 #=&gt; 2<br>p b2 #=&gt; 3<br>p c  #=&gt; 4</p>
+<p>以变量名开头来决定变量的种类，这是 Ruby 中对变量命名时唯一要坚决遵守的规则。虽然如此，但是根据以往的编程经验，也有一些非强制性的、约 定俗成的变量命名规则。在大多数情况下，遵循这些规则能使程序变得易于阅读，对我们来说有百利而无一害。<br>不要过多使用省略的名称<br>有些编程语言会限制变量名的长度，但 Ruby 不需要在意变量名的长度。当然，过长的名称是不便于阅读的，但是与其起个不知所云的短的名称， 老老实实地为变量取个长点的好理解的名称，对以后阅读、理解程序是非常有帮助的。</p>
+<p>但是，我们也还是有一些约定俗成的短名称变量。进行数学、物理等计算时，根据计算对象的不同，很多情况下会使用短名称的变量名，像坐标使 用 x、y、z，速度使用 v、w，循环次数使用 m、n 等。另外，我们编写程序时，也经常使用 i、j、k 等作为循环时需用到的变量名。<br>对于多个单词组合的变量名，使用 _ 隔开各个单词，或者单词以大写字母开头<br>也就是说，要么这样叫做 sort_list_by_name，要么叫做 sortListByName。一般来讲，Ruby 中的变量名和方法名使用前者，类名和模块名的使用 后者。</p>
+<p>在 Ruby 中还有个约定俗成的规则，为了使程序更 容易理解，返回真假值的方法都要以 ? 结尾。建议大家在写程序时也遵守这个规则。</p>
+<h1 id="Ruby-中的条件"><a href="#Ruby-中的条件" class="headerlink" title="Ruby 中的条件"></a>Ruby 中的条件</h1><h2 id="if-语句"><a href="#if-语句" class="headerlink" title="if 语句"></a>if 语句</h2><p>if 条件 1 then<br>  处理 1<br>elsif 条件 2 then<br>  处理 2<br>elsif 条件 3 then<br>  处理 3<br>else<br> 处理 4<br>end</p>
+<p>可以省略 then</p>
+<h2 id="unless-语句"><a href="#unless-语句" class="headerlink" title="unless 语句"></a>unless 语句</h2><p>unless 语句的用法刚好与 if 语句相反。unless 语句的用法如下:<br>unless 条件 then<br>  处理<br>end<br>※ 可以省略 then<br>unless 语句的形式和 if 语句一样。但 if 语句是条件为真时执行处理，unless 语句则刚好相反，条件为假时执行处理。<br>a = 10<br>b = 20<br>unless a &gt; b<br>  puts “a 不比b 大”<br>en</p>
+<h2 id="case-语句"><a href="#case-语句" class="headerlink" title="case 语句"></a>case 语句</h2><p>case 比较对象<br>when 值 1 then<br>  处理 1<br>when 值 2 then<br>  处理 2<br>when 值 3 then<br>  处理 3<br>else<br>  处理 4<br>end<br>※ 可以省略 then</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">tags = [ <span class="string">"A"</span>, <span class="string">"IMG"</span>, <span class="string">"PRE"</span> ] </span><br><span class="line">tags.each <span class="keyword">do</span> <span class="params">|tagname|</span></span><br><span class="line">    <span class="keyword">case</span> tagname</span><br><span class="line">    <span class="keyword">when</span> <span class="string">"P"</span>,<span class="string">"A"</span>,<span class="string">"I"</span>,<span class="string">"B"</span>,<span class="string">"BLOCKQUOTE"</span></span><br><span class="line">        puts <span class="string">"<span class="subst">#&#123;tagname&#125;</span> has child."</span></span><br><span class="line">    <span class="keyword">when</span> <span class="string">"IMG"</span>, <span class="string">"BR"</span></span><br><span class="line">        puts <span class="string">"<span class="subst">#&#123;tagname&#125;</span> has no child."</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        puts <span class="string">"<span class="subst">#&#123;tagname&#125;</span> cannot be used."</span></span><br><span class="line">    <span class="keyword">end</span> </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">array = [ <span class="string">"a"</span>, <span class="number">1</span>, <span class="literal">nil</span> ] </span><br><span class="line">array.each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">    <span class="keyword">case</span> item </span><br><span class="line">    <span class="keyword">when</span> String</span><br><span class="line">        puts <span class="string">"item "</span></span><br><span class="line">    <span class="keyword">when</span> Numeric </span><br><span class="line">        puts <span class="string">"item"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        puts <span class="string">"item"</span></span><br><span class="line">    <span class="keyword">end</span> </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">text.each_line <span class="keyword">do</span> <span class="params">|line|</span> </span><br><span class="line">    <span class="keyword">case</span> line</span><br><span class="line">    <span class="keyword">when</span> /^<span class="symbol">From:</span>/i</span><br><span class="line">        puts <span class="string">"发现寄信人信息"</span> </span><br><span class="line">    <span class="keyword">when</span> /^<span class="symbol">To:</span>/i</span><br><span class="line">        puts <span class="string">"发现收信人信息"</span> </span><br><span class="line">    <span class="keyword">when</span> /^<span class="symbol">Subject:</span>/i</span><br><span class="line">        puts <span class="string">"发现主题信息"</span> </span><br><span class="line">    <span class="keyword">when</span> /^$/</span><br><span class="line">        puts <span class="string">"头部解析完毕"</span></span><br><span class="line">        exit </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="comment">## 跳出处理 </span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>在 case 语句中，when 判断值是否相等时，实际是使用 === 运算符来判断的。左边是数值或者字符串时，=== 与== 的意义是一样的，除此以外，=== 还可以与=~ 一样用来判断正则表达式是否匹配，或者判断右边的对象是否属于左边的类，等等。对比单纯的判断两边的值是否相等，=== 能表达更加 广义的“相等”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p (&#x2F;zz&#x2F; &#x3D;&#x3D;&#x3D; &quot;xyzzy&quot;) #&#x3D;&gt; true </span><br><span class="line">p (String &#x3D;&#x3D;&#x3D; &quot;xyzzy&quot;) #&#x3D;&gt; true </span><br><span class="line">p ((1..3) &#x3D;&#x3D;&#x3D; 2) #&#x3D;&gt; true</span><br></pre></td></tr></table></figure></p>
+<h2 id="if-修饰符与-unless-修饰符"><a href="#if-修饰符与-unless-修饰符" class="headerlink" title="if 修饰符与 unless 修饰符"></a>if 修饰符与 unless 修饰符</h2><p>if 与 unless 可以写在希望执行的代码的后面。像下面这样:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts &quot;a 比b 大&quot; if a &gt; b</span><br></pre></td></tr></table></figure><br>这与下面的写法是等价的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if a &gt; b</span><br><span class="line">  puts &quot;a 比b 大&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>使用修饰符的写法会使程序更加紧凑。通常，我们在希望强调代码执行的内容时会使用修饰符写法。同样地，在使用修饰符写法时，请大家注意程序的易读 性。</p>
+<p>对象的同一性<br>所有的对象都有标识和值。<br>标识(ID)用来表示对象同一性。Ruby 中所有对象都是唯一的，对象的 ID 可以通过 object_id(或者 <strong>id</strong>)方法取得。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ary1 &#x3D; []</span><br><span class="line">ary2 &#x3D; []</span><br><span class="line">p ary1.object_id #&#x3D;&gt; 67653636 </span><br><span class="line">p ary2.object_id #&#x3D;&gt; 67650432</span><br></pre></td></tr></table></figure></p>
+<p>我们用 equal? 方法判断两个对象是否同一个对象(ID 是否相同)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">str1 &#x3D; &quot;foo&quot;</span><br><span class="line">str2 &#x3D; str1</span><br><span class="line">str3 &#x3D; &quot;f&quot; + &quot;o&quot; + &quot;o&quot;</span><br><span class="line">p str1.equal?(str2) #&#x3D;&gt; true </span><br><span class="line">p str1.equal?(str3) #&#x3D;&gt; false</span><br></pre></td></tr></table></figure></p>
+<p>对象的“值”就是对象拥有的信息。例如，只要对象的字符串内容相等，Ruby 就会认为对象的值相等。Ruby 使用 == 来判断对象的值是否相等。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1 &#x3D; &quot;foo&quot;</span><br><span class="line">str2 &#x3D; &quot;f&quot; + &quot;o&quot; + &quot;o&quot;</span><br><span class="line">p str1 &#x3D;&#x3D; str2 #&#x3D;&gt; true</span><br></pre></td></tr></table></figure><br>除了 == 以外，Ruby 还提供 eql? 方法用来判断对象的值是否相等。== 与 eql? 都是 Object 类定义的方法，大部分情况下它们的执行结果都是一样 的。但也有例外，数值类会重定义 eql? 方法，因此执行后有不一样结果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p 1.0 &#x3D;&#x3D; 1 #&#x3D;&gt; true</span><br><span class="line">p 1.0.eql?(1) #&#x3D;&gt; false</span><br></pre></td></tr></table></figure></p>
+<p>凭直觉来讲，把 1.0 与 1 判断为相同的值会更加方便。在一般情况进行值的比较时使用 ==，但是在一些需要进行更严谨的比较的程序中，就需要用到 eql? 方法。例如，0 与 0.0 作为散列的键时，会判断为不同的键，这是由于散列对象内部的键比较使用了 eql? 方法来判断。</p>
+<h1 id="实现循环的方法"><a href="#实现循环的方法" class="headerlink" title="实现循环的方法"></a>实现循环的方法</h1><h2 id="使用循环语句"><a href="#使用循环语句" class="headerlink" title="使用循环语句"></a>使用循环语句</h2><p>利用 Ruby 提供现有的循环语句，可以满足大部分循环处理的需求。</p>
+<h2 id="使用方法实现循环"><a href="#使用方法实现循环" class="headerlink" title="使用方法实现循环"></a>使用方法实现循环</h2><p>将块传给方法，然后在块里面写上需要循环的处理。一般我们在为了某种特定目的而需要定制循环结构时，才使用方法来实现循环。<br>下面是我们接下来要介绍的六种循环语句或方法。</p>
+<h3 id="times-方法"><a href="#times-方法" class="headerlink" title="times 方法"></a>times 方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">循环次数.times do  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">循环次数.times &#123;  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">7.times do</span><br><span class="line">    puts &quot;满地油菜花&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">10.times do |i|</span><br><span class="line">    puts i #在 times 方法的块里，也是可以获知当前的循环次数的</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="while-语句"><a href="#while-语句" class="headerlink" title="while 语句"></a>while 语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">while 条件 do  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">end</span><br><span class="line">※ 可以省略 do</span><br><span class="line">i&#x3D;1</span><br><span class="line">while i &lt; 3</span><br><span class="line">    puts i</span><br><span class="line">    i +&#x3D; 1 </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">names &#x3D; [&quot;awk&quot;,&quot;Perl&quot;,&quot;Python&quot;,&quot;Ruby&quot;] names.each do |name|</span><br><span class="line">    puts name </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="each-方法"><a href="#each-方法" class="headerlink" title="each 方法"></a>each 方法</h3><p>each 方法将对象集合里的对象逐个取出，这与 for 语句循环取出数组元素非常相似。实际上，我们可以非常简单地将使用 for 语句的程序(代码清单 6.5)<br>改写为使用 each 方法的程序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">对象.each do |变量 |  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">names &#x3D; [&quot;awk&quot;,&quot;Perl&quot;,&quot;Python&quot;,&quot;Ruby&quot;] </span><br><span class="line">names.each do |name|</span><br><span class="line">    puts name </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">对象.each &#123;|变量 |  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">&#125;</span><br><span class="line">这与下面的程序的效果是几乎一样。</span><br><span class="line">for 变量 in 对象  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<h3 id="for-语句"><a href="#for-语句" class="headerlink" title="for 语句"></a>for 语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">for 变量 in 开始时的数值..结束时的数值 do  </span><br><span class="line">    希望循环的处理</span><br><span class="line">end</span><br><span class="line">※ 可以省略 do</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sum &#x3D; 0</span><br><span class="line">for i in 1..5</span><br><span class="line">    sum &#x3D; sum + i</span><br><span class="line">end</span><br><span class="line">puts sum</span><br><span class="line"></span><br><span class="line">for 变量 in 对象 do  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">end</span><br><span class="line">※ 可以省略 do</span><br><span class="line"></span><br><span class="line">names &#x3D; [&quot;awk&quot;, &quot;Perl&quot;, &quot;Python&quot;, &quot;Ruby&quot;] </span><br><span class="line">for name in names</span><br><span class="line">    puts name </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="until-语句"><a href="#until-语句" class="headerlink" title="until 语句"></a>until 语句</h3><p>与 if 语句相对的有 unless 语句，同样地，与 while 语句相对的有 until 语句。until 语句的结构与 while 语句完全一样，只是条件判断刚好相反，不满 足条件时才执行循环处理。换句话说，while 语句是一直执行循环处理，直到条件不成立为止;until 语句是一直执行循环处理，直到条件成立为止。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">until 条件 do  </span><br><span class="line">    希望循环的处理 </span><br><span class="line">end</span><br><span class="line">※ 可以省略 do</span><br></pre></td></tr></table></figure><br>loop 方法<br>Ruby 的常用循环结构就介绍到这里，接下来就让我们来具体看看如何使用这些语句或方法实现循环。</p>
+<h2 id="循环控制"><a href="#循环控制" class="headerlink" title="循环控制"></a>循环控制</h2><p>命令    用途<br>break 终止程序，跳出循环<br>next  跳到下一次循环<br>redo  在相同的条件下重复刚才的处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">puts &quot;break 的例子:&quot;</span><br><span class="line">i &#x3D; 0</span><br><span class="line">[&quot;Perl&quot;, &quot;Python&quot;, &quot;Ruby&quot;, &quot;Scheme&quot;].each do |lang|</span><br><span class="line">    i+&#x3D;1</span><br><span class="line">    if i &#x3D;&#x3D; 3</span><br><span class="line">        break </span><br><span class="line">    end</span><br><span class="line">    p [i,lang]</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">puts &quot;next 的例子:&quot;</span><br><span class="line">i &#x3D; 0</span><br><span class="line">[&quot;Perl&quot;, &quot;Python&quot;, &quot;Ruby&quot;, &quot;Scheme&quot;].each do |lang|</span><br><span class="line">    i +&#x3D; 1</span><br><span class="line">    if i &#x3D;&#x3D; 3</span><br><span class="line">        next </span><br><span class="line">    end</span><br><span class="line">    p [i,lang]</span><br><span class="line">end </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">puts &quot;redo 的例子:&quot;</span><br><span class="line">i &#x3D; 0</span><br><span class="line">[&quot;Perl&quot;, &quot;Python&quot;, &quot;Ruby&quot;, &quot;Scheme&quot;].each do |lang|</span><br><span class="line">    i +&#x3D; 1</span><br><span class="line">    if i &#x3D;&#x3D; 3</span><br><span class="line">        redo </span><br><span class="line">    end</span><br><span class="line">    p [i,lang]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<pre><code>主要用途
+</code></pre><p>times 方法  确定循环次数时使用<br>for语句     从对象取出元素时使用(each 的语法糖)<br>while 语句  希望自由指定循环条件时使用<br>until 语句  使用 while 语句使循环条件变得难懂时使用<br>each方法    从对象取出元素时使用<br>loop方法    不限制循环次数时使用</p>
+<p>do~end 与 {~}<br>程序是跨行写的时候使用 do ~ end<br>程序写在 1 行的时候用 { ~ }</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><h2 id="带块的方法调用"><a href="#带块的方法调用" class="headerlink" title="带块的方法调用"></a>带块的方法调用</h2><p>带块的方法的语法如下:<br>对象.方法名(参数,…) do |变量 1,变量 2,…|<br>    块内容<br>end<br>do ~ end 这部分就是所谓的块。除 do ~ end 这一形式外，我们也可以用 {~} 将块改写为其他形式:<br>对象.方法名(参数,…){|变量 1,变量 2,…|<br>    块内容<br>}<br>备注 使用 do ~ end 时，可以省略把参数列表括起来的 ()。使用 { ~ } 时，只有在没有参数的时候才可以省略 ()，有一个以上的参数时就不能省 略。<br>在块开头的 | ~ | 部分中指定的变量称为块变量。在执行块的时候，块变量由方法传到块内部。不同的方法对应的块变量的个数、值也都不一样。之前介绍 过的 times 方法有一个块变量，执行块时，方法会从 0 开始依次把循环次数赋值给块变量</p>
+<h2 id="方法的分类"><a href="#方法的分类" class="headerlink" title="方法的分类"></a>方法的分类</h2><p>实例方法<br>类方法<br>函数式方法<br>方法的返回值<br>可以省略 return 语句，这时方法的最后一个表达式的结果就会成为方法的返回值。下面我们再通过求立方体的表面积这个例子，来看看如何省略 return。 这里，area 方法的最后一行的 (xy + yz + zx) <em> 2 的结果就是方法的返回值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def area(x, y, z) xy &#x3D; x * y</span><br><span class="line">    yz &#x3D; y * z</span><br><span class="line">    zx &#x3D; z * x</span><br><span class="line">    (xy + yz + zx) * 2 </span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>如果省略 return 的参数，程序则返回 nil。方法的目的是程序处理，所以 Ruby 允许没有返回值的方法。Ruby 中有很多返回值为 nil 的方法，第 1 章中介 绍的 print 方法就是其中一。<br>定义带块的方法<br>首先我们来实现 myloop 方法，它与利用块实现循环的 loop 方法的功能是一样的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def myloop </span><br><span class="line">while true</span><br><span class="line">    yield end # 执行块</span><br><span class="line">end</span><br><span class="line">num &#x3D; 1 # 初始化num</span><br><span class="line">myloop do</span><br><span class="line">    puts &quot;num is #&#123;num&#125;&quot; # 输出num</span><br><span class="line">    break if num &gt; 100  # num 超过 100 时跳出循环 # num 乘2</span><br><span class="line">    num *&#x3D; 2</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>参数个数不确定的方法<br>像下面的例子那样，通过用“</em> 变量名”的形式来定义参数个数不确定的方法，Ruby 就可以把所有参数封装为数组，供方法内部使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def foo(*args) </span><br><span class="line">    args</span><br><span class="line">end</span><br><span class="line">p foo(1, 2, 3) #&#x3D;&gt; [1, 2, 3]</span><br></pre></td></tr></table></figure><br>所有不确定的参数都被作为数组赋值给变量 args。“* 变量名”这种形式的参数，只能在方法定义的参数列表中出现一次。只确定首个和最后一个参数名，并 省略中间的参数时，可以像下面这样定义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def a(a, *b, c) </span><br><span class="line">    [a, b, c]</span><br><span class="line">end</span><br><span class="line">p a(1, 2, 3, 4, 5) #&#x3D;&gt; [1, [2, 3, 4], 5] </span><br><span class="line">p a(1, 2) #&#x3D;&gt; [1, [], 2]</span><br></pre></td></tr></table></figure>
+<p>关键字参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def 方法名(参数 1: 参数 1 的值, 参数 2: 参数 2 的值, ...)  </span><br><span class="line">    希望执行的处理</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">def area2(x:0,y:0,z:0)</span><br><span class="line">    xy &#x3D; x * y</span><br><span class="line">    yz &#x3D; y * z</span><br><span class="line">    zx &#x3D; z * x</span><br><span class="line">    (xy + yz + zx) * 2</span><br><span class="line">end</span><br><span class="line">p area2(x:2,y:3,z:4)</span><br><span class="line">p area2(z:4,y:3,x:2)</span><br><span class="line">p area2(x:2,z:3)</span><br></pre></td></tr></table></figure><br>这个方法有参数 x、y、z，各自的默认值都为 0。调用该方法时，可以像 x: 2 这样，指定一对实际的参数名和值。在用关键字参数定义的方法中，每个参 数都指定了默认值，因此可以省略任何一个。而且，由于调用方法时也会把参数名传给方法，所以参数顺序可以自由地更改。<br>不过，如果把未定义的参数名传给方法，程序就会报错，如下所示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">area2(foo: 0) #&#x3D;&gt; 错误:unknown keyword: foo(ArgumentError)</span><br></pre></td></tr></table></figure><br>为了避免调用方法时因指定了未定义的参数而报错，我们可以使用“<strong> 变量名”的形式来 接收未定义的参数。下面这个例子的方法中，除了关键字参数<br>x、y、z 外，还定义了 </strong>arg 参数。参数 arg 会把参数列表以外的关键字参数以散列对象的形式保存。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def meth(x: 0, y: 0, z: 0, **args) </span><br><span class="line">    [x, y, z, args]</span><br><span class="line">end</span><br><span class="line">p meth(z: 4, y: 3, x: 2) #&#x3D;&gt; [2, 3, 4, &#123;&#125;]</span><br><span class="line">p meth(x: 2, z: 3, v: 4, w: 5) #&#x3D;&gt; [2, 0, 3, &#123;:v&#x3D;&gt;4, :w&#x3D;&gt;5&#125;]</span><br></pre></td></tr></table></figure><br>关键字参数与普通参数的搭配使用</p>
+<p>关键字参数可以与普通参数搭配使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def func(a, b: 1, c:2)</span><br><span class="line">┊</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>上述这样定义时，a 为必须指定的普通参数，b、c 为关键字参数。调用该方法时，可以像下面这样，首先指定普通参数，然后是关键字参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(1, b: 2, c: 3)</span><br></pre></td></tr></table></figure><br>用散列传递参数<br>调用用关键字参数定义的方法时，可以使用以符号作为键的散列来传递参数。这样一来，程序就会检查散列的键与定义的参数名是否一致，并将与散列<br>关于方法调用的一些补充<br>把数组分解为参数<br>将参数传递给方法时，我们也可以先分解数组，然后再将分解后的数组元素作为参数传递给方法。在调用方法时，如果以“* 数组”这样的形式指定参 数，这时传递给方法的就不是数组本身，而是数组的各元素被按照顺序传递给方法。但需要注意的是，数组的元素个数必须要和方法定义的参数个数一 样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def foo(a, b, c) </span><br><span class="line">    a+b+c</span><br><span class="line">end</span><br><span class="line"> </span><br><span class="line">p foo(1, 2, 3) #&#x3D;&gt; 6</span><br><span class="line"> </span><br><span class="line">args1 &#x3D; [2, 3]</span><br><span class="line">p foo(1, *args1) #&#x3D;&gt; 6  </span><br><span class="line">args2 &#x3D; [1, 2, 3]</span><br><span class="line">p foo(*args2) #&#x3D;&gt; 6</span><br></pre></td></tr></table></figure><br>把散列作为参数传递<br>我们用 { ~ } 这样的形式来表示散列的字面量(literal)。将散列的字面量作为参数传递给方法时可以省略 {}。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def foo(arg) </span><br><span class="line">    arg</span><br><span class="line">end</span><br><span class="line"> </span><br><span class="line">p foo(&#123;&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2&#125;) #&#x3D;&gt; &#123;&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2&#125;</span><br><span class="line">p foo(&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2)   #&#x3D;&gt; &#123;&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2&#125;</span><br><span class="line">p foo(a: 1, b:2) #&#x3D;&gt; &#123;:a&#x3D;&gt;1, :b&#x3D;&gt;2&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当虽然有多个参数，但只将散列作为最后一个参数传递给方法时，可以使用下面的写法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def bar(arg1, arg2) </span><br><span class="line">    [arg1, arg2]</span><br><span class="line">end</span><br><span class="line"> </span><br><span class="line">p bar(100, &#123;&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2&#125;) #&#x3D;&gt; [100, &#123;&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2&#125;]</span><br><span class="line">p bar(100, &quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2)  #&#x3D;&gt; [100, &#123;&quot;a&quot;&#x3D;&gt;1, &quot;b&quot;&#x3D;&gt;2&#125;]</span><br><span class="line">p bar(100, a: 1, b: 2) #&#x3D;&gt; [100, &#123;:a&#x3D;&gt;1, :b&#x3D;&gt;2&#125;]</span><br></pre></td></tr></table></figure></p>
+<h1 id="class"><a href="#class" class="headerlink" title="class"></a>class</h1><p>当想知道某个对象属于哪个类时，我们可以使用 class 方法 <code>p ary.class #=&gt; Array</code><br>当判断某个对象是否属于某个类时，我们可以使用 instance_of? 方法。<code>p ary.instance_of?(Array)</code><br>BasicObject 类是 Ruby 中所有类的父类，它定义了作为 Ruby 对象的最基本功能。</p>
+<p>备注 BasicObject 类是最最基础的类，甚至连一般对象需要的功能都没有定义。因此普通对象所需要的类一般都被定义为 Object 类。字符串、数组 等都是 Object 类的子类。<br><img src="/res/images/article/ruby/1.png" alt="image"></p>
+<p>子类与父类的关系称为“is-a 关系”。例如，String 类与它的父类 Object 就是 is-a 关系。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str &#x3D; &quot;This is a String.&quot;</span><br><span class="line">p str.is_a?(String) #&#x3D;&gt; true </span><br><span class="line">p str.is_a?(Object) #&#x3D;&gt; true</span><br></pre></td></tr></table></figure><br>顺便提一下，由于 instance_of? 方法与 is_a? 方法都已经在 Object 类中定义过了，因此普通的对象都可以使用这两个方法。<br>class 类名<br>    类的定义<br>end<br>类名的首字母必须大写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class HelloWorld # class 关键字 </span><br><span class="line">    def initialize(myname &#x3D; &quot;Ruby&quot;) # initialize 方法</span><br><span class="line">        @name &#x3D; myname # 初始化实例变量 end</span><br><span class="line">    def hello                           # 实例方法 </span><br><span class="line">        puts &quot;Hello, world. I am        #&#123;@name&#125;.&quot;</span><br><span class="line">    end </span><br><span class="line">end</span><br><span class="line">bob &#x3D; HelloWorld.new(&quot;Bob&quot;) </span><br><span class="line">alice &#x3D; HelloWorld.new(&quot;Alice&quot;) </span><br><span class="line">ruby &#x3D; HelloWorld.new</span><br><span class="line">bob.hello</span><br></pre></td></tr></table></figure>
+<h2 id="initialize-方法"><a href="#initialize-方法" class="headerlink" title="initialize 方法"></a>initialize 方法</h2><p>initialize 的方法比较特别。使用 new 方法生成新的对象时，initialize 方法会被调用，同时 new 方法的参数也会被原封不动地传给<br>initialize 方法。因此初始化对象时需要的处理一般都写在这个方法中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def initialize(myname &#x3D; &quot;Ruby&quot;) # initialize 方法 </span><br><span class="line">    @name &#x3D; myname # 初始化实例变量</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="存取器"><a href="#存取器" class="headerlink" title="存取器"></a>存取器</h2><p>在 Ruby 中，从对象外部不能直接访问实例变量或对实例变量赋值，需要通过方法来访问对象的内部。<br>为了访问代码中 HelloWorld 类的 @name 实例变量，我们需要定义以下方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class HelloWorld</span><br><span class="line">    def name # 获取@name</span><br><span class="line">        @name </span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    def name&#x3D;(value) # 修改@name </span><br><span class="line">        @name &#x3D; value</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>第二个方法的方法名为 name=，使用方法如下:<br>bob.name = “Robert”<br>乍一看，该语法很像是在给对象的属性赋值，但实际上却是在调用 name=(“Robert”) 这个方法。利用这样的方法，我们就可以突破 Ruby 原有的限制，从外 部来自由地访问对象内部的实例变量了。<br>当对象的实例变量有多个时，如果逐个定义存取器，就会使程序变得难懂，而且也容易写错。为此，Ruby 为了我们提供了更简便的定义方法 attr_reader、attr_writer、attr_accessor。只要指定实例变量名的符号(symbol)，Ruby 就会自动帮我们定义相应的存取器。<br>定义                     意义<br>attr_reader :name       只读(定义 name 方法)<br>attr_writer :name       只写(定义 name= 方法)<br>attr_accessor :name     读写(定义以上两个方法)<br>也可以像下面这样只写一行代码，其效果与刚才的 name 方法以及 name= 方法的效果是一样的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class HelloWorld </span><br><span class="line">    attr_accessor :name</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>备注 Ruby 中一般把设定实例变量的方法称为 writer，读取实例变量的方法称为 reader，这两个方法合称为 accessor。另外，有时也把 reader 称为 getter，writer 称为 setter，合称为 accessor method4。一般把 accessor(method)翻译为存取器或者访问器，本书统一翻译为存取器</p>
+<h2 id="特殊变量-self"><a href="#特殊变量-self" class="headerlink" title="特殊变量 self"></a>特殊变量 self</h2><p>在实例方法中，可以用 self 这个特殊的变量来引用方法的接收者。接下来就让我们来看看其他的实例方法如何调用 name 方法。<br>greet 方法里的 self.name 引用了调用 greet 方法时的接收者。<br>调用方法时，如果省略了接收者，Ruby 就会默认把 self 作为该方法的接收者。因此，即使省略了 self，也还是可以调用 name 方法，如下所示:<br>另外，在调用像 name= 方法这样的以 = 结束的方法时，有一点需要特别注意。即使实例方法中已经有了 name = “Ruby” 这样的定义，但如果仅在方法内部 定义名为 name 的局部变量，也不能以缺省接收者的方式调用 name= 方法。这种情况下，我们需要用 self.name = “Ruby” 的形式来显式调用 name 方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def test_name</span><br><span class="line">    name &#x3D; &quot;Ruby&quot; # 为局部变量赋值 </span><br><span class="line">    self.name &#x3D; &quot;Ruby&quot; # 调用name&#x3D; 方法</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<h2 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h2><p>方法的接收者就是类本身(类对象)的方法称为类方法。正如我们在 7.2.2 节中提到的那样，类方法的操作对象不是实例，而是类本身。<br>下面，让我们在 class &lt;&lt; 类名 ~ end 这个特殊的类定义中，以定义实例方法的形式来定义类方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class &lt;&lt; HelloWorld </span><br><span class="line">    def hello(name)</span><br><span class="line">        puts &quot;#&#123;name&#125; said hello.&quot; </span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line">HelloWorld.hello(&quot;John&quot;) #&#x3D;&gt; John said hello.</span><br></pre></td></tr></table></figure><br>在 class 上下文中使用 self 时，引用的对象是该类本身，因此，我们可以使用 class &lt;&lt; self ~ end 这样的形式，在 class 上下文中定义类方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class HelloWorld </span><br><span class="line">    class &lt;&lt; self</span><br><span class="line">        def hello(name)</span><br><span class="line">            puts &quot;#&#123;name&#125; said hello.&quot;</span><br><span class="line">        end </span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>除此以外，我们还可以使用 def 类名 . 方法名 ~ end 这样的形式来定义类方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def HelloWorld.hello(name) </span><br><span class="line">    puts &quot;#&#123;name&#125; said hello.&quot;</span><br><span class="line">end</span><br><span class="line">HelloWorld.hello(&quot;John&quot;) #&#x3D;&gt; John said hello.</span><br></pre></td></tr></table></figure><br>同样，只要是在 class 上下文中，这种形式下也可以像下面的例子那样使用 self。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class HelloWorld</span><br><span class="line">    def self.hello(name)</span><br><span class="line">        puts &quot;#&#123;name&#125; said hello.&quot; </span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>备注 class &lt;&lt; 类名 ~ end 这种写法的类定义称为单例类定义，单例类定义中定义的方法称为单例方法。</p>
+<h2 id="常量-类变量"><a href="#常量-类变量" class="headerlink" title="常量/类变量"></a>常量/类变量</h2><p>对于在类中定义的常量，我们可以像下面那样使用 ::，通过类名来实现外部访问。<br>以 @@ 开头的变量称为类变量。类变量是该类所有实例的共享变量，这一点与常量类似，不同的是我们可以多次修改类变量的值。另外，与实例变量一样， 从类的外部访问类变量时也需要存取器。不过，由于 attr_accessor 等存取器都不能使用，因此需要直接定义。代码清单 8.4 的程序在代码清单 8.1 的 HelloWorld 类的基础上，添加了统计 hello 方法被调用次数的功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class HelloCount</span><br><span class="line">    @@count &#x3D; 0 # 调用hello 方法的次数</span><br><span class="line">    def HelloCount.count # 读取调用次数的类方法 </span><br><span class="line">        @@count</span><br><span class="line">    end</span><br><span class="line">    def initialize(myname&#x3D;&quot;Ruby&quot;) </span><br><span class="line">        @name &#x3D; myname</span><br><span class="line">    end</span><br><span class="line">    def hello</span><br><span class="line">        @@count +&#x3D; 1 # 累加调用次数</span><br><span class="line">        puts &quot;Hello, world. I am #&#123;@name&#125;.\n&quot;</span><br><span class="line">    end </span><br><span class="line">end</span><br><span class="line">bob &#x3D; HelloCount.new(&quot;Bob&quot;) alice &#x3D; HelloCount.new(&quot;Alice&quot;) ruby &#x3D; HelloCount.new</span><br><span class="line">p HelloCount.count bob.hello alice.hello ruby.hello</span><br><span class="line">p HelloCount.count</span><br><span class="line">#&#x3D;&gt; 0</span><br><span class="line">#&#x3D;&gt; 3</span><br></pre></td></tr></table></figure></p>
+<h2 id="限制方法的调用"><a href="#限制方法的调用" class="headerlink" title="限制方法的调用"></a>限制方法的调用</h2><p>到目前为止，我们定义的方法，都能作为实例方法被任意调用，但是有时候我们可能并不希望这样。例如，只是为了汇总多个方法的共同处理而定义的方<br>法，一般不会公开给外部使用。<br>Ruby 提供了 3 种方法的访问级别，我们可以按照需要来灵活调整。<br>public ……以实例方法的形式向外部公开该方法<br>private ……在指定接收者的情况下不能调用该方法(只能使用缺省接收者的方式调用该方法，因此无法从实例的外部访问) protected ……在同一个类中时可将该方法作为实例方法调用<br>在修改方法的访问级别时，我们会为这 3 个关键字指定表示方法名的符号。 首先来看看使用 public 和 private 的例子<br>希望统一定义多个方法的访问级别时，可以使用下面的语法 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class AccTest</span><br><span class="line">public # 不指定参数时，</span><br><span class="line"># 以下的方法都被定义为public</span><br><span class="line">def pub</span><br><span class="line">    puts &quot;pub is a public method.&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">private # 以下的方法都被定义为private</span><br><span class="line">def priv</span><br><span class="line">    puts &quot;priv is a private method.&quot;</span><br><span class="line">end end</span><br></pre></td></tr></table></figure><br>没有指定访问级别的方法默认为 public，但 initialize 方法是个例外，它通常会被定义为 private<br>定义为 protected 的方法，在同一个类(及其子类)中可作为实例方法使用，而在除此以外的地方则无法使用。<br>代码清单 8.6 定义了拥有 X、Y 坐标的 Point 类。在这个类中，实例中的坐标可以被外部读取，但不能被修改。为此，我们可以利用 protected 来实现交换 两个坐标值的方法 swap。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Point</span><br><span class="line">    attr_accessor :x, :y # 定义存取器</span><br><span class="line">    protected :x&#x3D;, :y&#x3D; # 把x&#x3D; 与y&#x3D; 设定为protected</span><br><span class="line">    def initialize(x&#x3D;0.0, y&#x3D;0.0) </span><br><span class="line">        @x, @y &#x3D; x, y</span><br><span class="line">    end</span><br><span class="line">    def swap(other) # 交换x、y 值的方法 </span><br><span class="line">        tmp_x, tmp_y &#x3D; @x, @y</span><br><span class="line">        @x, @y &#x3D; other.x, other.y</span><br><span class="line">        other.x, other.y &#x3D; tmp_x, tmp_y # 在同一个类中</span><br><span class="line">                                        # 可以被调用</span><br><span class="line">        return self </span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line">p0 &#x3D; Point.new</span><br><span class="line">p1 &#x3D; Point.new(1.0, 2.0) </span><br><span class="line">p[p0.x,p0.y]        #&#x3D;&gt; [0.0, 0.0]</span><br><span class="line">p[p1.x,p1.y]        #&#x3D;&gt; [1.0, 2.0]</span><br><span class="line">p0.swap(p1) </span><br><span class="line">p[p0.x,p0.y]        #&#x3D;&gt; [1.0, 2.0]</span><br><span class="line">p[p1.x,p1.y]        #&#x3D;&gt; [0.0, 0.0]</span><br><span class="line">p0.x &#x3D; 10.0         #&#x3D;&gt; 错误(NoMethodError)</span><br></pre></td></tr></table></figure></p>
+<h2 id="扩展类"><a href="#扩展类" class="headerlink" title="扩展类"></a>扩展类</h2><p>Ruby 允许我们在已经定义好的类中添加方法。下面，我们来试试给 String 类添加一个计算字符串单词数的实例方法 count_word(代码清单 8.7)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class String</span><br><span class="line">    def count_word</span><br><span class="line">        ary &#x3D; self.split(&#x2F;\s+&#x2F;) # 用空格分割接收者</span><br><span class="line">        return ary.size # 返回分割后的数组的元素总数 </span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line">str &#x3D; &quot;Just Another Ruby Newbie&quot; </span><br><span class="line">p str.count_word #&#x3D;&gt; 4</span><br></pre></td></tr></table></figure></p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>利用继承，我们可以在不对已有的类进行修改的前提下，通过增加新功能或重定义已有功能等手段来创建新的类。<br>定义继承时，在使用 class 关键字指定类名的同时指定父类名。<br>class 类名&lt; 父类名<br>    类定义<br>end<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class RingArray &lt; Array # 指定父类</span><br><span class="line">    def [](i)   # 重定义运算符[]</span><br><span class="line">        idx &#x3D; i % size # 计算新索引值</span><br><span class="line">        super(idx)   # 调用父类中同名的方法</span><br><span class="line">    end </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">wday &#x3D; RingArray[&quot;日&quot;, &quot;月&quot;, &quot;火&quot;, &quot;水&quot;, &quot;木&quot;, &quot;金&quot;, &quot;土&quot;] </span><br><span class="line">p wday[6] #&#x3D;&gt; &quot;土&quot;</span><br><span class="line">p wday[11] #&#x3D;&gt; &quot;木&quot;</span><br><span class="line">p wday[15] #&#x3D;&gt; &quot;月&quot;</span><br><span class="line">p wday[-1] #&#x3D;&gt; &quot;土&quot;</span><br></pre></td></tr></table></figure><br>利用继承，我们可以把共同的功能定义在父类，把各自独有的功能定义在子类。<br>定义类时没有指定父类的情况下，Ruby 会默认该类为 Object 类的子类。<br>Object 类提供了许多便于实际编程的方法。但在某些情况下，我们也有可能会希望使用更轻量级的类，而这时就可以使用 BasicObject 类。<br>BasicObject 类只提供了组成 Ruby 对象所需的最低限度的方法。类对象调用 instance_methods 方法后，就会以符号的形式返回该类的实例方法列表。下面 我们就用这个方法来对比一下 Object 类和 BasicObject 类的实例方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> irb --simple-prompt</span><br><span class="line">&gt;&gt; Object.instance_methods</span><br><span class="line">&#x3D;&gt; [:nil?, :&#x3D;&#x3D;&#x3D;, :&#x3D;~, :!~, :eql?, :hash, :&lt;&#x3D;&gt;, :class, :singleton_class, :clone, :dup, :taint, :tainted?, :untaint, :untrust, :untrusted?, :trust, :freeze, :frozen?, :to_s, ...... 等众多方法名......]</span><br><span class="line">&gt;&gt; BasicObject.instance_methods</span><br><span class="line">&#x3D;&gt; [:&#x3D;&#x3D;, :equal?, :!, :!&#x3D;, :instance_eval, :instance_exec, :__send__, :__id__]</span><br></pre></td></tr></table></figure></p>
+<h2 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h2><p>有时我们会希望给已经存在的方法设置别名。这种情况下就需要使用 alias 方法。alias 方法的参数为方法名或者符号名。<br>alias 别名 原名   # 直接使用方法名<br>alias : 别名 : 原名  # 使用符号名<br>像 Array#size 与 Array#length 这样，为同一种功能设置多个名称时，我们会使用到 alias。 另外，除了为方法设置别名外，在重定义已经存在的方法时，为了能用别名调用原来的方法，我们也需要用到 alias。 下面的例子中定义了类 C1 及其子类 C2。在类 C2 中，对 hello 方法设置别名 old_hello 后，重定义了 hello 方法。</p>
+<h2 id="undef"><a href="#undef" class="headerlink" title="undef"></a>undef</h2><p>undef 用于删除已有方法的定义。与 alias 一样，参数可以指定方法名或者符号名。<br>undef 方法名    # 直接使用方法名 undef : 方法名   # 使用符号名<br>例如，在子类中希望删除父类定义的方法时可以使用 undef。</p>
+<h2 id="单例类"><a href="#单例类" class="headerlink" title="单例类"></a>单例类</h2><p>定义类方法的方法时，我们提到了单例类定义，而通过利用单例类定义，就可以给对象添加方法(单例方法)。单例类定义被用于定 义对象的专属实例方法。在下面的例子中，我们分别将 “Ruby” 赋值给 str1 对象和 str2 对象，然后只对 str1 对象添加 hello 方法。这样一来，两个 对象分别调用 hello 方法时，str1 对象可以正常调用，但 str2 对象调用时程序就会发生错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">str1 &#x3D; &quot;Ruby&quot; </span><br><span class="line">str2 &#x3D; &quot;Ruby&quot;  </span><br><span class="line">class &lt;&lt; str1</span><br><span class="line">    def hello</span><br><span class="line">        &quot;Hello, #&#123;self&#125;!&quot;</span><br><span class="line">    end </span><br><span class="line">end</span><br><span class="line"> </span><br><span class="line">p str1.hello #&#x3D;&gt; &quot;Hello, Ruby!&quot;</span><br><span class="line">p str2.hello #&#x3D;&gt; 错误(NoMethodError)</span><br></pre></td></tr></table></figure><br>Ruby 中所有的类都是 Class 类的实例，对 Class 类添加实例方法，就等于给所有的类都添加了该类方法。因此，只希望对某个实例添加方法时，就需 要利用单例方法。<br>单例类的英语为 singleton class 或者 eigenclass。</p>
+<h2 id="模块的使用方法"><a href="#模块的使用方法" class="headerlink" title="模块的使用方法"></a>模块的使用方法</h2><p>所谓命名空间(namespace)，就是对方法、常量、类等名称进行区分及管理的单位。由于模块提供各自独立的命名空间，因此 A 模块中的 foo 方法与 B 模块中的 foo 方法，就会被程序认为是两个不同的方法。同样，A 模块中的 FOO 常量与 B 模块的 FOO 常量，也是两个不同的常量。<br>无论是方法名还是类名，当然都是越简洁越好，但是像 size、start 等这种普通的名称，可能在很多地方都会使用到。因此，通过在模块内定义名称，就可 以解决命名冲突的问题。<br>例如，在 FileTest 模块中存在与获取文件信息相关的方法。我们使用“模块名 . 方法名”的形式来调用在模块中定义的方法，这样的方法称为模块函数。</p>
+<h2 id="利用-Mix-in-扩展功能"><a href="#利用-Mix-in-扩展功能" class="headerlink" title="利用 Mix-in 扩展功能"></a>利用 Mix-in 扩展功能</h2><p>Mix-in 就是将模块混合到类中。在定义类时使用 include，模块里的方法、常量就都能被类使用。<br>像代码清单 8.9 那样，我们可以把 MyClass1 和 MyClass2 中两者共通的功能定义在 MyModule 中。虽然有点类似于类的继承，但 Mix-in 可以更加灵活地解决<br>下面的问题。<br>虽然两个类拥有相似的功能，但是不希望把它们作为相同的种类( Class)来考虑的时候<br>Ruby 不支持父类的多重继承，因此无法对已经继承的类添加共通的功能的时候</p>
+<h2 id="创建模块"><a href="#创建模块" class="headerlink" title="创建模块"></a>创建模块</h2><p>我们使用 module 关键字来创建模块。<br>语法与创建类时几乎相同。模块名的首字母必须大写。<br>module 模块名<br>    模块定义<br>end<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">module HelloModule  # module 关键字</span><br><span class="line">    Version &#x3D; &quot;1.0&quot; # 定义常量</span><br><span class="line">    def hello(name) # 定义方法</span><br><span class="line">        puts &quot;Hello, #&#123;name&#125;.&quot;</span><br><span class="line">    end</span><br><span class="line">module_function :hello # 指定hello 方法为模块函数</span><br><span class="line">end</span><br><span class="line">p HelloModule::Version </span><br><span class="line">HelloModule.hello(&quot;Alice&quot;)</span><br><span class="line">include HelloModule </span><br><span class="line">p Version </span><br><span class="line">hello(&quot;Alice&quot;)</span><br></pre></td></tr></table></figure><br>然而，如果仅仅定义了方法，虽然在模块内部与包含此模块的上文中都可以直接调用，但却不能以“模块名 . 方法名”的形式调用。如果希望把方法作为模块函 数公开给外部使用，就需要用到 module_function 方法。module_function 的参数是表示方法名的符号。<br>如果想知道类是否包含某个模块，可以使用 include? 方法。<br>C.include?(M) #=&gt; true<br>类 C 的实例在调用方法时，Ruby 会按类 C、模块 M、类 C 的父类 Object 这个顺序查找该方法，并执行第一个找到的方法。被包含的模块的作用就类似于 虚拟的父类。<br>我们用 ancestors 方法和 superclass 方法调查类的继承关系。在代码清单 8.11 中追加以下代码并执行，我们就可以通过 ancestors 取得继承关系的列<br>表。进而也就可以看出，被包含的模块 M 也被认为是类 C 的一个“祖先”。而 superclass 方法则直接返回类 C 的父类。<br>p C.ancestors #=&gt; [C, M, Object, Kernel, BasicObject]<br>p C.superclass #=&gt; Object<br>ancestors 方法的返回值中的 Kernel 是 Ruby 内部的一个核心模块，Ruby 程序运行时所需的共通函数都封装在此模块中。例如 p 方 法、raise 方法等都是由 Kernel 模块提供的模块函数<br>虽然 Ruby 采用的是不允许多个父类的单一继承模型，但是通过利用 Mix-in，我们就既可以保持单一继承的关系，又可以同时让多个类共享其他功能。<br>在 Ruby 标准类库中，Enumerable 模块就是利用 Mix-in 扩展功能的一个典型例子。使用 each 方法的类中包含 Enumerable 模块后，就可以使用 each_with_index 方法、collect 方法等对元素进行排序处理的方法。Array、Hash、IO 类等都包含了 Enumerable 模块(图 8.7)。这些类虽然没有继承这 样的血缘关系，但是从“可以使用 each 方法遍历元素”这一点来看，可以说它们都拥有了某种相似甚至相同的属性。</p>
+<h2 id="查找方法的规则"><a href="#查找方法的规则" class="headerlink" title="查找方法的规则"></a>查找方法的规则</h2><p>首先，我们来了解一下使用 Mix-in 时方法的查找顺序。<br>1 同继承关系一样，原类中已经定义了同名的方法时，优先使用该方法。<br>2 在同一个类中包含多个模块时，优先使用最后一个包含的模块。<br>3 嵌套 include 时，查找顺序也是线性的，此时的关系如图 8.8 所示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">module M1</span><br><span class="line">┊</span><br><span class="line">end</span><br><span class="line">module M2     </span><br><span class="line">┊</span><br><span class="line">end</span><br><span class="line">module M3 </span><br><span class="line">    include M2  #&#x3D;&gt; 包含M2</span><br><span class="line">end</span><br><span class="line">class C </span><br><span class="line">    include M1  #&#x3D;&gt; 包含M1 </span><br><span class="line">    include M3  #&#x3D;&gt; 包含M3</span><br><span class="line">end</span><br><span class="line">p C.ancestors #&#x3D;&gt; [C, M3, M2, M1, Object, Kernel]</span><br></pre></td></tr></table></figure><br>4 相同的模块被包含两次以上时，第 2 次以后的会被省略。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">module M1</span><br><span class="line">┊</span><br><span class="line">end</span><br><span class="line">module M2</span><br><span class="line">┊</span><br><span class="line">end</span><br><span class="line">class C </span><br><span class="line">include     M1  #&#x3D;&gt; 包含M1</span><br><span class="line">include     M2  #&#x3D;&gt; 包含M2</span><br><span class="line">include     M1  #&#x3D;&gt; 包含M1</span><br><span class="line">end</span><br><span class="line">p C.ancestors   #&#x3D;&gt; [C, M2, M1, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure></p>
+<h2 id="extend-方法"><a href="#extend-方法" class="headerlink" title="extend 方法"></a>extend 方法</h2><p>在之前的专栏中，我们已经介绍了如何逐个定义单例方法，而利用 Object#extend 方法，我们还可以实现批量定义单例方法。extend 方法可以使单例类包 含模块，并把模块的功能扩展到对象中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module Edition def edition(n)</span><br><span class="line">&quot;#&#123;self&#125; 第#&#123;n&#125; 版&quot; end</span><br><span class="line">end</span><br><span class="line">str &#x3D; &quot;Ruby 基础教程&quot;</span><br><span class="line">str.extend(Edition) #&#x3D;&gt; 将模块Mix-in 进对象</span><br><span class="line">p str.edition(4) #&#x3D;&gt; &quot;Ruby 基础教程第4 版&quot;</span><br></pre></td></tr></table></figure><br>include 可以帮助我们突破继承的限制，通过模块扩展类的功能;而 extend 则可以帮助我们跨过类，直接通过模块扩展对象的功能。</p>
+<h2 id="类与-Mix-in"><a href="#类与-Mix-in" class="headerlink" title="类与 Mix-in"></a>类与 Mix-in</h2><p>在 Ruby 中，所有类本身都是 Class 类的对象。我们之前也介绍过接收者为类本身的方法就是类方法。也就是说，类方法就是类对象的实例方法。我们可以 把类方法理解为:<br>Class 类的实例方法<br>类对象的单例方法<br>继承类后，这些方法就会作为类方法被子类继承。对子类定义单例方法，实际上也就是定义新的类方法。<br>除了之前介绍的定义类方法的语法外，使用 extend 方法也同样能为类对象追加类方法。下面是使用 extend 方法追加类方法，并使用 include 方法追加实 例方法的一个例子。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">module ClassMethods # 定义类方法的模块 def cmethod</span><br><span class="line">&quot;class method&quot; end</span><br><span class="line">end</span><br><span class="line">module InstanceMethods # 定义实例方法的模块 def imethod</span><br><span class="line">&quot;instance method&quot; end</span><br><span class="line">end</span><br><span class="line">class MyClass</span><br><span class="line"># 使用extend 方法定义类方法 extend ClassMethods</span><br><span class="line"># 使用include 定义实例方法 include InstanceMethods</span><br><span class="line">end</span><br><span class="line">p MyClass.cmethod #&#x3D;&gt; &quot;class method&quot;</span><br><span class="line">p Myclass.new.imethod #&#x3D;&gt; &quot;instance method&quot;</span><br></pre></td></tr></table></figure><br>在 Ruby 中，所有方法的执行，都需要通过作为接收者的某个对象的调用。换句话说，Ruby 的方法(包括单例方法)都一定属于某个类，并且 作为接收者对象的实例方法被程序调用。从这个角度来说，人们只是为了便于识别接收者的类型，才分别使用了“实例方法”和“类方法”这样的说法。<br>Ruby 中的变量没有限制类型，所以不会出现不是某个特定的类的对象，就不能给变量赋值的情况。因此，在程序开始运行之前，我们都无法知道变量指定<br>的对象的方法调用是否正确。<br>这样的做法有个缺点，就是增加了程序运行前检查错误的难度。但是，从另外一个角度来看，则可以非常简单地使没有明确继承关系的对象之间的处理变得 通用。只要能执行相同的操作，我们并不介意执行者是否一样;相反，虽然实际上是不同的执行者，但通过定义相同名称的方法，也可以实现处理通用化。 这就是鸭子类型思考问题的方法。<br>利用鸭子类型实现处理通用化，并不要求对象之间有明确的继承关系，因此，要想灵活运用，可能还需要花不少功夫。例如刚才介绍的 obj[index] 的形 式，就被众多的类作为访问内部元素的手段而使用。刚开始时，我们可以先有意识地留意这种简单易懂的方法，然后再由浅入深，慢慢地就可以抓住窍门 了。</p>
+<h2 id="范围运算符"><a href="#范围运算符" class="headerlink" title="范围运算符"></a>范围运算符</h2><p>范围运算符有 .. 和 … 两种。x.. y 和 x… y 的区别在于，前者的范围是从 x 到 y;而后者的范围则是从x 到 y 的前一个元素。<br>对 Range 对象使用 to_a 方法，就会返回范围中从开始到结束的值。下面就让我们使用这个方法来确认一下 .. 和 … 有什么不同。</p>
+<h2 id="定义运算符"><a href="#定义运算符" class="headerlink" title="定义运算符"></a>定义运算符</h2><p>Ruby 的运算符大多都是作为实例方法提供给我们使用的，因此我们可以很方便地定义或者重定义运算符，改变其原有的含义。但是，表 9.3 中列举的运算<br>符是不允许修改的。<br>不能重定义的运算符<br>::<br>&amp;&amp;<br>||<br>..<br>…<br>?:<br>not<br>=<br>and<br>or<br>定义四则运算符等二元运算符时，会将运算符名作为方法名，按照定义方法的做法重定义运算符。运算符的左侧为接收者，右侧被作为方法的参数传递。在<br>代码清单 9.1 的程序中，我们将为表示二元坐标的 Point 类定义运算符 + 以及 -<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Point </span><br><span class="line">attr_reader :x, :y</span><br><span class="line">    def initialize(x&#x3D;0, y&#x3D;0)</span><br><span class="line">        @x, @y &#x3D; x, y</span><br><span class="line">    end</span><br><span class="line">    def inspect # 用于显示 </span><br><span class="line">        &quot;(#&#123;x&#125;, #&#123;y&#125;)&quot;</span><br><span class="line">    end</span><br><span class="line">    def +(other) # x、y 分别进行加法运算 </span><br><span class="line">        self.class.new(x + other.x, y + other.y)</span><br><span class="line">    end</span><br><span class="line">    def -(other) # x、y 分别进行减法运算 </span><br><span class="line">        self.class.new(x - other.x, y - other.y)</span><br><span class="line">    end</span><br><span class="line">point0 &#x3D; Point.new(3, 6)</span><br><span class="line">point1 &#x3D; Point.new(1, 8)</span><br><span class="line">p point0 #&#x3D;&gt; (3, 6)</span><br><span class="line">p point1 #&#x3D;&gt; (1, 8)</span><br><span class="line">p point0 + point1 #&#x3D;&gt; (4, 14)</span><br><span class="line">p point0 - point1 #&#x3D;&gt; (2, -2)</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<h2 id="puts-方法与-p-方法的不同点"><a href="#puts-方法与-p-方法的不同点" class="headerlink" title="puts 方法与 p 方法的不同点"></a>puts 方法与 p 方法的不同点</h2><p>定义了用于显示的 inspect 方法，在 p 方法中把对象转换为字符串时会用到该方法。另外，使用 to_s 方法也可以把对象转换为字符 串，在 puts、print 方法中都有使用 to_s 方法。下面我们来看看两者的区别。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; irb --simple-prompt</span><br><span class="line">&gt;&gt; str &#x3D; &quot;Ruby 基础教程&quot; &#x3D;&gt; &quot;Ruby 基础教程&quot;</span><br><span class="line">&gt;&gt; str.to_s</span><br><span class="line">&#x3D;&gt; &quot;Ruby 基础教程&quot;</span><br><span class="line">&gt;&gt; str.inspect</span><br><span class="line">&#x3D;&gt; &quot;\&quot;Ruby 基础教程\&quot;&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="一元运算符"><a href="#一元运算符" class="headerlink" title="一元运算符"></a>一元运算符</h2><p>可定义的一元运算符有 +、-、~、! 4 个。它们分别以 +@、-@、~@、!@ 为方法名进行方法的定义。下面就让我们试试在 Point 类中定义这几个运算符<br>。这里需要注意的是，一元运算符都是没有参数的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Point</span><br><span class="line">    def +@</span><br><span class="line">        dup # 返回自己的副本</span><br><span class="line">    end</span><br><span class="line">    def -@</span><br><span class="line">        self.class.new(-x, -y) # 颠倒x、y 各自的正负</span><br><span class="line">    end</span><br><span class="line">    def ~@ </span><br><span class="line">        self.class.new(-y, x) # 使坐标翻转90 度</span><br><span class="line">    end </span><br><span class="line">end</span><br><span class="line">point &#x3D; Point.new(3, 6) </span><br><span class="line">p +point #&#x3D;&gt; (3, 6)</span><br><span class="line">p -point #&#x3D;&gt; (-3, -6) </span><br><span class="line">p ~point #&#x3D;&gt; (-6, 3)</span><br></pre></td></tr></table></figure></p>
+<h2 id="下标方法"><a href="#下标方法" class="headerlink" title="下标方法"></a>下标方法</h2><p>数组、散列中的 obj[i] 以及 obj[i]=x 这样的方法，称为下标方法。定义下标方法时的方法名分别为 [] 和 []=。在代码清单 9.3 中，我们将会定义 Point<br>类实例 pt 的下标方法，实现以 v[0] 的形式访问 pt.x，以 v[1] 的形式访问 pt.y。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Point</span><br><span class="line">    def [](index) </span><br><span class="line">        case index </span><br><span class="line">        when 0</span><br><span class="line">            x </span><br><span class="line">        when 1</span><br><span class="line">            y </span><br><span class="line">        else</span><br><span class="line">            raise ArgumentError, &quot;out of range &#96;#&#123;index&#125;&#39;&quot;</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">    def []&#x3D;(index, val) </span><br><span class="line">        case index</span><br><span class="line">        when 0</span><br><span class="line">            self.x &#x3D; val </span><br><span class="line">        when 1</span><br><span class="line">            self.y &#x3D; val </span><br><span class="line">        else</span><br><span class="line">            raise ArgumentError, &quot;out of range &#96;#&#123;index&#125;&#39;&quot;</span><br><span class="line">        end</span><br><span class="line">    end </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">point &#x3D; Point.new(3, 6)</span><br><span class="line">p point[0]      #&#x3D;&gt; 3</span><br><span class="line">p point[1] &#x3D; 2  #&#x3D;&gt; 2</span><br><span class="line">p point[1]      #&#x3D;&gt; 2</span><br><span class="line">p point[2]      #&#x3D;&gt; 错误(ArgumentError)</span><br></pre></td></tr></table></figure></p>
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>Ruby 中使用 begin ~ rescue ~ end 语句描述异常处理。<br>begin<br> 可能会发生异常的处理<br>rescue<br> 发生异常时的处理<br>end<br>在 Ruby 中，异常及其相关信息都是被作为对象来处理的。在 rescue 后指定变量名，可以获得异常对象。<br>begin<br> 可能会发生异常的处理 rescue =&gt; 引用异常对象的变量  发生异常时的处理<br>end<br>即使不指定变量名，Ruby 也会像表 10.1 那样把异常对象赋值给变量 $!。不过，把变量名明确地写出来会使程序更加易懂。<br>异常发生时被自动赋值的变量:<br>$!  最后发生的异常(异常对象)<br>$@  最后发生的异常的位置信息<br>异常对象的方法:<br>class   异常的种类<br>message 异常信息<br>backtrace   异常发生的位置信息($@ 与 $!.backtrace 是等价的)</p>
+<h2 id="后处理"><a href="#后处理" class="headerlink" title="后处理"></a>后处理</h2><p>不管是否发生异常都希望执行的处理，在 Ruby 中可以用 ensure 关键字来定义。<br>begin<br>    有可能发生异常的处理<br>rescue =&gt; 变量<br>    发生异常后的处理<br>ensure<br>    不管是否发生异常都希望执行的处理<br>end<br>在 rescue 中使用 retry 后，begin 以下的处理会再重做一遍。</p>
+<h2 id="rescue-修饰符"><a href="#rescue-修饰符" class="headerlink" title="rescue 修饰符"></a>rescue 修饰符</h2><p>与 if 修饰符、unless 修饰符一样，rescue 也有对应的修饰符。<br>表达式 1 rescue 表达式 2<br>如果表达式 1 中发生异常，表达式 2 的值就会成为整体表达式的值。也就是说，上面的式子与下面的写法是等价的:</p>
+<p>begin<br>    表达式 1<br>rescue<br>    表达式 2<br>end<br>我们再来看看下面的例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n &#x3D; Integer(val) rescue 0</span><br></pre></td></tr></table></figure><br>Integer 方法当接收到 “123” 这种数值形式的字符串参数时，会返回该字符串表示的整数值，而当接收到 “abc” 这种非数值形式的字符串参数时，则会抛出 异常(在判断字符串是否为数值形式时经常用到此方法)。在本例中，如果 val 是不正确的数值格式，就会抛出异常，而 0 则作为 = 右侧整体表达式的返回 值。像这样，这个小技巧经常被用在不需要过于复杂的处理，只是希望简单地对变量赋予默认值的时候。<br>如果异常处理的范围是整个方法体，也就是说整个方法内的程序都用 begin ~ end 包含的话，我们就可以省略 begin 以及 end，直接书写 rescue 与<br>ensure 部分的程序。</p>
+<h2 id="指定需要捕捉的异常"><a href="#指定需要捕捉的异常" class="headerlink" title="指定需要捕捉的异常"></a>指定需要捕捉的异常</h2><p>当存在多个种类的异常，且需要按异常的种类分别进行处理时，我们可以用多个 rescue 来分开处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">begin</span><br><span class="line"> 可能发生异常的处理</span><br><span class="line">rescue Exception1, Exception2 &#x3D;&gt; 变量  </span><br><span class="line">    对Exception1 或者Exception2 的处理 </span><br><span class="line">rescue Exception3 &#x3D;&gt; 变量  </span><br><span class="line">    对Exception3 的处理</span><br><span class="line">rescue</span><br><span class="line">    对上述异常以外的异常的处理</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">file1 &#x3D; ARGV[0] </span><br><span class="line">file2 &#x3D; ARGV[1] </span><br><span class="line">begin</span><br><span class="line">    io &#x3D; File.open(file1)</span><br><span class="line">rescue Errno::ENOENT, Errno::EACCES</span><br><span class="line">    io &#x3D; File.open(file2) </span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<h2 id="异常类"><a href="#异常类" class="headerlink" title="异常类"></a>异常类</h2><p>之前我们提到过异常也是对象。Ruby 中所有的异常都是 Exception 类的子类，并根据程序错误的种类来定义相应的异常。<br>在 rescue 中指定的异常的种类实际上就是异常类的类名。rescue 中不指定异常类时，程序会默认捕捉 StandardError 类及其子类的异常。<br><img src="/res/images/article/ruby/2.png" alt="image"><br>rescue 不只会捕捉指定的异常类，同时还会捕捉其子类。因此，我们在自己定义异常时，一般会先定义继承 StandardError 类的新类，然后再继承这个新类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyError &#x3D; Class.new(StandardError) # 新的异常类 MyError1 &#x3D; Class.new(MyError)</span><br><span class="line">MyError2 &#x3D; Class.new(MyError)</span><br><span class="line">MyError3 &#x3D; Class.new(MyError)</span><br></pre></td></tr></table></figure><br>MyError = Class.new(StandardError)<br>上述写法的作用是定义一个继承 StandardError 类的新类，并将其赋值给 MyError 常量。这与下面的效果是一样的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class MyError &lt; StandardError </span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>使用 class 语句，我们可以进行定义方法等操作，但在本例中，由于我们只需要生成继承 StandardError 类的新类就可以了，所以就向大家介绍了这个只需 1 行代码就能实现类的定义的简洁写法。</p>
+<h2 id="主动抛出异常"><a href="#主动抛出异常" class="headerlink" title="主动抛出异常"></a>主动抛出异常</h2><p>使用 raise 方法，可以使程序主动抛出异常。在基于自己判定的条件抛出异常，或者把刚捕捉到的异常再次抛出并通知异常的调用者等情况下，我们会使用<br>raise 方法。<br>raise 方法有以下 4 种调用方式:<br>raise message<br>抛出 RuntimeError 异常，并把字符串作为 message 设置给新生成的异常对象。 raise 异常类<br>抛出指定的异常。<br>raise 异常类，message<br>抛出指定的异常，并把字符串作为 message 设置给新生成的异常对象。<br>raise<br>在 rescue 外抛出 RuntimeError。在 rescue 中调用时，会再次抛出最后一次发生的异常($!)。</p>
+<h1 id="块"><a href="#块" class="headerlink" title="块"></a>块</h1><p>块就是在调用方法时，能与参数一起传递的多个处理的集合。之前在介绍 each 方法、time 方法等与循环有关的部分时，我们就已经接触过块。接收块的<br>方法会执行必要次数的块。块的执行次数由方法本身决定，因此不需事前指定，甚至有可能一次都不执行。do 和 end 之间的部分就是所谓的块。<br>块的调用方法一般采用以下形式:<br>对象. 方法名( 参数列表) do | 块变量 |<br>    希望循环的处理<br>end<br>或<br>对象. 方法名( 参数列表) { | 块变量 |<br>    希望循环的处理<br>}<br>块的开头是块变量。块变量就是在执行块的时候，从方法传进来的参数。不同方法的块变量个数也不相同。例如，在 Array#each 方法中，数组的元素会作 为块变量被逐个传递到块中。而在 Array#each_with_index 方法中，则是 [ 元素 , 索引 ] 两个值被传递到块中。</p>
+<h2 id="块的使用方法"><a href="#块的使用方法" class="headerlink" title="块的使用方法"></a>块的使用方法</h2><h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>在 Ruby 中，我们常常使用块来实现循环。在接收块的方法中，实现了循环处理的方法称为迭代器(iterator)。each 方法就是一个典型的迭代器。<br>和数组一样，散列也能将元素一个个拿出来，但与数组不同的是，散列会将 [key, value] 的组合作为数组来提取元素。如代码清单 11.1 所示，可以成对地 提取散列的全部键、值。本例中使用 pair[1] 提取并合计了散列的值，提取散列的键时则可以使用 pair[0]。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">File.open(&quot;sample.txt&quot;) do |file| </span><br><span class="line">    file.each_line do |line|</span><br><span class="line">        print line </span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>块中最后一个表达式的值就是块的执行结果，因此 &lt;=&gt; 运算符必须在最后一行使用。块的最后一个表达式不是指块的最后一行表达式，而是指在块中最后执行的表达式。<br>Array#sort 方法没有指定块时，会使用 &lt;=&gt; 运算符对各个元素进行比较，并根据比较后的结果进行排序。&lt;=&gt; 运算符的返回值为-1、0、1 中的一个。<br>a &lt;=&gt; b 的结果<br>a &lt;&gt; 时     -1(比 0 小)<br>a == b时    0<br>a&gt;b时       1(比 0 大)</p>
+<h2 id="定义带块的方法"><a href="#定义带块的方法" class="headerlink" title="定义带块的方法"></a>定义带块的方法</h2><p>首先让我们重温一下 myloop 方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def myloop </span><br><span class="line">    while true</span><br><span class="line">        yield   # 执行块</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line">num &#x3D; 1     # 初始化num</span><br><span class="line">myloop do</span><br><span class="line">    puts &quot;num is #&#123;num&#125;&quot;    # 输出num</span><br><span class="line">    break if num &gt; 100      # num 超过100 后跳出循环</span><br><span class="line">    num *&#x3D; 2                # num 乘2</span><br><span class="line">end</span><br></pre></td></tr></table></figure><br>myloop 方法在执行 while 循环的同时执行了 yield 关键字，yield 关键字的作用就是执行方法的块。因为这个 while 循环的条件固定为 true，所以会无限 循环地执行下去，但只要在块里调用 break，就可以随时中断 myloop 方法，来执行后面的处理。</p>
+<h2 id="传递块参数，获取块的值"><a href="#传递块参数，获取块的值" class="headerlink" title="传递块参数，获取块的值"></a>传递块参数，获取块的值</h2><p>在刚才的例子中，块参数以及块的执行结果都没有被使用。接下来，我们会定义一个方法，该方法接收两个整数参数，并对这两个整数之间的整数做某种处<br>理后进行合计处理，而“某种处理”则由块指定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def total(from, to)</span><br><span class="line">  result &#x3D; 0  # 合计值</span><br><span class="line">  from.upto(to) do |num|  # 处理从from 到to 的值</span><br><span class="line">    if block_given?       # 如果有块的话</span><br><span class="line">      result +&#x3D; yield(num)  # 累加经过块处理的值</span><br><span class="line">    else                # 如果没有块的话</span><br><span class="line">      result +&#x3D; num # 直接累加</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">  return  result  # 返回方法的结果</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">p total(1,10) # 从1 到10 的和 &#x3D;&gt; 55</span><br><span class="line">p total(1,10) &#123;|num|</span><br><span class="line">  num ** 2</span><br><span class="line">&#125; # 从1 到10 的2 次幂的和 &#x3D;&gt; 385</span><br></pre></td></tr></table></figure><br>total 方法会先使用 Integer#upto 方法把 from 到 to 之间的整数值按照从小到大的顺序取出来，然后交给块处理，最后再将块处理后的值累加到变量 result。程序第 5 行中，对 yield 传递参数后，参数值就会作为块变量传递到块中。同时，块的运行结果也会作为 yield 的结果返回。<br>程序第 4 行的 block_given? 方法被用来判断调用该方法时是否有块被传递给方法，如果有则返回 true，反之返回 false。如果方法没有块，则在程序第 7 行中直接把 num 相加。<br>在块中使用 break，程序会马上返回到调用块的地方</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ruby/" rel="tag"># Ruby</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/07/20/ruby%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="Ruby环境搭建">
+      <i class="fa fa-chevron-left"></i> Ruby环境搭建
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/20/Ruby%20vscode%20debug/" rel="next" title="Ruby VSCode debug 环境配置">
+      Ruby VSCode debug 环境配置 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多重赋值"><span class="nav-number">1.</span> <span class="nav-text">多重赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#合并执行多个赋值操作"><span class="nav-number">1.1.</span> <span class="nav-text">合并执行多个赋值操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#置换变量的值"><span class="nav-number">1.2.</span> <span class="nav-text">置换变量的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取数组的元素"><span class="nav-number">1.3.</span> <span class="nav-text">获取数组的元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取嵌套数组的元素"><span class="nav-number">1.4.</span> <span class="nav-text">获取嵌套数组的元素</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ruby-中的条件"><span class="nav-number">2.</span> <span class="nav-text">Ruby 中的条件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#if-语句"><span class="nav-number">2.1.</span> <span class="nav-text">if 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unless-语句"><span class="nav-number">2.2.</span> <span class="nav-text">unless 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#case-语句"><span class="nav-number">2.3.</span> <span class="nav-text">case 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-修饰符与-unless-修饰符"><span class="nav-number">2.4.</span> <span class="nav-text">if 修饰符与 unless 修饰符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现循环的方法"><span class="nav-number">3.</span> <span class="nav-text">实现循环的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用循环语句"><span class="nav-number">3.1.</span> <span class="nav-text">使用循环语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方法实现循环"><span class="nav-number">3.2.</span> <span class="nav-text">使用方法实现循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#times-方法"><span class="nav-number">3.2.1.</span> <span class="nav-text">times 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-语句"><span class="nav-number">3.2.2.</span> <span class="nav-text">while 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#each-方法"><span class="nav-number">3.2.3.</span> <span class="nav-text">each 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-语句"><span class="nav-number">3.2.4.</span> <span class="nav-text">for 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#until-语句"><span class="nav-number">3.2.5.</span> <span class="nav-text">until 语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环控制"><span class="nav-number">3.3.</span> <span class="nav-text">循环控制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法"><span class="nav-number">4.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带块的方法调用"><span class="nav-number">4.1.</span> <span class="nav-text">带块的方法调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法的分类"><span class="nav-number">4.2.</span> <span class="nav-text">方法的分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#class"><span class="nav-number">5.</span> <span class="nav-text">class</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#initialize-方法"><span class="nav-number">5.1.</span> <span class="nav-text">initialize 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存取器"><span class="nav-number">5.2.</span> <span class="nav-text">存取器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊变量-self"><span class="nav-number">5.3.</span> <span class="nav-text">特殊变量 self</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类方法"><span class="nav-number">5.4.</span> <span class="nav-text">类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量-类变量"><span class="nav-number">5.5.</span> <span class="nav-text">常量&#x2F;类变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限制方法的调用"><span class="nav-number">5.6.</span> <span class="nav-text">限制方法的调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展类"><span class="nav-number">5.7.</span> <span class="nav-text">扩展类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">5.8.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-number">5.9.</span> <span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undef"><span class="nav-number">5.10.</span> <span class="nav-text">undef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单例类"><span class="nav-number">5.11.</span> <span class="nav-text">单例类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块的使用方法"><span class="nav-number">5.12.</span> <span class="nav-text">模块的使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用-Mix-in-扩展功能"><span class="nav-number">5.13.</span> <span class="nav-text">利用 Mix-in 扩展功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建模块"><span class="nav-number">5.14.</span> <span class="nav-text">创建模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找方法的规则"><span class="nav-number">5.15.</span> <span class="nav-text">查找方法的规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#extend-方法"><span class="nav-number">5.16.</span> <span class="nav-text">extend 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类与-Mix-in"><span class="nav-number">5.17.</span> <span class="nav-text">类与 Mix-in</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#范围运算符"><span class="nav-number">5.18.</span> <span class="nav-text">范围运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义运算符"><span class="nav-number">5.19.</span> <span class="nav-text">定义运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#puts-方法与-p-方法的不同点"><span class="nav-number">5.20.</span> <span class="nav-text">puts 方法与 p 方法的不同点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一元运算符"><span class="nav-number">5.21.</span> <span class="nav-text">一元运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下标方法"><span class="nav-number">5.22.</span> <span class="nav-text">下标方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理"><span class="nav-number">6.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#后处理"><span class="nav-number">6.1.</span> <span class="nav-text">后处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rescue-修饰符"><span class="nav-number">6.2.</span> <span class="nav-text">rescue 修饰符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指定需要捕捉的异常"><span class="nav-number">6.3.</span> <span class="nav-text">指定需要捕捉的异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常类"><span class="nav-number">6.4.</span> <span class="nav-text">异常类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主动抛出异常"><span class="nav-number">6.5.</span> <span class="nav-text">主动抛出异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#块"><span class="nav-number">7.</span> <span class="nav-text">块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#块的使用方法"><span class="nav-number">7.1.</span> <span class="nav-text">块的使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#循环"><span class="nav-number">7.1.1.</span> <span class="nav-text">循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义带块的方法"><span class="nav-number">7.2.</span> <span class="nav-text">定义带块的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传递块参数，获取块的值"><span class="nav-number">7.3.</span> <span class="nav-text">传递块参数，获取块的值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Light"
+      src="/images/avatar/lightning.png">
+  <p class="site-author-name" itemprop="name">Light</p>
+  <div class="site-description" itemprop="description">Keep going……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:heliangzhang@yeah.net" title="E-Mail → mailto:heliangzhang@yeah.net" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Light</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: ,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
