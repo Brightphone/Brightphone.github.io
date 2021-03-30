@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://triplecc.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="实现方案 参考 1）通过rtsp协议获取到摄像头的直播数据，形如： rtsp:&#x2F;&#x2F;admin:12345@192.168.1.5:554&#x2F;h264&#x2F;ch1&#x2F;main&#x2F;av_stream 2）通过ffmpeg从摄像头拉取rtsp视频数据流实现采集，并转发到nginx-rtmp 3) nginx-rtmp转推rtmp流到腾讯云实现互联网直播">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RTMP&amp;HLS 直播流搭建">
+<meta property="og:url" content="https://triplecc.github.io/2020/04/28/%E6%B5%81%E5%AA%92%E4%BD%93/index.html">
+<meta property="og:site_name" content="Light&#39;s Blog">
+<meta property="og:description" content="实现方案 参考 1）通过rtsp协议获取到摄像头的直播数据，形如： rtsp:&#x2F;&#x2F;admin:12345@192.168.1.5:554&#x2F;h264&#x2F;ch1&#x2F;main&#x2F;av_stream 2）通过ffmpeg从摄像头拉取rtsp视频数据流实现采集，并转发到nginx-rtmp 3) nginx-rtmp转推rtmp流到腾讯云实现互联网直播">
+<meta property="og:image" content="https://triplecc.github.io/res/images/article/stream/1.png">
+<meta property="article:published_time" content="2020-04-28T12:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-30T16:28:36.500Z">
+<meta property="article:author" content="Light">
+<meta property="article:tag" content="Stream">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://triplecc.github.io/res/images/article/stream/1.png">
+
+<link rel="canonical" href="https://triplecc.github.io/2020/04/28/%E6%B5%81%E5%AA%92%E4%BD%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>RTMP&HLS 直播流搭建 | Light's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Light's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2020/04/28/%E6%B5%81%E5%AA%92%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RTMP&HLS 直播流搭建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-28 12:00:00" itemprop="dateCreated datePublished" datetime="2020-04-28T12:00:00+00:00">2020-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-30 16:28:36" itemprop="dateModified" datetime="2021-03-30T16:28:36+00:00">2021-03-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h1><p><img src="/res/images/article/stream/1.png" alt="image"></p>
+<p><a href="https://www.nmbhost.net/archives/5734" target="_blank" rel="noopener">参考</a></p>
+<p>1）通过rtsp协议获取到摄像头的直播数据，形如： rtsp://admin:<a href="mailto:12345@192.168.1.5">12345@192.168.1.5</a>:554/h264/ch1/main/av_stream</p>
+<p>2）通过ffmpeg从摄像头拉取rtsp视频数据流实现采集，并转发到nginx-rtmp</p>
+<p>3) nginx-rtmp转推rtmp流到腾讯云实现互联网直播</p>
+<a id="more"></a>
+<h1 id="采集流数据"><a href="#采集流数据" class="headerlink" title="采集流数据"></a>采集流数据</h1><h2 id="摄像头的RTSP协议数据采集。"><a href="#摄像头的RTSP协议数据采集。" class="headerlink" title="摄像头的RTSP协议数据采集。"></a>摄像头的RTSP协议数据采集。</h2><p>也可以买支持rtmp的摄像头</p>
+<p>测试设备使用的是海康威视<br>DS-2CD3125F-IS型号的球形摄像头<br><a href="http://mrw.so/4M7hJs" target="_blank" rel="noopener">摄像头配置</a><br>首先去海康官网下载设备网路搜索工具（sadp）：<br><a href="https://www.hikvision.com/cn/download_more_393.html" target="_blank" rel="noopener">海康（型号为DS-xxxx）</a><br><a href="http://service.ys7.com/downloadInfoSite/admin" target="_blank" rel="noopener">萤石（型号为CS-xxxx）</a></p>
+<p>通过SADP软件搜索出摄像机的IP，电脑改成跟摄像机同网段，在浏览器中输入摄像机IP，输入用户名密码后登陆到摄像机的配置界面（用户名为admin，密码是激活设备时输入的密码）</p>
+<p>海康威视IP摄像头rtsp协议地址如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rtsp:&#x2F;&#x2F;[username]:[passwd]@[ip]:[port]&#x2F;[codec]&#x2F;[channel]&#x2F;[subtype]&#x2F;av_stream</span><br><span class="line">port是可以自己设置</span><br></pre></td></tr></table></figure></p>
+<p>说明：<br>username：用户名，例如admin<br>passwd：密码，例如12345<br>ip：设备的ip地址，例如192.0.0.64<br>port：端口号默认554，若为默认可以不写<br>codec：有h264、MPEG-4、mpeg4这几种<br>channel：通道号，起始为1<br>subtype：码流类型，主码流为main,子码流为sub<br>例如，请求海康IP摄像机通道1的码流，url如下：<br>主码流：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rtsp:&#x2F;&#x2F;admin:12345@192.0.0.64:554&#x2F;h264&#x2F;ch1&#x2F;main&#x2F;av_stream</span><br><span class="line">rtsp:&#x2F;&#x2F;admin:12345@192.0.0.64:554&#x2F;MPEG-4&#x2F;ch1&#x2F;main&#x2F;av_stream</span><br></pre></td></tr></table></figure><br>子码流：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rtsp:&#x2F;&#x2F;admin:12345@192.0.0.64&#x2F;mpeg4&#x2F;ch1&#x2F;sub&#x2F;av_stream</span><br><span class="line">rtsp:&#x2F;&#x2F;admin:12345@192.0.0.64&#x2F;h264&#x2F;ch1&#x2F;sub&#x2F;av_stream</span><br></pre></td></tr></table></figure><br>rtsp流测试<br>基于rtsp协议的码流确定好之后，我们可以用流媒体播放器对视频地址进行测试，这里推荐使用VLC media player</p>
+<h2 id="ffmpeg安装"><a href="#ffmpeg安装" class="headerlink" title="ffmpeg安装"></a>ffmpeg安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ffmpeg</span><br></pre></td></tr></table></figure>
+<p>安装ffmpeg的时候需要安装比较多的依赖库，慢慢等就行了。</p>
+<h2 id="nginx-rtmp安装和配置"><a href="#nginx-rtmp安装和配置" class="headerlink" title="nginx-rtmp安装和配置"></a>nginx-rtmp安装和配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew tap denji&#x2F;nginx</span><br><span class="line">brew install nginx-full --with-rtmp-module</span><br><span class="line">#brew 卸载软件</span><br><span class="line">brew uninstall nginx</span><br><span class="line"></span><br><span class="line">#查看安装信息(经常用到, 比如查看安装目录等):</span><br><span class="line">brew info nginx</span><br></pre></td></tr></table></figure>
+<h2 id="nginx-rtmp配置"><a href="#nginx-rtmp配置" class="headerlink" title="nginx-rtmp配置"></a>nginx-rtmp配置</h2><p>通过<code>brew info nginx</code>查看nginx 安装路径.<br>/usr/local/etc/nginx/nginx.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;Users&#x2F;用户名&#x2F;hls</span><br><span class="line"></span><br><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;  #监听的端口  </span><br><span class="line">        chunk_size 4000;</span><br><span class="line"></span><br><span class="line">        # rtmp推流请求路径 </span><br><span class="line">        application hls &#123;   </span><br><span class="line">            live on;</span><br><span class="line">            hls on;</span><br><span class="line">            # 本地保存hlv格式文件</span><br><span class="line">            hls_path &#x2F;Users&#x2F;用户名&#x2F;hls; </span><br><span class="line">            hls_fragment 10s;</span><br><span class="line">            # 转推腾讯云</span><br><span class="line">            push rtmp:&#x2F;&#x2F;94876.livepush.myqcloud.com&#x2F;live&#x2F;streamtest?txSecret&#x3D;12642777f59326374f55b9f64cdb3d37&amp;txTime&#x3D;5EA852FF;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>检查配置是否正确<br>nginx -c  /usr/local/etc/nginx/nginx.conf<br>重启nginx<br>nginx -s reload<br>如果需要关闭nginx使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -s stop : 快速停止nginx</span><br><span class="line">nginx -s quit ：完整有序的停止nginx</span><br></pre></td></tr></table></figure></p>
+<h2 id="ffmpeg拉摄像头的视频流"><a href="#ffmpeg拉摄像头的视频流" class="headerlink" title="ffmpeg拉摄像头的视频流"></a>ffmpeg拉摄像头的视频流</h2><p>通过ffmpeg从远端摄像头拉取rtsp流，转换成flv格式，推到本地nginx-rtmp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i &quot;rtsp:&#x2F;&#x2F;admin:zf19890427@10.60.22.70:554&#x2F;h264&#x2F;ch1&#x2F;sub&#x2F;av_stream&quot;  -f flv -y  &quot;rtmp:&#x2F;&#x2F;127.0.0.1:1935&#x2F;hls&quot;</span><br></pre></td></tr></table></figure>
+<p>后面就可以在腾讯云上点测试看到地址，头疼的是现在浏览器都禁用类flast 😅</p>
+<h1 id="直接本地开一个rtmp直播流服务"><a href="#直接本地开一个rtmp直播流服务" class="headerlink" title="直接本地开一个rtmp直播流服务"></a>直接本地开一个rtmp直播流服务</h1><p>添加配置文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;  #监听的端口  </span><br><span class="line">        chunk_size 4000;</span><br><span class="line">        # rtmp推流请求路径 </span><br><span class="line">        application hls &#123;   </span><br><span class="line">            #保持开启</span><br><span class="line">            live on;</span><br><span class="line">            #停止录制</span><br><span class="line">            record   off;</span><br><span class="line">            #允许所有请求</span><br><span class="line">            allow play all;</span><br><span class="line">            #hls on;</span><br><span class="line">            # 本地保存hlv格式文件</span><br><span class="line">            #hls_path &#x2F;Users&#x2F;light&#x2F;hls; </span><br><span class="line">            #hls_fragment 10s;</span><br><span class="line">            # 转推腾讯云</span><br><span class="line">            # push rtmp:&#x2F;&#x2F;94876.livepush.myqcloud.com&#x2F;live&#x2F;streamtest?txSecret&#x3D;12642777f59326374f55b9f64cdb3d37&amp;txTime&#x3D;5EA852FF;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="推流"><a href="#推流" class="headerlink" title="推流"></a>推流</h2><p>ffmpeg -re -i /Users/light/Downloads/zhz/11.mp4 -vcodec libx264 -acodec aac -strict -2 -f flv rtmp://localhost:1935/hls<br>ffmpeg -re -i /Users/light/Downloads/zhz/11.mp4 -vcodec copy -ar 22050 -f flv rtmp://localhost:1935/hls/movie<br>ffmpeg -re -i /Users/light/Downloads/zhz/11.mp4 -vcodec copy -f flv rtmp://localhost:1935/hls/movie</p>
+<h2 id="FFmpeg常用推流命令"><a href="#FFmpeg常用推流命令" class="headerlink" title="FFmpeg常用推流命令"></a>FFmpeg常用推流命令</h2><h3 id="桌面录制或者分享"><a href="#桌面录制或者分享" class="headerlink" title="桌面录制或者分享"></a>桌面录制或者分享</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f avfoundation -i &quot;1&quot; -vcodec libx264 -preset ultrafast -acodec libfaac -f flv rtmp:&#x2F;&#x2F;localhost:1935&#x2F;hls</span><br></pre></td></tr></table></figure>
+<h3 id="桌面-麦克风"><a href="#桌面-麦克风" class="headerlink" title="桌面+麦克风"></a>桌面+麦克风</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f avfoundation -i &quot;1:0&quot; -vcodec libx264 -preset ultrafast -acodec libmp3lame -ar 44100 -ac 1 -f flv rtmp:&#x2F;&#x2F;localhost:1935&#x2F;hls</span><br></pre></td></tr></table></figure>
+<h3 id="桌面-麦克风，并且还要摄像头拍摄到自己"><a href="#桌面-麦克风，并且还要摄像头拍摄到自己" class="headerlink" title="桌面+麦克风，并且还要摄像头拍摄到自己"></a>桌面+麦克风，并且还要摄像头拍摄到自己</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f avfoundation -framerate 30 -i &quot;1:0&quot; \-f avfoundation -framerate 30 -video_size 640x480 -i &quot;0&quot; \-c:v libx264 -preset ultrafast \-filter_complex &#39;overlay&#x3D;main_w-overlay_w-10:main_h-overlay_h-10&#39; -acodec libmp3lame -ar 44100 -ac 1 -f flv rtmp:&#x2F;&#x2F;localhost:1935&#x2F;hls</span><br></pre></td></tr></table></figure>
+<h1 id="HLS-直播流配置"><a href="#HLS-直播流配置" class="headerlink" title="HLS 直播流配置"></a>HLS 直播流配置</h1><p><a href="https://www.cnblogs.com/jys509/p/5653720.html" target="_blank" rel="noopener">参考</a></p>
+<p>修改config如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#user  nobody;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">#error_log  logs&#x2F;error.log;</span><br><span class="line">#error_log  logs&#x2F;error.log  notice;</span><br><span class="line">#error_log  logs&#x2F;error.log  info;</span><br><span class="line"></span><br><span class="line">#pid        logs&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span><br><span class="line">    #                  &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span><br><span class="line">    #                  &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs&#x2F;access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       8080;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">       #HLS配置开始,这个配置为了&#96;客户端&#96;能够以http协议获取HLS的拉流</span><br><span class="line">        location &#x2F;hls &#123;</span><br><span class="line">            # Serve HLS fragments</span><br><span class="line">            types &#123;</span><br><span class="line">                application&#x2F;vnd.apple.mpegurl m3u8;</span><br><span class="line">                video&#x2F;mp2t ts;</span><br><span class="line">            &#125;</span><br><span class="line">            # root html 是指使用当前nginx服务器根目录所在位置,指向的是 &#x2F;usr&#x2F;local&#x2F;var&#x2F;www 这个目录</span><br><span class="line">            root html;</span><br><span class="line">            add_header Cache-Control no-cache;</span><br><span class="line">        &#125;</span><br><span class="line">       #HLS配置结束</span><br><span class="line">        #error_page  404              &#x2F;404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page &#x2F;50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">        location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    proxy_pass   http:&#x2F;&#x2F;127.0.0.1;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  &#x2F;scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache&#39;s document root</span><br><span class="line">        # concurs with nginx&#39;s one</span><br><span class="line">        #</span><br><span class="line">        #location ~ &#x2F;\.ht &#123;</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location &#x2F; &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location &#x2F; &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line">    include servers&#x2F;*;</span><br><span class="line">&#125;</span><br><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;  #监听的端口  </span><br><span class="line">        chunk_size 4000;</span><br><span class="line">        # rtmp推流请求路径 </span><br><span class="line">        application mylive &#123;</span><br><span class="line">            #开启实时</span><br><span class="line">            live on;</span><br><span class="line">            #停止录制</span><br><span class="line">            record   off;</span><br><span class="line">        &#125;</span><br><span class="line">        #增加对HLS支持开始</span><br><span class="line">        application hls &#123;</span><br><span class="line">            #开启实时</span><br><span class="line">            live on;</span><br><span class="line">            #开启hls</span><br><span class="line">            hls on;</span><br><span class="line">            # ts文件存放路径</span><br><span class="line">            hls_path &#x2F;usr&#x2F;local&#x2F;var&#x2F;www&#x2F;hls; </span><br><span class="line">            #每个TS文件包含5秒的视频内容</span><br><span class="line">            hls_fragment 5s;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>执行以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#推摄像头视频</span><br><span class="line">ffmpeg -i &quot;rtsp:&#x2F;&#x2F;admin:zf19890427@10.60.22.70:554&#x2F;h264&#x2F;ch1&#x2F;main&#x2F;av_stream&quot;  -f flv rtmp:&#x2F;&#x2F;localhost:1935&#x2F;hls&#x2F;movie</span><br><span class="line">#推本地视频</span><br><span class="line">ffmpeg -re -i &#x2F;Users&#x2F;light&#x2F;Downloads&#x2F;zhz&#x2F;11.mp4 -vcodec copy -f flv rtmp:&#x2F;&#x2F;localhost:1935&#x2F;hls&#x2F;movie</span><br></pre></td></tr></table></figure><br>movie 关键字可以任何替换<br>RTMT流：<br>rtmp://localhost:1935/hls/movie<br>直播流：<br><a href="http://localhost:8080/hls/movie.m3u8" target="_blank" rel="noopener">http://localhost:8080/hls/movie.m3u8</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Stream/" rel="tag"># Stream</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="ruby基本使用">
+      <i class="fa fa-chevron-left"></i> ruby基本使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/28/%E7%9B%B4%E6%92%AD%E5%8D%8F%E8%AE%AE/" rel="next" title="直播">
+      直播 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实现方案"><span class="nav-number">1.</span> <span class="nav-text">实现方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#采集流数据"><span class="nav-number">2.</span> <span class="nav-text">采集流数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#摄像头的RTSP协议数据采集。"><span class="nav-number">2.1.</span> <span class="nav-text">摄像头的RTSP协议数据采集。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg安装"><span class="nav-number">2.2.</span> <span class="nav-text">ffmpeg安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-rtmp安装和配置"><span class="nav-number">2.3.</span> <span class="nav-text">nginx-rtmp安装和配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-rtmp配置"><span class="nav-number">2.4.</span> <span class="nav-text">nginx-rtmp配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg拉摄像头的视频流"><span class="nav-number">2.5.</span> <span class="nav-text">ffmpeg拉摄像头的视频流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直接本地开一个rtmp直播流服务"><span class="nav-number">3.</span> <span class="nav-text">直接本地开一个rtmp直播流服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#推流"><span class="nav-number">3.1.</span> <span class="nav-text">推流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FFmpeg常用推流命令"><span class="nav-number">3.2.</span> <span class="nav-text">FFmpeg常用推流命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面录制或者分享"><span class="nav-number">3.2.1.</span> <span class="nav-text">桌面录制或者分享</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面-麦克风"><span class="nav-number">3.2.2.</span> <span class="nav-text">桌面+麦克风</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面-麦克风，并且还要摄像头拍摄到自己"><span class="nav-number">3.2.3.</span> <span class="nav-text">桌面+麦克风，并且还要摄像头拍摄到自己</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HLS-直播流配置"><span class="nav-number">4.</span> <span class="nav-text">HLS 直播流配置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Light"
+      src="/images/avatar/lightning.png">
+  <p class="site-author-name" itemprop="name">Light</p>
+  <div class="site-description" itemprop="description">Keep going……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:heliangzhang@yeah.net" title="E-Mail → mailto:heliangzhang@yeah.net" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Light</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: ,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
