@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://triplecc.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="JSP(Java Server Page)和 Servlet是JavaEE规范的两个基本成员，它们是Java Web开发的重点知识，也是Java EE开发的基础知识。JSP和Servlet的本质是一样的，因为JSP最终必须编译成servlet才能运行，或者说JSP只是生成Servlet的“草稿”文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSP&#x2F;Servlet简介">
+<meta property="og:url" content="https://triplecc.github.io/2020/05/05/JSP/index.html">
+<meta property="og:site_name" content="Light&#39;s Blog">
+<meta property="og:description" content="JSP(Java Server Page)和 Servlet是JavaEE规范的两个基本成员，它们是Java Web开发的重点知识，也是Java EE开发的基础知识。JSP和Servlet的本质是一样的，因为JSP最终必须编译成servlet才能运行，或者说JSP只是生成Servlet的“草稿”文件。">
+<meta property="article:published_time" content="2020-05-05T12:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-08T15:01:37.475Z">
+<meta property="article:author" content="Light">
+<meta property="article:tag" content="JavaEE">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://triplecc.github.io/2020/05/05/JSP/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>JSP/Servlet简介 | Light's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Light's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2020/05/05/JSP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JSP/Servlet简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-05 12:00:00" itemprop="dateCreated datePublished" datetime="2020-05-05T12:00:00+00:00">2020-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>JSP(Java Server Page)和 Servlet是JavaEE规范的两个基本成员，它们是Java Web开发的重点知识，也是Java EE开发的基础知识。JSP和Servlet的本质是一样的，因为JSP最终必须编译成servlet才能运行，或者说JSP只是生成Servlet的“草稿”文件。<br><a id="more"></a><br>现在JSP主要是表现层技术，不再承担业务逻辑组件及持久层组件的责任。<br>JSP相关技术：Servlet，Listener，Filter以及自定义标签</p>
+<h1 id="Web应用和Web-xml文件"><a href="#Web应用和Web-xml文件" class="headerlink" title="Web应用和Web.xml文件"></a>Web应用和Web.xml文件</h1><p>下面徒手建立Web应用.</p>
+<ul>
+<li>建立一个文件夹，取名为webDemo</li>
+<li>建立一个WEB-INF文件夹（注意大小写）</li>
+<li>在WEB-INF文件夹里创建web.xml文件文件内容如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;web-app xmlns&#x3D;&quot;http:&#x2F;&#x2F;xmlns.jcp.org&#x2F;xml&#x2F;ns&#x2F;javaee&quot;</span><br><span class="line">         xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;xmlns.jcp.org&#x2F;xml&#x2F;ns&#x2F;javaee http:&#x2F;&#x2F;xmlns.jcp.org&#x2F;xml&#x2F;ns&#x2F;javaee&#x2F;web-app_4_0.xsd&quot;</span><br><span class="line">         version&#x3D;&quot;4.0&quot;&gt;</span><br><span class="line">&lt;&#x2F;web-app&gt;</span><br></pre></td></tr></table></figure></li>
+<li>在WEB-INF文件夹里新建classes和lib文件夹，这两个文件夹的作用完全相同：都是用于保存web应用所需要的java类文件，区别是classes保存单个*.class文件，lib保存打包后的JAR文件。</li>
+<li>在webDemo文件夹里创建一个jsp文件，内容如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; errorPage&#x3D;&quot;&quot; %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;WelCome&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">Welcome to Java Web.</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure></li>
+<li>将webDemo复制到Tomcat的webapps目录下，启动tomcat，浏览器输入 <a href="http://localhose:8080/webDemo/a.jsp" target="_blank" rel="noopener">http://localhose:8080/webDemo/a.jsp</a> 即可</li>
+</ul>
+<h2 id="web-xml"><a href="#web-xml" class="headerlink" title="web.xml"></a>web.xml</h2><p>该文件被称为配置描述符，这个文件对Java Web应用十分重要，Servlet 2.5规范之前，每个Java Web应用都必须包含一个该文件，Servlet 3之后该文件不再是必需都，但建议保留.<br>2.5之前，Java Web应用的绝大部分组件都通过这个文件来配置，servlet 3之后可以通过注解来配置管理web组件。</p>
+<ul>
+<li>配置JSP</li>
+<li>配置和管理Servlet</li>
+<li>配置和管理Listener</li>
+<li>配置和管理Filter</li>
+<li>配置标签库</li>
+<li>配置JSP属性</li>
+<li>配置和管理JAAS授权认证</li>
+<li>配置和管理资源引用</li>
+<li>Web应用首页</li>
+</ul>
+<p>Servlet 3增加了 metadata-complete属性，该属性接受true或false，当为true时，将不会加载注解配置的web组件（如Servlet，Filter，Listener等）。</p>
+<h3 id="配置首页"><a href="#配置首页" class="headerlink" title="配置首页"></a>配置首页</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 配置web应用的首页列表&gt;</span><br><span class="line">&lt;welcome-file-list&gt;</span><br><span class="line">    &lt;welcome-file&gt;index.html&lt;&#x2F;welcome-file&gt;</span><br><span class="line">    &lt;welcome-file&gt;index.htm&lt;&#x2F;welcome-file&gt;</span><br><span class="line">    &lt;welcome-file&gt;index.jsp&lt;&#x2F;welcome-file&gt;</span><br><span class="line">&lt;&#x2F;welcome-file-list&gt;</span><br></pre></td></tr></table></figure>
+<p>上面的配置信息指定该Web应用的首页依次是index.html,index.htm和index.jsp<br>每个Web容器都会提供一个系统的web.xml文件，用于描述所有Web应用共同的配置属性。Tomcat是在conf路径中。<br>Jetty在etc中的webdefault.xml</p>
+<h1 id="JSP基本原理"><a href="#JSP基本原理" class="headerlink" title="JSP基本原理"></a>JSP基本原理</h1><p>JSP的本质是Servlet（一个特殊的Java类），当用户向指定Servlet发送请求时，Servlet利用输出流动态生成HTML页面。<br>JSP通过在标准的HTML页面中嵌入java代码，静态的部分无须Java程序控制，只有那些动态的部门才使用Java脚本控制。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; errorPage&#x3D;&quot;&quot; %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;WelCome&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">Welcome to Java Web.Hello~</span><br><span class="line">&lt;br&#x2F;&gt;</span><br><span class="line">&lt;%out.println(new java.util.Date());%&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure><br>当启动Tomcat后，可以在…\Tomcat/work/Catalina/localhost/webDemo/org/apache/jsp目录找到<br>a_jsp.class和a_jsp.java文件，这两个文件都是由tomcat生成的，Tomcat根据JSP页面生成对应Servlet的Java文件和class文件.<br>a_jsp.java的源码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * Generated by the Jasper component of Apache Tomcat</span><br><span class="line"> * Version: Apache Tomcat&#x2F;8.5.54</span><br><span class="line"> * Generated at: 2020-05-28 13:02:24 UTC</span><br><span class="line"> * Note: The last modified time of this file was set to</span><br><span class="line"> *       the last modified time of the source file after</span><br><span class="line"> *       generation to assist with modification tracking.</span><br><span class="line"> *&#x2F;</span><br><span class="line">package org.apache.jsp;</span><br><span class="line"></span><br><span class="line">import javax.servlet.*;</span><br><span class="line">import javax.servlet.http.*;</span><br><span class="line">import javax.servlet.jsp.*;</span><br><span class="line"></span><br><span class="line">public final class a_jsp extends org.apache.jasper.runtime.HttpJspBase</span><br><span class="line">    implements org.apache.jasper.runtime.JspSourceDependent,</span><br><span class="line">                 org.apache.jasper.runtime.JspSourceImports &#123;</span><br><span class="line"></span><br><span class="line">  private static final javax.servlet.jsp.JspFactory _jspxFactory &#x3D;</span><br><span class="line">          javax.servlet.jsp.JspFactory.getDefaultFactory();</span><br><span class="line"></span><br><span class="line">  private static java.util.Map&lt;java.lang.String,java.lang.Long&gt; _jspx_dependants;</span><br><span class="line"></span><br><span class="line">  private static final java.util.Set&lt;java.lang.String&gt; _jspx_imports_packages;</span><br><span class="line"></span><br><span class="line">  private static final java.util.Set&lt;java.lang.String&gt; _jspx_imports_classes;</span><br><span class="line"></span><br><span class="line">  static &#123;</span><br><span class="line">    _jspx_imports_packages &#x3D; new java.util.HashSet&lt;&gt;();</span><br><span class="line">    _jspx_imports_packages.add(&quot;javax.servlet&quot;);</span><br><span class="line">    _jspx_imports_packages.add(&quot;javax.servlet.http&quot;);</span><br><span class="line">    _jspx_imports_packages.add(&quot;javax.servlet.jsp&quot;);</span><br><span class="line">    _jspx_imports_classes &#x3D; null;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  private volatile javax.el.ExpressionFactory _el_expressionfactory;</span><br><span class="line">  private volatile org.apache.tomcat.InstanceManager _jsp_instancemanager;</span><br><span class="line"></span><br><span class="line">  public java.util.Map&lt;java.lang.String,java.lang.Long&gt; getDependants() &#123;</span><br><span class="line">    return _jspx_dependants;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public java.util.Set&lt;java.lang.String&gt; getPackageImports() &#123;</span><br><span class="line">    return _jspx_imports_packages;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public java.util.Set&lt;java.lang.String&gt; getClassImports() &#123;</span><br><span class="line">    return _jspx_imports_classes;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public javax.el.ExpressionFactory _jsp_getExpressionFactory() &#123;</span><br><span class="line">    if (_el_expressionfactory &#x3D;&#x3D; null) &#123;</span><br><span class="line">      synchronized (this) &#123;</span><br><span class="line">        if (_el_expressionfactory &#x3D;&#x3D; null) &#123;</span><br><span class="line">          _el_expressionfactory &#x3D; _jspxFactory.getJspApplicationContext(getServletConfig().getServletContext()).getExpressionFactory();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return _el_expressionfactory;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public org.apache.tomcat.InstanceManager _jsp_getInstanceManager() &#123;</span><br><span class="line">    if (_jsp_instancemanager &#x3D;&#x3D; null) &#123;</span><br><span class="line">      synchronized (this) &#123;</span><br><span class="line">        if (_jsp_instancemanager &#x3D;&#x3D; null) &#123;</span><br><span class="line">          _jsp_instancemanager &#x3D; org.apache.jasper.runtime.InstanceManagerFactory.getInstanceManager(getServletConfig());</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return _jsp_instancemanager;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public void _jspInit() &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public void _jspDestroy() &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)</span><br><span class="line">      throws java.io.IOException, javax.servlet.ServletException &#123;</span><br><span class="line"></span><br><span class="line">    final java.lang.String _jspx_method &#x3D; request.getMethod();</span><br><span class="line">    if (!&quot;GET&quot;.equals(_jspx_method) &amp;&amp; !&quot;POST&quot;.equals(_jspx_method) &amp;&amp; !&quot;HEAD&quot;.equals(_jspx_method) &amp;&amp; !javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) &#123;</span><br><span class="line">      response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, &quot;JSPs only permit GET, POST or HEAD. Jasper also permits OPTIONS&quot;);</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final javax.servlet.jsp.PageContext pageContext;</span><br><span class="line">    javax.servlet.http.HttpSession session &#x3D; null;</span><br><span class="line">    final javax.servlet.ServletContext application;</span><br><span class="line">    final javax.servlet.ServletConfig config;</span><br><span class="line">    javax.servlet.jsp.JspWriter out &#x3D; null;</span><br><span class="line">    final java.lang.Object page &#x3D; this;</span><br><span class="line">    javax.servlet.jsp.JspWriter _jspx_out &#x3D; null;</span><br><span class="line">    javax.servlet.jsp.PageContext _jspx_page_context &#x3D; null;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">      response.setContentType(&quot;text&#x2F;html;charset&#x3D;UTF-8&quot;);</span><br><span class="line">      pageContext &#x3D; _jspxFactory.getPageContext(this, request, response,</span><br><span class="line">      			&quot;&quot;, true, 8192, true);</span><br><span class="line">      _jspx_page_context &#x3D; pageContext;</span><br><span class="line">      application &#x3D; pageContext.getServletContext();</span><br><span class="line">      config &#x3D; pageContext.getServletConfig();</span><br><span class="line">      session &#x3D; pageContext.getSession();</span><br><span class="line">      out &#x3D; pageContext.getOut();</span><br><span class="line">      _jspx_out &#x3D; out;</span><br><span class="line"></span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;html&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;head&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;    &lt;title&gt;WelCome&lt;&#x2F;title&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;&#x2F;head&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;body&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;Welcome to Java Web.Hello~\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;br&#x2F;&gt;\n&quot;);</span><br><span class="line">out.println(new java.util.Date());</span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;&#x2F;body&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;&#x2F;html&gt;&quot;);</span><br><span class="line">    &#125; catch (java.lang.Throwable t) &#123;</span><br><span class="line">      if (!(t instanceof javax.servlet.jsp.SkipPageException))&#123;</span><br><span class="line">        out &#x3D; _jspx_out;</span><br><span class="line">        if (out !&#x3D; null &amp;&amp; out.getBufferSize() !&#x3D; 0)</span><br><span class="line">          try &#123;</span><br><span class="line">            if (response.isCommitted()) &#123;</span><br><span class="line">              out.flush();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">              out.clearBuffer();</span><br><span class="line">            &#125;</span><br><span class="line">          &#125; catch (java.io.IOException e) &#123;&#125;</span><br><span class="line">        if (_jspx_page_context !&#x3D; null) _jspx_page_context.handlePageException(t);</span><br><span class="line">        else throw new ServletException(t);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">      _jspxFactory.releasePageContext(_jspx_page_context);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>其实这就是一个servlet类的源代码，主要包含三个方法：</p>
+<ul>
+<li>init（）</li>
+<li>destroy（）</li>
+<li>service（）</li>
+</ul>
+<h1 id="JSP的4种基本语法"><a href="#JSP的4种基本语法" class="headerlink" title="JSP的4种基本语法"></a>JSP的4种基本语法</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; errorPage&#x3D;&quot;&quot; %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;WelCome JSP&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;%! </span><br><span class="line">&#x2F;&#x2F;声明一个整型变量</span><br><span class="line">public int count;</span><br><span class="line">&#x2F;&#x2F;声明一个方法</span><br><span class="line">public String info () &#123;</span><br><span class="line">    return &quot;hello&quot;;</span><br><span class="line">&#125;</span><br><span class="line">%&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">Welcome to Java Web.Hello~</span><br><span class="line">&lt;br&#x2F;&gt;</span><br><span class="line">&lt;%--JSP注释内容--%&gt;</span><br><span class="line">&lt;!-- html注释内容--&gt;</span><br><span class="line">&lt;%out.println(new java.util.Date());%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">&#x2F;&#x2F;将count 值输出</span><br><span class="line">out.println(count++);</span><br><span class="line">%&gt;</span><br><span class="line">&lt;br&#x2F;&gt;</span><br><span class="line">&lt;%&#x3D;count++%&gt;</span><br><span class="line">&lt;br&#x2F;&gt;</span><br><span class="line">&lt;%</span><br><span class="line">&#x2F;&#x2F;将info 输出</span><br><span class="line">out.println(info());</span><br><span class="line">%&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>生成的java文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)</span><br><span class="line">      throws java.io.IOException, javax.servlet.ServletException &#123;</span><br><span class="line"></span><br><span class="line">    final java.lang.String _jspx_method &#x3D; request.getMethod();</span><br><span class="line">    if (!&quot;GET&quot;.equals(_jspx_method) &amp;&amp; !&quot;POST&quot;.equals(_jspx_method) &amp;&amp; !&quot;HEAD&quot;.equals(_jspx_method) &amp;&amp; !javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) &#123;</span><br><span class="line">      response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, &quot;JSPs only permit GET, POST or HEAD. Jasper also permits OPTIONS&quot;);</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final javax.servlet.jsp.PageContext pageContext;</span><br><span class="line">    javax.servlet.http.HttpSession session &#x3D; null;</span><br><span class="line">    final javax.servlet.ServletContext application;</span><br><span class="line">    final javax.servlet.ServletConfig config;</span><br><span class="line">    javax.servlet.jsp.JspWriter out &#x3D; null;</span><br><span class="line">    final java.lang.Object page &#x3D; this;</span><br><span class="line">    javax.servlet.jsp.JspWriter _jspx_out &#x3D; null;</span><br><span class="line">    javax.servlet.jsp.PageContext _jspx_page_context &#x3D; null;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">      response.setContentType(&quot;text&#x2F;html;charset&#x3D;UTF-8&quot;);</span><br><span class="line">      pageContext &#x3D; _jspxFactory.getPageContext(this, request, response,</span><br><span class="line">      			&quot;&quot;, true, 8192, true);</span><br><span class="line">      _jspx_page_context &#x3D; pageContext;</span><br><span class="line">      application &#x3D; pageContext.getServletContext();</span><br><span class="line">      config &#x3D; pageContext.getServletConfig();</span><br><span class="line">      session &#x3D; pageContext.getSession();</span><br><span class="line">      out &#x3D; pageContext.getOut();</span><br><span class="line">      _jspx_out &#x3D; out;</span><br><span class="line"></span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;html&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;head&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;    &lt;title&gt;WelCome JSP&lt;&#x2F;title&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;&#x2F;head&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;body&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;Welcome to Java Web.Hello~\n&quot;);</span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;br&#x2F;&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;!-- html注释内容--&gt;\n&quot;);</span><br><span class="line">out.println(new java.util.Date());</span><br><span class="line">      out.write(&#39;\n&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;将count 值输出</span><br><span class="line">out.println(count++);</span><br><span class="line"></span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;br&#x2F;&gt;\n&quot;);</span><br><span class="line">      out.print(count++);</span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;br&#x2F;&gt;\n&quot;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;将info 输出</span><br><span class="line">out.println(info());</span><br><span class="line"></span><br><span class="line">      out.write(&quot;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;&#x2F;body&gt;\n&quot;);</span><br><span class="line">      out.write(&quot;&lt;&#x2F;html&gt;&quot;);</span><br><span class="line">    &#125; catch (java.lang.Throwable t) &#123;</span><br><span class="line">      if (!(t instanceof javax.servlet.jsp.SkipPageException))&#123;</span><br><span class="line">        out &#x3D; _jspx_out;</span><br><span class="line">        if (out !&#x3D; null &amp;&amp; out.getBufferSize() !&#x3D; 0)</span><br><span class="line">          try &#123;</span><br><span class="line">            if (response.isCommitted()) &#123;</span><br><span class="line">              out.flush();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">              out.clearBuffer();</span><br><span class="line">            &#125;</span><br><span class="line">          &#125; catch (java.io.IOException e) &#123;&#125;</span><br><span class="line">        if (_jspx_page_context !&#x3D; null) _jspx_page_context.handlePageException(t);</span><br><span class="line">        else throw new ServletException(t);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">      _jspxFactory.releasePageContext(_jspx_page_context);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="JSP注释："><a href="#JSP注释：" class="headerlink" title="JSP注释："></a>JSP注释：</h2><p>jsp注释：<code>&lt;%-- 注释内容 --%&gt;</code><br>html注释：<code>&lt;!-- html注释内容--&gt;</code><br>java注释：<code>//将count 值输出</code><br>通过查看生成的java文件和html源码，jsp注释只会出现在jsp文件中，html注释会被输出到浏览器的html源码中，java注释只会出现在生成的java文件中。</p>
+<h2 id="JSP-声明："><a href="#JSP-声明：" class="headerlink" title="JSP 声明："></a>JSP 声明：</h2><p>&lt;%! 声明部分 %&gt;<br>JSP声明会被生成为java文件的成员变量和成员函数，用来声明变量和函数<br>JSP页面会被编译成一个Servlet类，每个Servlet类在容器中只有一个实例；</p>
+<h2 id="JSP输出表达式："><a href="#JSP输出表达式：" class="headerlink" title="JSP输出表达式："></a>JSP输出表达式：</h2><p>&lt;%=表达式%&gt;(输出表达式语法后不能有分号)<br>对应生成的Java语句为<code>out.print(表达式)</code></p>
+<h2 id="JSP小脚本"><a href="#JSP小脚本" class="headerlink" title="JSP小脚本"></a>JSP小脚本</h2><p>&lt;%<br>//将info 输出<br>out.println(info());<br>%&gt;<br>JSP小脚本里可以包含任何可执行的Java代码。<br>JSP小脚本里声明的变量是Service函数里的局部变量</p>
+<h1 id="JSP的3个编译指令"><a href="#JSP的3个编译指令" class="headerlink" title="JSP的3个编译指令"></a>JSP的3个编译指令</h1><h2 id="page"><a href="#page" class="headerlink" title="page"></a>page</h2><p>&lt;%@page … %&gt;该指令是针对当前页面的指令<br>page指令通常位于jsp页面的顶端，一个jsp页面可以使用多条page指令，格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@page</span><br><span class="line">[language&#x3D;&quot;java&quot;]</span><br><span class="line">[extends&#x3D;&quot;package.class&quot;]</span><br><span class="line">[import&#x3D;&quot;package.class|package.*,...&quot;]</span><br><span class="line">[session&#x3D;&quot;true|false&quot;]</span><br><span class="line">[buffer&#x3D;&quot;none|8KB|size Kb&quot;]</span><br><span class="line">[autoFlush&#x3D;&quot;true|false&quot;]</span><br><span class="line">[isThreadSafe&#x3D;&quot;true|false&quot;]</span><br><span class="line">[info&#x3D;&quot;text&quot;]</span><br><span class="line">[errorPage&#x3D;&quot;relativeURL&quot;]</span><br><span class="line">[contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot;]</span><br><span class="line">[pageEncoding]</span><br><span class="line">[isErrorPage&#x3D;&quot;true|false&quot;]</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="language"><a href="#language" class="headerlink" title="language"></a>language</h3><p>声明当前JSP页面使用的脚本语言的种类，因为页面是JSP页面，该属性的值通常都是java，默认值也是java，通常无须设置。</p>
+<h3 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h3><p>指定jsp页面编译产生类所继承的父类或所实现的接口</p>
+<h3 id="import"><a href="#import" class="headerlink" title="import"></a>import</h3><p>用来导入包。下面是默认导入的包名<br>java.lang.<em>,javax.servlet.</em>,javax.servlet.jsp.<em>,javax.servlet.http.</em></p>
+<h3 id="session"><a href="#session" class="headerlink" title="session"></a>session</h3><p>设定这个JSP是否需要http session</p>
+<h3 id="buffer"><a href="#buffer" class="headerlink" title="buffer"></a>buffer</h3><p>指定缓冲区的大小，输出缓冲区的JSP内部对象：out用于缓存JSP页面对客户浏览器的输出，默认为8Kb，可以设为none，或其他值，单位为kb。</p>
+<h3 id="autoFlush"><a href="#autoFlush" class="headerlink" title="autoFlush"></a>autoFlush</h3><p>当输出缓冲区即将溢出时，是否强制输出缓冲区内容。false会在溢出时产生一个异常。</p>
+<h3 id="info"><a href="#info" class="headerlink" title="info"></a>info</h3><p>该JSP的信息，通过Servlet.getServletInfo()方法可以获取，如果是在jsp页面中，可以直接调用getServletInfo()</p>
+<h3 id="errorPage"><a href="#errorPage" class="headerlink" title="errorPage"></a>errorPage</h3><p>指定错误处理页面</p>
+<h3 id="isErrorPage"><a href="#isErrorPage" class="headerlink" title="isErrorPage"></a>isErrorPage</h3><p>设定本页面是否为错误处理程序。</p>
+<h3 id="contentType"><a href="#contentType" class="headerlink" title="contentType"></a>contentType</h3><p>设定生成网页的文件格式和编码字符集,及MIME类型和页面字符集类型。<br>默认MIME为text/html，默认字符集为”ISO-8859-1“</p>
+<h3 id="pageEncoding"><a href="#pageEncoding" class="headerlink" title="pageEncoding"></a>pageEncoding</h3><p>生成网页的编码字符集</p>
+<h2 id="include"><a href="#include" class="headerlink" title="include"></a>include</h2><p>可以将一个外部文件嵌入到当前JSP文件中，同时解析这个页面中的JSP语句。这是个静态的include语句，它会把目标页面的其他编译指令也包含进来，如果两个页面的编译指令冲突就会报错，如果是动态include则不会。<br>&lt;%@include file=”relativeURLSpec”&gt;<br>如果被嵌入的文件经常需要改变，建议使用<a href="jsp:include">jsp:include</a>操作指令，这个是动态的include语句。</p>
+<h2 id="taglib"><a href="#taglib" class="headerlink" title="taglib"></a>taglib</h2><p>用于定义和访问自定义标签</p>
+<h1 id="7个动作指令"><a href="#7个动作指令" class="headerlink" title="7个动作指令"></a>7个动作指令</h1><h2 id="jsp-forward"><a href="#jsp-forward" class="headerlink" title="jsp:forward"></a>jsp:forward</h2><p>执行页面转向，将请求的处理转发到下一个页面<br>JSP 1.0<br>&lt;jsp:forward page=”{relativeURL}&lt;%=expression%&gt;”/&gt;<br>JSP 1.1<br>&lt;jsp:forward page=”{relativeURL}&lt;%=expression%&gt;”&gt;<br>  {<a href="jsp:param.../">jsp:param.../</a>}<br>&lt;/jsp:forward&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--表单--&gt;</span><br><span class="line">a.jsp:</span><br><span class="line">&lt;form id&#x3D;&quot;login&quot; method&#x3D;&quot;post&quot; action&#x3D;&quot;jsp-forward.jsp&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;username&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;login&quot;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line"></span><br><span class="line">jsp-forward.jsp:</span><br><span class="line">&lt;jsp:forward page&#x3D;&quot;forward-result.jsp&quot;&gt;</span><br><span class="line">    &lt;jsp:param name&#x3D;&quot;age&quot; value&#x3D;&quot;29&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;jsp:forward&gt;</span><br><span class="line"></span><br><span class="line">forward-result.jsp:</span><br><span class="line">&lt;%&#x3D;request.getParameter(&quot;age&quot;)%&gt;</span><br></pre></td></tr></table></figure>
+<p>生成的java代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> if (true) &#123;</span><br><span class="line">  _jspx_page_context.forward(&quot;forward_result.jsp&quot; + &quot;?&quot; + org.apache.jasper.runtime.JspRuntimeLibrary.URLEncode(&quot;age&quot;, request.getCharacterEncoding())+ &quot;&#x3D;&quot; + org.apache.jasper.runtime.JspRuntimeLibrary.URLEncode(&quot;29&quot;, request.getCharacterEncoding()));</span><br><span class="line">        return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>增加的参数可以通过HttpServletRequest类的getParameter（）方法获取，JSP中是request内置对象。</p>
+<ul>
+<li>执行forward后页面的地址不会变化</li>
+<li>执行forward指令转发请求时，客户端的请求参数不会丢失。</li>
+</ul>
+<h2 id="jsp-param"><a href="#jsp-param" class="headerlink" title="jsp:param"></a>jsp:param</h2><p>用于传递参数，必须与其他支持参数的标签一起使用<br>与jsp:inclued,jsp:forward,jsp:plugin一起使用</p>
+<h2 id="jsp-include"><a href="#jsp-include" class="headerlink" title="jsp:include"></a>jsp:include</h2><p>用于动态包含一个JSP页面<br>不会导入被include页面的编译指令，仅仅导入body内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:include page&#x3D;&quot;&#123;relativeURL|&lt;%&#x3D;expression%&gt;&#125;&quot; flush&#x3D;&quot;true&quot;&#x2F;&gt;</span><br><span class="line">或</span><br><span class="line">&lt;jsp:include page&#x3D;&quot;&#123;relativeURL|&lt;%&#x3D;expression%&gt;&#125;&quot; flush&#x3D;&quot;true&quot;&gt;</span><br><span class="line">  &lt;jsp:param name&#x3D;&quot;parameterName&quot; value&#x3D;&quot;value&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;jsp:include&gt;</span><br></pre></td></tr></table></figure>
+<p>flush 指定输出缓存是否转移到被导入文件中。JSP 1.1之前只能为false<br>动态导入只是使用一个include方法来插入目标页面的内容，而不是将目标页面完全融入本页面中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">org.apache.jasper.runtime.JspRuntimeLibrary.include(request,response,&quot;scriptlet.jsp&quot;,out,false)</span><br></pre></td></tr></table></figure><br>动态导入和静态区别：</p>
+<ul>
+<li>是否完全融合</li>
+<li>是否导入编译指令</li>
+<li>是否可以增加额外参数</li>
+</ul>
+<h2 id="jsp-plugin"><a href="#jsp-plugin" class="headerlink" title="jsp:plugin"></a>jsp:plugin</h2><p>用于下载服务器端的JavaBean或Applet到客户端执行</p>
+<h2 id="jsp-useBean-jsp-setProperty-jsp-getProperty"><a href="#jsp-useBean-jsp-setProperty-jsp-getProperty" class="headerlink" title="jsp:useBean jsp:setProperty jsp:getProperty"></a>jsp:useBean jsp:setProperty jsp:getProperty</h2><ul>
+<li>jsp:useBean：创建一个JavaBean的实例</li>
+<li>jsp:setProperty：设置JavaBean实例的属性值</li>
+<li>jsp:getProperty：输出JavaBean实例的属性值</li>
+</ul>
+<p>&lt;jsp:useBean id=”name” class=”classname” scope=”page|request|session|application”/&gt;<br>id:JavaBean的实例名，class 实现类，scope实例的作用范围有下面几个</p>
+<ul>
+<li>page：该JavaBean仅在该页面有效</li>
+<li>request：仅本次请求有效</li>
+<li>session：本次session有效</li>
+<li>application：本应用内一直有效</li>
+</ul>
+<p>&lt;jsp:setProperty name=”BeanName” property=”propertyName” value=”Value” /&gt;</p>
+<p>&lt;jsp:getProperty name=”BeanName” property=”propertyName” /&gt;<br>当页面使用setProperty和getProperty标签时，系统底层就是调用setName()和getName()方法来操作Person实例的属性。</p>
+<h1 id="JSP中的9个内置对象"><a href="#JSP中的9个内置对象" class="headerlink" title="JSP中的9个内置对象"></a>JSP中的9个内置对象</h1><p>这9个内置对象都是Serlet API接口的实例，他们已经是对象，可以直接使用</p>
+<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><p>javax.servlet.ServletContex 实例，代表JSP所属的Web应用本身，可用于JSP页面，或者Servlet直接交换信息，常用的方法有getAttribute（String attName），setAttribute（String attName，String attValue）和getInitParameter（String paramName），整个Web应用有效。</p>
+<h3 id="让多个JSP、Servlet共享数据"><a href="#让多个JSP、Servlet共享数据" class="headerlink" title="让多个JSP、Servlet共享数据"></a>让多个JSP、Servlet共享数据</h3><p>getAttribute（String attName），setAttribute（String attName，String attValue</p>
+<h3 id="获得Web应用配置参数"><a href="#获得Web应用配置参数" class="headerlink" title="获得Web应用配置参数"></a>获得Web应用配置参数</h3><p>获取web.xml中的使用context-param元素配置的信息，每个&lt;context-param…><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;context-param&gt;</span><br><span class="line">  &lt;param-name&gt;driver&lt;&#x2F;param-name&gt;</span><br><span class="line">  &lt;param-value&gt;com.mysql.jdbc&lt;&#x2F;param-value&gt;</span><br><span class="line">&lt;&#x2F;context-param&gt;</span><br></pre></td></tr></table></figure><br>application.getInitParemeter(“driver”)</p>
+<h2 id="config"><a href="#config" class="headerlink" title="config"></a>config</h2><p>javax.servlet.ServletConfig 实例，代表JSP的配置信息<br>getInitParameter（String paramName），getInitParameterNames()<br>但JSP页面通常无须配置，因此JSP页面比较少用，但在Servlet中用处较大，因为Servlet需要在web.xml中配置.例如下面的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet&gt;</span><br><span class="line">  &lt;servlet-name&gt;config&lt;&#x2F;servlet-name&gt;</span><br><span class="line">  &lt;jsp-file&gt;&#x2F;configTest.jsp&lt;&#x2F;jsp-file&gt;&#x2F;&#x2F;指定将哪个JSP页面配置成servlet</span><br><span class="line">  &lt;init-param&gt;</span><br><span class="line">    &lt;param-name&gt;name&lt;&#x2F;param-name&gt;</span><br><span class="line">    &lt;param-value&gt;Crazy&lt;&#x2F;param-value&gt;</span><br><span class="line">  &lt;&#x2F;init-param&gt;</span><br><span class="line">&lt;&#x2F;servlet&gt;</span><br><span class="line">&lt;servlet-maping&gt;</span><br><span class="line">&#x2F;&#x2F;指定将config servlet配置到&#x2F;config路径</span><br><span class="line">  &lt;servlet-name&gt;config&lt;&#x2F;servlet-name&gt;</span><br><span class="line">  &lt;url-patern&gt;&#x2F;config&lt;&#x2F;url-parttern&gt;</span><br><span class="line">&lt;&#x2F;servlet-maping&gt;</span><br></pre></td></tr></table></figure><br>如果希望JSP页面可以获取web.xml配置文件中的配置信息，则必须通过为该JSP配置的路径来访问该页面。</p>
+<h2 id="exception"><a href="#exception" class="headerlink" title="exception"></a>exception</h2><p>java.lang.Throwable实例，只有编译指令isErrorPage为true才可以使用。<br>getMessage（），printStackTrac（）<br>jsp声明需要自己处理exception</p>
+<h2 id="out"><a href="#out" class="headerlink" title="out"></a>out</h2><p>javax.servlet.jsp.JspWriter实例，输出流</p>
+<h2 id="page-1"><a href="#page-1" class="headerlink" title="page"></a>page</h2><p>代表该页面本身，即this，能用page的地方就可以用this。</p>
+<h2 id="pageContext"><a href="#pageContext" class="headerlink" title="pageContext"></a>pageContext</h2><p>javax.servlet.jsp.PageContext实例，代表该JSP的页面上下文，使用该对象可以访问页面中的共享数据。getServletContext（），getServletConfig（）。仅当前页面有效。<br>代表页面上下文，主要用于访问JSP之间共享的数据。可以访问page、request、session、application范围的变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getAttribute(String name):取得page范围内的name属性</span><br><span class="line">getAttribute(String name,int scope):scope可以取：</span><br><span class="line">PageContext.PAGE_SCOPE</span><br><span class="line">PageContext.REQUEST_SCOPE</span><br><span class="line">PageContext.SESSION_SCOPE</span><br><span class="line">PageContext.APPLICATION_SCOPE</span><br><span class="line">setAttribute(String name,value,scope)</span><br></pre></td></tr></table></figure></p>
+<h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>javax.servlet.HttpServletRequest实例。仅本次请求有效。</p>
+<h3 id="获取请求头-请求参数"><a href="#获取请求头-请求参数" class="headerlink" title="获取请求头/请求参数"></a>获取请求头/请求参数</h3><h3 id="操作request范围的属性"><a href="#操作request范围的属性" class="headerlink" title="操作request范围的属性"></a>操作request范围的属性</h3><h3 id="执行forward或include"><a href="#执行forward或include" class="headerlink" title="执行forward或include"></a>执行forward或include</h3><p>HttpServletRequest类提供了一个getRequestDispatcher(String path)方法，其中path就是希望foward或者include的目标路径。<br>getRequestDispatcher(“/a.jsp”).include(request,response)<br>getRequestDispatcher(“/a.jsp”).forward(request,response)</p>
+<h2 id="response"><a href="#response" class="headerlink" title="response"></a>response</h2><p>javax.servlet.HttpServletResponse实例</p>
+<h2 id="session-1"><a href="#session-1" class="headerlink" title="session"></a>session</h2><p>代表一次会话,仅一次会话有效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)</span><br><span class="line">    throws java.io.IOException, javax.servlet.ServletException &#123;</span><br><span class="line"></span><br><span class="line">  final java.lang.String _jspx_method &#x3D; request.getMethod();</span><br><span class="line">  if (!&quot;GET&quot;.equals(_jspx_method) &amp;&amp; !&quot;POST&quot;.equals(_jspx_method) &amp;&amp; !&quot;HEAD&quot;.equals(_jspx_method) &amp;&amp; !javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) &#123;</span><br><span class="line">    response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, &quot;JSPs only permit GET, POST or HEAD. Jasper also permits OPTIONS&quot;);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  final javax.servlet.jsp.PageContext pageContext;</span><br><span class="line">  javax.servlet.http.HttpSession session &#x3D; null;</span><br><span class="line">  final javax.servlet.ServletContext application;</span><br><span class="line">  final javax.servlet.ServletConfig config;</span><br><span class="line">  javax.servlet.jsp.JspWriter out &#x3D; null;</span><br><span class="line">  final java.lang.Object page &#x3D; this;</span><br><span class="line">  javax.servlet.jsp.JspWriter _jspx_out &#x3D; null;</span><br><span class="line">  javax.servlet.jsp.PageContext _jspx_page_context &#x3D; null;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  pageContext &#x3D; _jspxFactory.getPageContext(this, request, response,</span><br><span class="line">    			&quot;&quot;, true, 2048, true);</span><br><span class="line">   _jspx_page_context &#x3D; pageContext;</span><br><span class="line">  application &#x3D; pageContext.getServletContext();</span><br><span class="line">  config &#x3D; pageContext.getServletConfig();</span><br><span class="line">  session &#x3D; pageContext.getSession();</span><br><span class="line">  out &#x3D; pageContext.getOut();</span><br></pre></td></tr></table></figure></p>
+<h1 id="servlet"><a href="#servlet" class="headerlink" title="servlet"></a>servlet</h1><p>JSP本质就是Servlet，编写好的JSP页面部署到Web容器中之后，Web容器会将JSP编译成对应的Servlet。<br>Servlet是标准的Java类。<br>Sevlet是一个特殊的Java类，必须继承HttpServlet类。<br>每个Servlet可以响应客户端的请求：GET，POST，PUT，DELETE<br>处理什么请求就重写对应的doGet，doPost，doPut，doDelete函数，如果所有响应处理方式一致，可以直接重写service（）方法。<br>HttpServlet还包含：<br>init(ServletConfig config):创建Servlet时，初始化Servlet资源<br>destroy(）:销魂时调用</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaEE/" rel="tag"># JavaEE</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/28/%E7%9B%B4%E6%92%AD%E5%8D%8F%E8%AE%AE/" rel="prev" title="直播">
+      <i class="fa fa-chevron-left"></i> 直播
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/10/swift/" rel="next" title="Swift备忘">
+      Swift备忘 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Web应用和Web-xml文件"><span class="nav-number">1.</span> <span class="nav-text">Web应用和Web.xml文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web-xml"><span class="nav-number">1.1.</span> <span class="nav-text">web.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置首页"><span class="nav-number">1.1.1.</span> <span class="nav-text">配置首页</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSP基本原理"><span class="nav-number">2.</span> <span class="nav-text">JSP基本原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSP的4种基本语法"><span class="nav-number">3.</span> <span class="nav-text">JSP的4种基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP注释："><span class="nav-number">3.1.</span> <span class="nav-text">JSP注释：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP-声明："><span class="nav-number">3.2.</span> <span class="nav-text">JSP 声明：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP输出表达式："><span class="nav-number">3.3.</span> <span class="nav-text">JSP输出表达式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP小脚本"><span class="nav-number">3.4.</span> <span class="nav-text">JSP小脚本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSP的3个编译指令"><span class="nav-number">4.</span> <span class="nav-text">JSP的3个编译指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#page"><span class="nav-number">4.1.</span> <span class="nav-text">page</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#language"><span class="nav-number">4.1.1.</span> <span class="nav-text">language</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#extends"><span class="nav-number">4.1.2.</span> <span class="nav-text">extends</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#import"><span class="nav-number">4.1.3.</span> <span class="nav-text">import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session"><span class="nav-number">4.1.4.</span> <span class="nav-text">session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buffer"><span class="nav-number">4.1.5.</span> <span class="nav-text">buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autoFlush"><span class="nav-number">4.1.6.</span> <span class="nav-text">autoFlush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#info"><span class="nav-number">4.1.7.</span> <span class="nav-text">info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#errorPage"><span class="nav-number">4.1.8.</span> <span class="nav-text">errorPage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isErrorPage"><span class="nav-number">4.1.9.</span> <span class="nav-text">isErrorPage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#contentType"><span class="nav-number">4.1.10.</span> <span class="nav-text">contentType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pageEncoding"><span class="nav-number">4.1.11.</span> <span class="nav-text">pageEncoding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include"><span class="nav-number">4.2.</span> <span class="nav-text">include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#taglib"><span class="nav-number">4.3.</span> <span class="nav-text">taglib</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7个动作指令"><span class="nav-number">5.</span> <span class="nav-text">7个动作指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp-forward"><span class="nav-number">5.1.</span> <span class="nav-text">jsp:forward</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp-param"><span class="nav-number">5.2.</span> <span class="nav-text">jsp:param</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp-include"><span class="nav-number">5.3.</span> <span class="nav-text">jsp:include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp-plugin"><span class="nav-number">5.4.</span> <span class="nav-text">jsp:plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp-useBean-jsp-setProperty-jsp-getProperty"><span class="nav-number">5.5.</span> <span class="nav-text">jsp:useBean jsp:setProperty jsp:getProperty</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSP中的9个内置对象"><span class="nav-number">6.</span> <span class="nav-text">JSP中的9个内置对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#application"><span class="nav-number">6.1.</span> <span class="nav-text">application</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#让多个JSP、Servlet共享数据"><span class="nav-number">6.1.1.</span> <span class="nav-text">让多个JSP、Servlet共享数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获得Web应用配置参数"><span class="nav-number">6.1.2.</span> <span class="nav-text">获得Web应用配置参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#config"><span class="nav-number">6.2.</span> <span class="nav-text">config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exception"><span class="nav-number">6.3.</span> <span class="nav-text">exception</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#out"><span class="nav-number">6.4.</span> <span class="nav-text">out</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#page-1"><span class="nav-number">6.5.</span> <span class="nav-text">page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pageContext"><span class="nav-number">6.6.</span> <span class="nav-text">pageContext</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#request"><span class="nav-number">6.7.</span> <span class="nav-text">request</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取请求头-请求参数"><span class="nav-number">6.7.1.</span> <span class="nav-text">获取请求头&#x2F;请求参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作request范围的属性"><span class="nav-number">6.7.2.</span> <span class="nav-text">操作request范围的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行forward或include"><span class="nav-number">6.7.3.</span> <span class="nav-text">执行forward或include</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#response"><span class="nav-number">6.8.</span> <span class="nav-text">response</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session-1"><span class="nav-number">6.9.</span> <span class="nav-text">session</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#servlet"><span class="nav-number">7.</span> <span class="nav-text">servlet</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Light"
+      src="/images/avatar/lightning.png">
+  <p class="site-author-name" itemprop="name">Light</p>
+  <div class="site-description" itemprop="description">Keep going……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:heliangzhang@yeah.net" title="E-Mail → mailto:heliangzhang@yeah.net" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Light</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: ,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

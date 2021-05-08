@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://triplecc.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Keep going……">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Light&#39;s Blog">
+<meta property="og:url" content="https://triplecc.github.io/page/2/index.html">
+<meta property="og:site_name" content="Light&#39;s Blog">
+<meta property="og:description" content="Keep going……">
+<meta property="article:author" content="Light">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://triplecc.github.io/page/2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false
+  };
+</script>
+
+  <title>Light's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Light's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">ruby基本使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-20 12:00:00" itemprop="dateCreated datePublished" datetime="2019-07-20T12:00:00+00:00">2019-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="多重赋值"><a href="#多重赋值" class="headerlink" title="多重赋值"></a>多重赋值</h1><h2 id="合并执行多个赋值操作"><a href="#合并执行多个赋值操作" class="headerlink" title="合并执行多个赋值操作"></a>合并执行多个赋值操作</h2><p>a, b, *c = 1, 2, 3, 4, 5  </p>
+<p>p [a, b, c] #=&gt; [1, 2, [3, 4, 5]] </p>
+<p>a, * b, c = 1, 2, 3, 4, 5  </p>
+<p>p [a, b, c] #-&gt; [1, [2, 3, 4], 5]</p>
+<h2 id="置换变量的值"><a href="#置换变量的值" class="headerlink" title="置换变量的值"></a>置换变量的值</h2><p>a, b = 0, 1<br>a, b = b, a # 置换变量a、b 的值<br>p [a, b] #=&gt; [1, 0<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/07/20/ruby%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/07/20/Ruby%20vscode%20debug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/20/Ruby%20vscode%20debug/" class="post-title-link" itemprop="url">Ruby VSCode debug 环境配置</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-20 12:00:00" itemprop="dateCreated datePublished" datetime="2019-07-20T12:00:00+00:00">2019-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="安装需要的gems"><a href="#安装需要的gems" class="headerlink" title="安装需要的gems"></a>安装需要的gems</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gem install ruby-debug-ide</span><br><span class="line">gem install debase</span><br><span class="line">gem install solargraph</span><br><span class="line">gem install rubocop</span><br><span class="line">gem install rcodetools</span><br><span class="line">gem install reek</span><br></pre></td></tr></table></figure>
+<p>安装这些gem，如果提示没有权限就加上sudo。<br>可以<a href="https://blog.csdn.net/skybboy/article/details/80105524" target="_blank" rel="noopener">参考博客</a></p>
+<p>去VSCode的Extensions市场搜索Ruby,安装Ruby，Ruby Solargraph,VSCode Ruby这几个插件<br>去VSCode debug创建lauch.json文件<br><img src="/res/images/article/rubyvscode/1.png" alt="image"><br><img src="/res/images/article/rubyvscode/2.png" alt="image"><br><img src="/res/images/article/rubyvscode/3.png" alt="image"><br>lauch.json默认配置如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; Use IntelliSense to learn about possible attributes.</span><br><span class="line">    &#x2F;&#x2F; Hover to view descriptions of existing attributes.</span><br><span class="line">    &#x2F;&#x2F; For more information, visit: https:&#x2F;&#x2F;go.microsoft.com&#x2F;fwlink&#x2F;?linkid&#x3D;830387</span><br><span class="line">    &quot;version&quot;: &quot;0.2.0&quot;,</span><br><span class="line">    &quot;configurations&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;Debug Local File&quot;,</span><br><span class="line">            &quot;type&quot;: &quot;Ruby&quot;,</span><br><span class="line">            &quot;request&quot;: &quot;launch&quot;,</span><br><span class="line">            &quot;program&quot;: &quot;$&#123;workspaceRoot&#125;&#x2F;main.rb&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>可配置项有下面这些，可以去官网看看每个的含义<a href="https://github.com/rubyide/vscode-ruby/wiki/2.-Launching-from-VS-Code#available-vs-code-defined-variables" target="_blank" rel="noopener">官方说明</a></p>
+<h1 id="配置launch-json文件"><a href="#配置launch-json文件" class="headerlink" title="配置launch.json文件"></a>配置launch.json文件</h1><h2 id="“name”"><a href="#“name”" class="headerlink" title="“name”"></a>“name”</h2><p>You can set this to what ever you want. It will need to be unique within the configurations array. This is the string that will be shown in the drop-down selector on the debug side bar.</p>
+<h2 id="“type”"><a href="#“type”" class="headerlink" title="“type”"></a>“type”</h2><p>Must be “Ruby”. This tells VS Code what debugger to run.</p>
+<h2 id="“request”"><a href="#“request”" class="headerlink" title="“request”"></a>“request”</h2><p>Either “launch” - which enables launching the provided program directly from VS Code - or “attach” - which allows you to attach to a remote debug session.</p>
+<h2 id="“program”"><a href="#“program”" class="headerlink" title="“program”"></a>“program”</h2><p>This is the ruby script that will first be launched when debugging is started. You should not rely on relative paths working. If the file is in your workspace (which is usually is) this string should have the structure “${workspaceRoot}/path/to/script.rb”.</p>
+<p>You could debug the current open file with just “program”: “${file}”.</p>
+<h2 id="“cwd”"><a href="#“cwd”" class="headerlink" title="“cwd”"></a>“cwd”</h2><p>By default, the working directory is set to the location of the file provided in the program string. It is common for this value to be set to “cwd”: “${workspaceRoot}”.</p>
+<h2 id="“stopOnEntry”"><a href="#“stopOnEntry”" class="headerlink" title="“stopOnEntry”"></a>“stopOnEntry”</h2><p>Stop program execution on the first line always. Note that all active breakpoints are set before the debugger starts even if this field is not set. Valid options are true and false (default).<br>(这个我目前设置了，貌似没有起作用)</p>
+<h2 id="“showDebuggerOutput”"><a href="#“showDebuggerOutput”" class="headerlink" title="“showDebuggerOutput”"></a>“showDebuggerOutput”</h2><p>Provide some extra output to the debug terminal, specifically about the running of rdebug-ide. Valid options are true and false (default).</p>
+<h2 id="“args”"><a href="#“args”" class="headerlink" title="“args”"></a>“args”</h2><p>An array of arguments to provide to the script under debug. Each string in the array is sent as a seperate argument, so if you would call the script from a terminal as:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby main.js --infile &#39;&#x2F;the&#x2F;file name&#x2F;with spaces&#39; --count 3 --base</span><br></pre></td></tr></table></figure><br>this setting should read:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;args&quot;: [&quot;--infile&quot;, &quot;&#x2F;the&#x2F;file name&#x2F;with spaces&quot;, &quot;--count&quot;, &quot;3&quot;]</span><br></pre></td></tr></table></figure><br>There is no need to include the quotes around the second argument. Doing so would actually result in the string WITH the quotes being passed to the script.</p>
+<h2 id="“env”"><a href="#“env”" class="headerlink" title="“env”"></a>“env”</h2><p>Provide a hash of environment variable to set before launching the program. For example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;env&quot;: &#123;</span><br><span class="line">		&quot;BASE&quot;: &quot;$&#123;workspaceRoot&#125;&quot;,</span><br><span class="line">		&quot;EXT&quot;: &quot;$&#123;fileExtname&#125;&quot;,</span><br><span class="line">		&quot;RAILS_ENV&quot;: &quot;test&quot;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="“pathToRDebugIDE”"><a href="#“pathToRDebugIDE”" class="headerlink" title="“pathToRDebugIDE”:"></a>“pathToRDebugIDE”:</h2><p>Set the absolute path to rdebug-ide if it’s not in your PATH. On windows you need to provide the .bat file.</p>
+<h2 id="“useBundler”"><a href="#“useBundler”" class="headerlink" title="“useBundler”:"></a>“useBundler”:</h2><p>Run rdebug-ide within bundler exec. You may need to do this if you’ve installed the ruby-debug-ide gem within your project. Valid options are true and false (default).</p>
+<h2 id="“pathToBundler”"><a href="#“pathToBundler”" class="headerlink" title="“pathToBundler”:"></a>“pathToBundler”:</h2><p>If you have useBundler set, and bundler isn’t in your PATH, set the absolute path here. If you’re wrapping in bundler, you shouldn’t need to provide a pathToRDebugIDE setting. On windows you need to provide the .bat file.</p>
+<p>Also, if you’ve installed with the bundler install –binstubs you should be able to skip the bundler related settings and use “pathToRDebugIDE”: “${workspaceRoot}/bin/rdebug-ide”.</p>
+<h2 id="Available-VS-Code-defined-variables"><a href="#Available-VS-Code-defined-variables" class="headerlink" title="Available VS Code defined variables"></a>Available VS Code defined variables</h2><p>下面是VSCode自定义的一些变量代表的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$&#123;workspaceRoot&#125;:the path of the folder opened in VS Code</span><br><span class="line">$&#123;file&#125;	:the current opened file</span><br><span class="line">$&#123;fileBasename&#125;:the current opened file&#39;s basename</span><br><span class="line">$&#123;fileDirname&#125;:	the current opened file&#39;s dirname</span><br><span class="line">$&#123;fileExtname&#125;:	the current opened file&#39;s extension</span><br></pre></td></tr></table></figure></p>
+<h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><p>远程调试需要设定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;version&quot;: &quot;0.2.0&quot;,</span><br><span class="line">	&quot;configurations&quot;: [</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;name&quot;: &quot;Debug Attach&quot;,</span><br><span class="line">			&quot;type&quot;: &quot;Ruby&quot;,</span><br><span class="line">			&quot;request&quot;: &quot;attach&quot;,</span><br><span class="line">			&quot;cwd&quot;: &quot;$&#123;workspaceRoot&#125;&quot;,</span><br><span class="line">			&quot;remoteWorkspaceRoot&quot;: &quot;$&#123;workspaceRoot&#125;&quot;,</span><br><span class="line">			&quot;remoteHost&quot;: &quot;SERVER_IP_ADDRESS&quot;,</span><br><span class="line">			&quot;remotePort&quot;: &quot;SERVER_LISTENING_PORT&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="“remoteWorkspaceRoot”"><a href="#“remoteWorkspaceRoot”" class="headerlink" title="“remoteWorkspaceRoot”"></a>“remoteWorkspaceRoot”</h2><p>Set this to the remote base path. The cwd setting above will be dropped from the start of any paths passed to the debugger and this value will replace it. This enables different paths to be used between the development and test devices.</p>
+<p>With:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;cwd&quot;: &quot;&#x2F;dev&#x2F;folder&quot;,</span><br><span class="line">&quot;remoteWorkspaceRoot&quot;: &quot;&#x2F;usr&#x2F;local&#x2F;www&quot;</span><br></pre></td></tr></table></figure><br>The path: /dev/folder/app/models/user.rb will become /usr/local/www/app/models/user.rb. Without this translation, break points won’t be set correctly.</p>
+<h2 id="“remoteHost”"><a href="#“remoteHost”" class="headerlink" title="“remoteHost”"></a>“remoteHost”</h2><p>The IP address of the server the debugger will be running on. If you’re running it locally, use 127.0.0.1 rather than localhost.</p>
+<h2 id="“remotePort”"><a href="#“remotePort”" class="headerlink" title="“remotePort”"></a>“remotePort”</h2><p>The port to connect to on the remote server. The default listening port for ruby-debug-ide is 1234.</p>
+<h2 id="Running-the-debugger"><a href="#Running-the-debugger" class="headerlink" title="Running the debugger"></a>Running the debugger</h2><p> Run the debugger from the command line with:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rdebug-ide --host SERVER_IP_ADDRESS\</span><br><span class="line">    --port SERVER_LISTENING_PORT\</span><br><span class="line">    -- TARGET_SCRIPT &#123;...script args&#125;</span><br></pre></td></tr></table></figure>
+<p>Where the SERVER_IP_ADDRESS and SERVER_LISTENING_PORT match the settings in your launch.json configuration. If there is only one network device on the server where the debugger is running, (and/or you have considered the security implications) you can use 0.0.0.0 to allow the debugger to listen on any connection.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;diffEditor.ignoreTrimWhitespace&quot;: false,</span><br><span class="line">    &quot;editor.wordWrap&quot;: &quot;on&quot;,</span><br><span class="line">    &quot;window.zoomLevel&quot;: 0,</span><br><span class="line">    &quot;editor.minimap.enabled&quot;: false,</span><br><span class="line">    &quot;workbench.colorTheme&quot;: &quot;Xcode Default (Dark)&quot;,</span><br><span class="line">    &quot;[markdown]&quot;: &#123;&#125;,</span><br><span class="line">    &quot;[ruby]&quot;: &#123;&#125;,</span><br><span class="line">    &quot;files.associations&quot;: &#123;</span><br><span class="line">        &quot;*.rb&quot;: &quot;ruby&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;ruby.lint&quot;: &#123;</span><br><span class="line">        &quot;rubocop&quot;: &#123;</span><br><span class="line">            &quot;useBundler&quot;: false &#x2F;&#x2F; enable rubocop via bundler</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;reek&quot;: &#123;</span><br><span class="line">            &quot;useBundler&quot;: false &#x2F;&#x2F; enable reek via bundler</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;ruby.codeCompletion&quot;: &quot;rcodetools&quot;,</span><br><span class="line">    &quot;ruby.format&quot;: &quot;rubocop&quot;, &#x2F;&#x2F; use rubocop for formatting</span><br><span class="line">    &quot;ruby.intellisense&quot;: &quot;rubyLocate&quot;,</span><br><span class="line">    &quot;ruby.useLanguageServer&quot;: true, &#x2F;&#x2F; use the internal language server (see below)</span><br><span class="line">    &quot;ruby.useBundler&quot;: false, &#x2F;&#x2F;run non-lint commands with bundle exec</span><br><span class="line">    &quot;ruby.interpreter.commandPath&quot;: &quot;ruby&quot;,</span><br><span class="line">    &quot;ruby.locate&quot;: &#123;</span><br><span class="line">        &quot;exclude&quot;: &quot;&#123;**&#x2F;@(test|spec|tmp|.*),**&#x2F;@(test|spec|tmp|.*)&#x2F;**,**&#x2F;*_spec.rb&#125;&quot;,</span><br><span class="line">        &quot;include&quot;: &quot;**&#x2F;*.rb&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/07/20/ruby%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/20/ruby%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">Ruby环境搭建</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-20 12:00:00" itemprop="dateCreated datePublished" datetime="2019-07-20T12:00:00+00:00">2019-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>rbenv和rvm 是用来管理 ruby 的，ruby 的其中一个“程序”叫 rubygems ，简称 gem，而用来管理项目的 gem 的，叫 bundle ，他俩完全是不同的东西，相同的只是都可以管理gem。bundler 用来管理 fastlane 自身版本和 fastlane 运行时的相关依赖版本, 相当于 iOS 开发中的 CocoaPods 框架,CocoaPods就是模仿Bundle的工作原理开发出来的，bundle中用于管理gem的文件叫gemfile</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/07/20/ruby%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/05/18/LLDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/18/LLDB/" class="post-title-link" itemprop="url">LLDB使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-18 12:00:00" itemprop="dateCreated datePublished" datetime="2019-05-18T12:00:00+00:00">2019-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LLDB全称Low Level Debugger ，并不是低水平的调试器，而是轻量级的高性能调试器，默认内置于Xcode中。能够很好的运用它会使我们的开发效率事半功倍，接下来将讲解lldb常用命令及一些高级用法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/18/LLDB/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/04/20/cocoapods%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/20/cocoapods%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">cocoapods基本使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-20 12:00:00" itemprop="dateCreated datePublished" datetime="2019-04-20T12:00:00+00:00">2019-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>CocoaPods通过集中式的管理，可以非常有效的管理第三方库，甚至可以用于大型项目的模块化管理，非常优雅高效的解决iOS项目中的依赖管理。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/20/cocoapods%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/04/18/carthage%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/18/carthage%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">carthage基本使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-18 12:00:00" itemprop="dateCreated datePublished" datetime="2019-04-18T12:00:00+00:00">2019-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Carthage与CocoaPods类似，都是用于在iOS/OS X环境下管理第三方的工具,Carthage不会像CocoaPods那样创建一个workspace。而是直接提供了一种去中心化的依赖管理系统，不提供中心化的项目列表，使用者可以自行添加类库，对项目的侵入性也较少。可以理解为只帮你下载和更新第三方依赖，怎么用看你自己.Carthage使用xcodebuild去编译依赖，而不是将依赖集成到一个单一的工作区间，它没有类似的规范文件(例如CocoaPods 的 podspec)，但你的依赖必须包括它们自己的Xcode工程文件来描述是如何编译它们的项目。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/18/carthage%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/03/22/html%E8%AE%A4%E8%AF%86%E6%A0%87%E7%AD%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/22/html%E8%AE%A4%E8%AF%86%E6%A0%87%E7%AD%BE/" class="post-title-link" itemprop="url">html认识标签</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-22 12:00:00" itemprop="dateCreated datePublished" datetime="2019-03-22T12:00:00+00:00">2019-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="认识标签-第一部分"><a href="#认识标签-第一部分" class="headerlink" title="认识标签(第一部分)"></a>认识标签(第一部分)</h1><p>语义化，让你的网页更好的被搜索引擎理解<br>我们要开始把网页中常用到的标签一 一向大家介绍，学习这一章节的时候要记住学习html标签过程中，主要注意两个方面的学习：标签的用途、标签在浏览器中的默认样式。</p>
+<p>标签的用途：我们学习网页制作时，常常会听到一个词，语义化。那么什么叫做语义化呢，说的通俗点就是：明白每个标签的用途（在什么情况下使用此标签合理）比如，网页上的文章的标题就可以用标题标签，网页上的各个栏目的栏目名称也可以使用标题标签。文章中内容的段落就得放在段落标签中，在文章中有想强调的文本，就可以使用 em 标签表示强调等等。</p>
+<p>讲了这么多语义化，但是语义化可以给我们带来什么样的好处呢？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/22/html%E8%AE%A4%E8%AF%86%E6%A0%87%E7%AD%BE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://triplecc.github.io/2019/02/13/Mac%E4%B8%8A%E6%90%AD%E5%BB%BAAppium%20iOS%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/lightning.png">
+      <meta itemprop="name" content="Light">
+      <meta itemprop="description" content="Keep going……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Light's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/13/Mac%E4%B8%8A%E6%90%AD%E5%BB%BAAppium%20iOS%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Mac 上搭建Appium iOS测试环境</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-13 12:00:00" itemprop="dateCreated datePublished" datetime="2019-02-13T12:00:00+00:00">2019-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-08 15:01:37" itemprop="dateModified" datetime="2021-05-08T15:01:37+00:00">2021-05-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Mac-上通过Appium实现自动化测试"><a href="#Mac-上通过Appium实现自动化测试" class="headerlink" title="Mac 上通过Appium实现自动化测试"></a>Mac 上通过Appium实现自动化测试</h1><h2 id="安装Homebrew"><a href="#安装Homebrew" class="headerlink" title="安装Homebrew"></a><a href="https://brew.sh" target="_blank" rel="noopener">安装Homebrew</a></h2><p>Homebrew是一款Mac OS平台下的软件包管理工具，拥有安装、卸载、更新、查看、搜索等很多实用的功能。简单的一条指令，就可以实现包管理，而不用你关心各种依赖和文件路径的情况，十分方便快捷.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;bin&#x2F;ruby -e &quot;$(curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Homebrew&#x2F;install&#x2F;master&#x2F;install)&quot;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/13/Mac%E4%B8%8A%E6%90%AD%E5%BB%BAAppium%20iOS%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Light"
+      src="/images/avatar/lightning.png">
+  <p class="site-author-name" itemprop="name">Light</p>
+  <div class="site-description" itemprop="description">Keep going……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:heliangzhang@yeah.net" title="E-Mail → mailto:heliangzhang@yeah.net" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Light</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: ,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
